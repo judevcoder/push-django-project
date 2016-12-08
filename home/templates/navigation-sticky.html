@@ -14,17 +14,17 @@
                 <span class="username">Hey {{ user.first_name }}!</span>
               </li>
               <li id="menu-item-248" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-248">
-                <a href="{% url dashboard %}">Dashboard</a>
+                <a href="{% url "dashboard" %}">Dashboard</a>
               </li>
               <li id="menu-item-247" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-247">
-                <a href="{% url logout %}">Log out</a>
+                <a href="{% url "logout" %}">Log out</a>
               </li>                            
               {% else %}
               <li id="menu-item-248" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-248">
-                <a href="{% url login %}">Sign In</a>
+                <a href="{% url "login" %}">Sign In</a>
               </li>
               <li id="menu-item-247" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-247">
-                <a href="{% url register %}">Sign up</a>
+                <a href="{% url "register" %}">Sign up</a>
               </li>              
               {% endif %}
             </ul>
@@ -36,7 +36,7 @@
     <div class="navheader sticky-navheader sticky">
 
       <nav id="site-navigation" class="main-navigation" aria-label="Primary Menu">
-        <div class="menu-header-menus-container"><ul id="menu-header-menus" class="primary-menu"><li id="menu-item-11" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-11"><a href="{% url home %}">Home</a></li>
+        <div class="menu-header-menus-container"><ul id="menu-header-menus" class="primary-menu"><li id="menu-item-11" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-11"><a href="{% url "home" %}">Home</a></li>
           <li id="menu-item-9" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-9"><a href="/#Description">Description</a></li>
           <li id="menu-item-10" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-10"><a href="/#Pricing">Pricing</a></li>
           <li id="menu-item-12" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-12"><a href="/#Contact">Contact</a></li>
