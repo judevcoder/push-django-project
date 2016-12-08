@@ -1,2 +1,4 @@
 *.pyc
 *.pye
+.local
+sqlite3.db
