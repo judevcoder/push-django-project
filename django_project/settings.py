@@ -71,6 +71,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pushmonkey.middleware.cors.XsSharing'
 )
 
 ROOT_URLCONF = 'django_project.urls'
@@ -127,6 +128,18 @@ else:
 PAYPAL_SUBSCRIPTION_IMAGE = "/static/images/paypal-button.png"
 PAYPAL_SUBSCRIPTION_SANDBOX_IMAGE = "/static/images/paypal-button.png"
 
+# Max number of website for Pro plan
+MAX_NUMBER_OF_WEBSITES_ON_PRO = 5
+
+# ImageKit
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.Optimistic'
+
+# Auth
+LOGIN_URL = "/login"
+LOGIN_REDIRECT_URL = "/dashboard"
+
+AUTHENTICATION_BACKENDS = ('clients.backends.EmailAuthBackend',)
+
 # Email Config
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.socketlabs.com'
@@ -140,7 +153,32 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 MEDIA_URL = '/static/media/'
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'mail_admins': {
+            'level': 'DEBUG',
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'djacobs_apns.apns': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    }
+}
