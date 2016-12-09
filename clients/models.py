@@ -11,6 +11,7 @@ import hashlib
 import os
 import pushmonkey 
 import string, random
+from django.utils.text import slugify
 
 REGISRATION_STEP = (
     (1, 'Registration'),
@@ -39,7 +40,7 @@ class ClientProfile(models.Model):
     website_name = models.CharField(max_length = 300, default = '')
     return_url = models.CharField(max_length = 400, default = '', blank = True)
     from_envato = models.BooleanField(default = False)
-    subdomain = models.SlugField(unique = True, default = "notifications")
+    subdomain = models.CharField(max_length = 60, null=True, blank = True)
 
     def __unicode__(self):
         return self.user.username
@@ -48,6 +49,13 @@ class ClientProfile(models.Model):
         return self.status == 'pending'
 
     def save(self, *args, **kwargs):
+        if not self.subdomain and self.website_name:
+            slug = slugify(self.website_name)
+            count = ClientProfile.objects.filter(subdomain = slug).count()
+            if count == 0:
+                self.subdomain = slug
+            else:
+                self.subdomain = "%s-%s" % (slug, count+1)
         super(ClientProfile, self).save(*args, **kwargs)
 
     def has_push_package(self):

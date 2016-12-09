@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'ClientProfile.subdomain'
         db.add_column(u'clients_clientprofile', 'subdomain',
-                      self.gf('django.db.models.fields.SlugField')(default='notifications', unique=True, max_length=50),
+                      self.gf('django.db.models.fields.CharField')(max_length=60, null=True),
                       keep_default=False)
 
 
@@ -60,7 +60,7 @@ class Migration(SchemaMigration):
             'registration_step': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'return_url': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '400', 'blank': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'pending'", 'max_length': '30'}),
-            'subdomain': ('django.db.models.fields.SlugField', [], {'default': "'notifications'", 'unique': 'True', 'max_length': '50'}),
+            'subdomain': ('django.db.models.fields.CharField', [], {'max_length': '60', 'null': 'True'}),
             'url_format_string': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '200', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
