@@ -39,6 +39,7 @@ class ClientProfile(models.Model):
     website_name = models.CharField(max_length = 300, default = '')
     return_url = models.CharField(max_length = 400, default = '', blank = True)
     from_envato = models.BooleanField(default = False)
+    subdomain = models.SlugField(unique = True, default = "notifications")
 
     def __unicode__(self):
         return self.user.username
