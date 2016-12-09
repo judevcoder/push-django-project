@@ -33,7 +33,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".getpushmonkey.com"]
 
 # Application definition
 
