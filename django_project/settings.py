@@ -8,7 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# Build paths inside the project like this: os.path.join(   _DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -135,6 +135,10 @@ EMAIL_HOST_PASSWORD = 'Ax9o2E4Fsb6K7Qi'
 EMAIL_PORT = 25
 DEFAULT_FROM_EMAIL = 'Push Monkey <mailer@getpushmonkey.com>'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+# MEDIA
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+MEDIA_URL = '/static/media/'
 
 
 # Static files (CSS, JavaScript, Images)
