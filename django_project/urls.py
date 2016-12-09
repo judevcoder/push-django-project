@@ -90,7 +90,7 @@ urlpatterns = patterns('',
   url(r'^(?P<account_key>.+)/service-worker.js$', 'pushmonkey.views.service_worker', name='service_worker_js'),
   url(r'^(?P<account_key>.+)/manifest.json$', 'pushmonkey.views.manifest', name='manifest'),
   url(r'^sdk/config-(?P<account_key>.+).js$', 'pushmonkey.views.config_js', name='config_js'),
-  url(r'^sdk/sdk.js$', 'pushmonkey.views.sdk_js', name='sdk_js'),  
+  url(r'^sdk/sdk-(?P<account_key>.+).js$', 'pushmonkey.views.sdk_js', name='sdk_js'),  
   url(r'^(?P<account_key>.+)/register-service-worker$', 'pushmonkey.views.register_service_worker', name='register_service_worker'),  
   # TODO: handle unregister
   #affiliates

@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from pushmonkey.models import PushMessage, Device, WebServiceDevice
+from clients.models import ClientProfile
 import json
 
 GCM_ENDPOINT = "https://android.googleapis.com/gcm/send"
@@ -97,7 +98,13 @@ def config_js(request, account_key = None):
 	return HttpResponse(rendered, content_type="application/json")
 
 @xframe_options_exempt
-def sdk_js(request):
+def sdk_js(request, account_key = None):
+	if not account_key:
 
-	rendered = render_to_string('pushmonkey/sdk.js', {})
+		raise Http404
+	profile = ClientProfile.objects.get_object_or_404(account_key = account_key)
+	rendered = render_to_string('pushmonkey/sdk.js', {
+		"account_key": account_key,
+		"subdomain": subdomain		
+		})
 	return HttpResponse(rendered, content_type="application/json")

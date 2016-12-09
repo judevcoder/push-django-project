@@ -331,7 +331,7 @@ var PushMonkey = function(config) {
   pm.safariHost = "https://www.getpushmonkey.com";   
   pm.safariEndpointURL = pm.safariHost + "/push";
   pm.safariWebPushID = "web.com.pushmonkey." + pm.accountKey;
-  pm.sdkHost = "https://notifications.getpushmonkey.com";
+  pm.sdkHost = "https://{{ subdomain }}.getpushmonkey.com";
   pm.serviceWorker = './service-worker.js';  
   pm.serviceWorkerLocal = './service-worker-'+pm.accountKey+'.php';
   pm.serviceWorkersSupportNotifications = ("undefined" != typeof ServiceWorkerRegistration && 'showNotification' in ServiceWorkerRegistration.prototype && 'PushManager' in window);
