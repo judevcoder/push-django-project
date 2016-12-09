@@ -137,8 +137,8 @@ DEFAULT_FROM_EMAIL = 'Push Monkey <mailer@getpushmonkey.com>'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # MEDIA
-# MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
-# MEDIA_URL = '/static/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+MEDIA_URL = '/static/media/'
 
 
 # Static files (CSS, JavaScript, Images)
