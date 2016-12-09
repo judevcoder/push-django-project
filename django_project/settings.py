@@ -45,16 +45,16 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'clients',
     'home',
+    'coupons',
     'paypal.standard.ipn',
     'djacobs_apns',
     'pushmonkey',
     'south',
-    'clients',
     'stats',
     'backup',
     'plans',
-    'coupons',
     'emails',
     'contact_messages',
     'affiliates',
@@ -126,6 +126,15 @@ else:
     PAYPAL_RECEIVER_EMAIL = "payments@getpushmonkey.com" #production
 PAYPAL_SUBSCRIPTION_IMAGE = "/static/images/paypal-button.png"
 PAYPAL_SUBSCRIPTION_SANDBOX_IMAGE = "/static/images/paypal-button.png"
+
+# Email Config
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.socketlabs.com'
+EMAIL_HOST_USER = 'server14980'
+EMAIL_HOST_PASSWORD = 'Ax9o2E4Fsb6K7Qi'
+EMAIL_PORT = 25
+DEFAULT_FROM_EMAIL = 'Push Monkey <mailer@getpushmonkey.com>'
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 
 # Static files (CSS, JavaScript, Images)

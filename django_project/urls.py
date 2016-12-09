@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
+from django.views.generic import TemplateView, RedirectView
 
 admin.autodiscover()
 
@@ -68,23 +69,21 @@ urlpatterns = patterns('',
   #coupons
   url(r'^coupons/redeem$', 'coupons.views.redeem', name='redeem_coupon'),
   #pages
-  url(r'^terms-and-conditions', 'django.views.generic.simple.direct_to_template', {'template': 'tc.html'}, name='tc'),
-  url(r'^privacy-policy', 'django.views.generic.simple.direct_to_template', {'template': 'privacy.html'}, name='privacy'),
-  url(r'^404', 'django.views.generic.simple.direct_to_template', {'template': '404.html'}, name='page_404'),
-  url(r'^500', 'django.views.generic.simple.direct_to_template', {'template': '500.html'}, name='page_500'),
-  url(r'^help', 'django.views.generic.simple.direct_to_template', {'template': 'help.html'}, name='help'),
-  url(r'^team', 'django.views.generic.simple.direct_to_template', {'template': 'team.html'}, name='team'),
-  url(r'^robots.txt$', 'django.views.generic.simple.direct_to_template', {'template': 'robots.txt'}, name='robots'),
-  url(r'^sitemap.xml$', 'django.views.generic.simple.direct_to_template', {'template': 'sitemap.xml'}, name='sitemap'),
-  url(r'^D3FE892048C257252C7C6EA9FB8B6F35.txt$', 'django.views.generic.simple.direct_to_template', {'template': 'D3FE892048C257252C7C6EA9FB8B6F35.txt'}, name='ssl-check'),
-  url(r'^favicon.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'}, name='favicon'),
-  url(r'^apple-touch-icon.png$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/push-monkey-logo-60x60.png'}, name='apple-touch-icon'),
-  url(r'^apple-touch-icon-precomposed.png$', 'django.views.generic.simple.redirect_to', 
-  {'url': '/static/img/push-monkey-logo-60x60.png'}, name='apple-touch-icon-precomposed'),
-  url(r'^changelog/fixed', 'django.views.generic.simple.direct_to_template', {'template': 'changelog_fixed.html'}, name='changelog_fixed'),
-  url(r'^changelog/wordpress', 'django.views.generic.simple.direct_to_template', {'template': 'changelog_wordpress.html'}, name='changelog_wordpress'),
+  url(r'^terms-and-conditions', TemplateView.as_view(template_name='tc.html'), name='tc'),
+  url(r'^privacy-policy', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
+  url(r'^404', TemplateView.as_view(template_name='404.html'), name='page_404'),
+  url(r'^500', TemplateView.as_view(template_name='500.html'), name='page_500'),
+  url(r'^help', TemplateView.as_view(template_name='help.html'), name='help'),
+  url(r'^team', TemplateView.as_view(template_name='team.html'), name='team'),
+  url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt'), name='robots'),
+  url(r'^sitemap.xml$', TemplateView.as_view(template_name='sitemap.xml'), name='sitemap'),
+  url(r'^favicon.ico$', RedirectView.as_view(url='/static/img/favicon.ico'), name='favicon'),
+  url(r'^apple-touch-icon.png$', RedirectView.as_view(url='/static/img/push-monkey-logo-60x60.png'), name='apple-touch-icon'),
+  url(r'^apple-touch-icon-precomposed.png$', RedirectView.as_view(url='/static/img/push-monkey-logo-60x60.png'), name='apple-touch-icon-precomposed'),
+  url(r'^changelog/fixed', TemplateView.as_view(template_name='changelog_fixed.html'), name='changelog_fixed'),
+  url(r'^changelog/wordpress', TemplateView.as_view(template_name='changelog_wordpress.html'), name='changelog_wordpress'),
   # chrome
-  url(r'^chrome', 'django.views.generic.simple.direct_to_template', {'template': 'chrome/index.html'}),
+  url(r'^chrome', TemplateView.as_view(template_name='chrome/index.html')),
   url(r'^push/v1/register/(?P<account_key>.+)', 'pushmonkey.views.register', name='service_worker_register'),
   url(r'^push/v1/unregister/(?P<subscription_id>.+)', 'pushmonkey.views.unregister', name='service_worker_unregister'),  
   url(r'^push/v1/notifs/(?P<account_key>.+)', 'pushmonkey.views.notifications', name='service_worker_notifications'),                     
@@ -98,9 +97,9 @@ urlpatterns = patterns('',
   url(r'^af/', include('affiliates.urls')),
   # Examples:
   url(r'^$', 'django_project.views.home', name='home'),
-  url(r'^banner/', 'django.views.generic.simple.direct_to_template', {'template': 'banner.html'}, name='banner'),
-  url(r'^banner-mobile/', 'django.views.generic.simple.direct_to_template', {'template': 'banner-mobile.html'}, name='banner-mobile'),
-  url(r'^banner-smobile/', 'django.views.generic.simple.direct_to_template', {'template': 'banner-smobile.html'}, name='banner-smobile'),  
+  url(r'^banner/', TemplateView.as_view(template_name='banner.html'), name='banner'),
+  url(r'^banner-mobile/', TemplateView.as_view(template_name='banner-mobile.html'), name='banner-mobile'),
+  url(r'^banner-smobile/', TemplateView.as_view(template_name='banner-smobile.html'), name='banner-smobile'),  
   url(r'^admin/', include(admin.site.urls)),
 )
 

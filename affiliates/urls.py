@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic import TemplateView, RedirectView
 
 urlpatterns = patterns('affiliates.views',
                        url(r'^join$', 'join', name="affiliates_join"),
@@ -8,7 +9,7 @@ urlpatterns = patterns('affiliates.views',
                       )
 
 additional_patterns = patterns('',
-                               url(r'^terms-and-conditions', 'django.views.generic.simple.direct_to_template', {'template': 'affiliates/terms.html'}, name='affiliates_terms'),
+                               url(r'^terms-and-conditions', TemplateView.as_view(template_name='affiliates/terms.html'), name='affiliates_terms'),
                               )
 
 urlpatterns += additional_patterns

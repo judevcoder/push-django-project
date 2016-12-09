@@ -26,17 +26,17 @@
 					<span class="username">Hey {{ user.first_name }}!</span>
 				</li>
 				<li>
-					<a href="{% url dashboard %}" class="btn btn-default">Dashboard</a>
+					<a href="{% url 'dashboard' %}" class="btn btn-default">Dashboard</a>
 				</li>
 				<li>
-					<a href="{% url logout %}" class="btn btn-default">Sign Out</a>
+					<a href="{% url 'logout' %}" class="btn btn-default">Sign Out</a>
 				</li>
                 {% else %}
 				<li>
-					<a href="{% url login %}" class="btn btn-default">Sign In</a>
+					<a href="{% url 'login' %}" class="btn btn-default">Sign In</a>
 				</li>
 				<li>
-					<a href="{% url register %}" class="btn btn-success">Sign Up</a>
+					<a href="{% url 'register' %}" class="btn btn-success">Sign Up</a>
 				</li>
                 {% endif %}
             </ul>

@@ -27,9 +27,9 @@
             <p>
 
               {% if modal_pricing_table or overview_pricing_tabel %}
-              <a href="{% url payment_overview 'yearly' plans.STARTER %}" 
+              <a href="{% url 'payment_overview' 'yearly' plans.STARTER %}" 
               {% else %}
-              <a href="{% url register_preselected_plan plans.starter_yearly %}" 
+              <a href="{% url 'register_preselected_plan' plans.starter_yearly %}" 
               {% endif %} 
               >
                 {{ prices.starter_monthly_paid_yearly }}<br>
@@ -43,9 +43,9 @@
           <div class="wpb_wrapper">
             <p>
               {% if modal_pricing_table or overview_pricing_tabel %}
-              <a href="{% url payment_overview 'monthly' plans.STARTER %}" 
+              <a href="{% url 'payment_overview' 'monthly' plans.STARTER %}" 
               {% else %}
-              <a href="{% url register_preselected_plan plans.starter_monthly %}" 
+              <a href="{% url 'register_preselected_plan' plans.starter_monthly %}" 
               {% endif %}
               >
                 {{ prices.STARTER_MONTHLY }}<br>
@@ -85,9 +85,9 @@
           <div class="wpb_wrapper">
             <p>
                 {% if modal_pricing_table or overview_pricing_tabel %}
-                <a href="{% url payment_overview 'yearly' plans.SWEET_SPOT %}" 
+                <a href="{% url 'payment_overview' 'yearly' plans.SWEET_SPOT %}" 
                 {% else %}
-                <a href="{% url register_preselected_plan plans.sweet_spot_yearly %}" 
+                <a href="{% url 'register_preselected_plan' plans.sweet_spot_yearly %}" 
                 {% endif %}
                 >
                 {{ prices.sweet_spot_monthly_paid_yearly }}<br>
@@ -101,9 +101,9 @@
           <div class="wpb_wrapper">
             <p>
               {% if modal_pricing_table or overview_pricing_tabel %}
-              <a href="{% url payment_overview 'monthly' plans.SWEET_SPOT %}" 
+              <a href="{% url 'payment_overview' 'monthly' plans.SWEET_SPOT %}" 
               {% else %}
-              <a href="{% url register_preselected_plan plans.sweet_spot_monthly %}" 
+              <a href="{% url 'register_preselected_plan' plans.sweet_spot_monthly %}" 
               {% endif %}
               >
                 {{ prices.SWEET_SPOT_MONTHLY }}<br>
@@ -143,9 +143,9 @@
           <div class="wpb_wrapper">
             <p>
                 {% if modal_pricing_table or overview_pricing_tabel %}
-                <a href="{% url payment_overview 'yearly' plans.PRO %}" 
+                <a href="{% url 'payment_overview' 'yearly' plans.PRO %}" 
                 {% else %}
-                <a href="{% url register_preselected_plan plans.pro_year %}" 
+                <a href="{% url 'register_preselected_plan' plans.pro_year %}" 
                 {% endif %}
                 >
                 {{ prices.pro_monthly_paid_yearly }}<br>
@@ -159,9 +159,9 @@
           <div class="wpb_wrapper">
             <p>
                 {% if modal_pricing_table or overview_pricing_tabel %}
-                <a href="{% url payment_overview 'monthly' plans.PRO %}" 
+                <a href="{% url 'payment_overview' 'monthly' plans.PRO %}" 
                 {% else %}
-                <a href="{% url register_preselected_plan plans.pro_monthly %}" 
+                <a href="{% url 'register_preselected_plan' plans.pro_monthly %}" 
                 {% endif %}
                 >
                 {{ prices.PRO_MONTHLY }}<br>

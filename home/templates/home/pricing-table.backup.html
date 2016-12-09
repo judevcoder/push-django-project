@@ -12,9 +12,9 @@
 			<div class="price-row last-row">CTA Banners</div>
 			<div class="button-row centered">
 				{% if modal_pricing_table or overview_pricing_tabel %}
-				<a href="{% url payment_overview 'yearly' plans.STARTER %}" 
+				<a href="{% url 'payment_overview' 'yearly' plans.STARTER %}" 
 				{% else %}
-				<a href="{% url register_preselected_plan plans.starter_yearly %}" 
+				<a href="{% url 'register_preselected_plan' plans.starter_yearly %}" 
 				{% endif %}
 					class="btn {% if is_cool_update %}btn-cool-update{% else %}btn-success{% endif %} btn-lg btn-block">
 					<span class="currency">$</span>{{ prices.starter_monthly_paid_yearly }}/month
@@ -30,9 +30,9 @@
 		<div class="second-tier price-yearly">
 			<div class="button-row centered">
 				{% if modal_pricing_table or overview_pricing_tabel %}
-				<a href="{% url payment_overview 'monthly' plans.STARTER %}" 
+				<a href="{% url 'payment_overview' 'monthly' plans.STARTER %}" 
 					{% else %}
-				<a href="{% url register_preselected_plan plans.starter_monthly %}" 
+				<a href="{% url 'register_preselected_plan' plans.starter_monthly %}" 
 					{% endif %}
 					class="btn {% if is_cool_update %}btn-cool-update{% else %}btn-success{% endif %} btn-lg btn-block">
 					<span class="currency">$</span>{{ prices.STARTER_MONTHLY }}/month
@@ -62,9 +62,9 @@
 			<div class="price-row-light last-row">Data Export</div>
 			<div class="button-row centered">
 				{% if modal_pricing_table or overview_pricing_tabel %}
-				<a href="{% url payment_overview 'yearly' plans.SWEET_SPOT %}" 
+				<a href="{% url 'payment_overview' 'yearly' plans.SWEET_SPOT %}" 
 					{% else %}
-				<a href="{% url register_preselected_plan plans.sweet_spot_yearly %}" 
+				<a href="{% url 'register_preselected_plan' plans.sweet_spot_yearly %}" 
 					{% endif %}
 					class="btn btn-success btn-lg btn-block">
 					<span class="currency">$</span>{{ prices.sweet_spot_monthly_paid_yearly }}/month
@@ -80,9 +80,9 @@
 		<div class="first-tier price-yearly">
 			<div class="button-row centered">
 				{% if modal_pricing_table or overview_pricing_tabel %}
-				<a href="{% url payment_overview 'monthly' plans.SWEET_SPOT %}" 
+				<a href="{% url 'payment_overview' 'monthly' plans.SWEET_SPOT %}" 
 					{% else %}
-				<a href="{% url register_preselected_plan plans.sweet_spot_monthly %}" 
+				<a href="{% url 'register_preselected_plan' plans.sweet_spot_monthly %}" 
 					{% endif %}
 					class="btn btn-success btn-lg btn-block">
 					<span class="currency">$</span>{{ prices.SWEET_SPOT_MONTHLY }}/month
@@ -112,9 +112,9 @@
 			<div class="price-row last-row">5 Websites</div>
 			<div class="button-row centered">
 				{% if modal_pricing_table or overview_pricing_tabel %}
-				<a href="{% url payment_overview 'yearly' plans.PRO %}" 
+				<a href="{% url 'payment_overview' 'yearly' plans.PRO %}" 
 					{% else %}
-				<a href="{% url register_preselected_plan plans.pro_year %}" 
+				<a href="{% url 'register_preselected_plan' plans.pro_year %}" 
 					{% endif %}
 					class="btn btn-success btn-lg btn-block">
 					<span class="currency">$</span>{{ prices.pro_monthly_paid_yearly|floatformat }}/month
@@ -130,9 +130,9 @@
 		<div class="second-tier price-yearly">
 			<div class="button-row centered">
 				{% if modal_pricing_table or overview_pricing_tabel %}
-				<a href="{% url payment_overview 'monthly' plans.PRO %}" 
+				<a href="{% url 'payment_overview' 'monthly' plans.PRO %}" 
 					{% else %}
-				<a href="{% url register_preselected_plan plans.pro_monthly %}" 
+				<a href="{% url 'register_preselected_plan' plans.pro_monthly %}" 
 					{% endif %}
 					class="btn btn-success btn-lg btn-block">
 					<span class="currency">$</span>{{ prices.PRO_MONTHLY }}/month
