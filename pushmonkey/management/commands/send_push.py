@@ -78,6 +78,7 @@ class Command(BaseCommand):
         else:
             cert_path = os.path.join(settings.STATIC_ROOT, profile.website_push_id, 'pushPackage', 'cert.pem')
             key_path = os.path.join(settings.STATIC_ROOT, profile.website_push_id, 'pushPackage', 'key.pem')
+        print(cert_path)
         apns = APNs(use_sandbox=False, cert_file=cert_path, key_file=key_path, enhanced = True)
         apns.gateway_server.register_response_listener(self.response_listener)
         devices = Device.objects.filter(account_key = profile.account_key)
