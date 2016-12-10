@@ -105,6 +105,6 @@ def sdk_js(request, account_key = None):
 	profile = ClientProfile.objects.get(account_key = account_key)
 	rendered = render_to_string('pushmonkey/sdk.js', {
 		"account_key": account_key,
-		"subdomain": subdomain		
+		"subdomain": profile.subdomain		
 		})
 	return HttpResponse(rendered, content_type="application/json")
