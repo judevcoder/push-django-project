@@ -38,7 +38,7 @@ def home(request):
                               RequestContext(request))
 
 def test(request):
-    subprocess.Popen("sleep 10; python /home/django/django_project/manage.py send_push 1", shell=True)
+    subprocess.Popen("sleep 10; python /home/django/django_project/manage.py send_push 19936", shell=True)
 
     title = 'title'
     body = 'body'
