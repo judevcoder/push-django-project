@@ -1,9 +1,9 @@
 'use strict';
 
 var pushMonkeySWConfig = {
-    version: 1,
+    version: 2,
     logging: false, // TODO: set to false when live
-    host: "https://www.getpushmonkey.com" // TODO: add live
+    host: "https://getpushmonkey.com" // TODO: add live
 };
 
 var url = pushMonkeySWConfig.host + "/push/v1/notifs/{{ account_key }}";
