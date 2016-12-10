@@ -57,7 +57,7 @@ class Command(BaseCommand):
             "Feedback Server: " + str(feedback_responses) + "\n"
             "=======================\n"
         ]
-        logs_dir = '/var/django'
+        logs_dir = '/home/django'
         f = open(os.path.join(logs_dir, 'push_sent_log.txt'), 'a')
         for message in message_lines:
             self.stdout.write(message)
