@@ -112,7 +112,7 @@ def push_message(request):
 
     if should_push:
         # subprocess for async execution
-        command_path = "/home/django/django_project manage.py send_push" 
+        command_path = "/home/django/django_project/manage.py send_push" 
         message_id = new_message.id
         subprocess.Popen("sleep 10; python " + command_path + " " + str(message_id), shell=True)
 
