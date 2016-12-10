@@ -45,7 +45,7 @@ def test(request):
     email_address = settings.MANAGERS[0][1]
     subject = 'Push sent: ' + title
     message = 'Body: ' + body
-    send_mail(subject, message, settings.EMAIL_HOST_USER,
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
               [email_address], fail_silently=False)
     return render_to_response('home/home.html')
 
