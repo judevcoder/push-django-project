@@ -57,7 +57,7 @@ class Command(BaseCommand):
             "Feedback Server: " + str(feedback_responses) + "\n"
             "=======================\n"
         ]
-        logs_dir = '/var/lib/openshift/'+ settings.OPENSHIFT_ID +'/app-root/logs'
+        logs_dir = '/var/django'
         f = open(os.path.join(logs_dir, 'push_sent_log.txt'), 'a')
         for message in message_lines:
             self.stdout.write(message)
