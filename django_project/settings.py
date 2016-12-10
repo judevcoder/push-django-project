@@ -159,6 +159,8 @@ MEDIA_URL = '/static/media/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 
+SITE_ID = 1
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
