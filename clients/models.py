@@ -7,6 +7,7 @@ from django.dispatch.dispatcher import receiver
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from uuid import uuid4
+from django.utils.text import Truncator
 import hashlib
 import os
 import pushmonkey 
@@ -51,6 +52,7 @@ class ClientProfile(models.Model):
     def save(self, *args, **kwargs):
         if not self.subdomain and self.website_name:
             slug = slugify(self.website_name)
+            slug = Truncator(slug).chars(55)
             count = ClientProfile.objects.filter(subdomain = slug).count()
             if count == 0:
                 self.subdomain = slug
