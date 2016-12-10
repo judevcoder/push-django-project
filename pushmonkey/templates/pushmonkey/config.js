@@ -8,7 +8,7 @@ try {
     var container = document.body ? document.body : document.head;
     var script = document.createElement("script");
     script.id="PushMonkeySDK",
-    script.src="//www.getpushmonkey.com/sdk/sdk.js",
+    script.src="//www.getpushmonkey.com/sdk/sdk-{{ account_key }}.js",
     container.appendChild(script)
 } catch(err) {
 }
