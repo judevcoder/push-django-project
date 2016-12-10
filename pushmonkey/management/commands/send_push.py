@@ -24,7 +24,7 @@ class Command(BaseCommand):
     def __init__(self):
         self.batch_raw = {}
         self.batch = Batch()
-        super(Command, self).init()
+        super(Command, self).__init__()
 
     def handle(self, *args, **options):
         push_message = None
