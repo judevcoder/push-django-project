@@ -24,7 +24,7 @@ PROJECT_DIR = os.path.join(os.path.dirname(__file__), "..")
 SECRET_KEY = 'sVRomwETUhjAESoAjQeIti9XvXDj0bYCL0Q41e8gu2QLlOmqmo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = IS_LOCAL
 
 TEMPLATE_DEBUG = DEBUG
 
