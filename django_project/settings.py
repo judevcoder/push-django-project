@@ -23,6 +23,11 @@ PROJECT_DIR = os.path.join(os.path.dirname(__file__), "..")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'sVRomwETUhjAESoAjQeIti9XvXDj0bYCL0Q41e8gu2QLlOmqmo'
 
+MANAGERS = (
+    ('Tudor Munteanu', 'tudor@mowowstudios.com'),
+    ('Ash K', 'tudor@getpushmonkey.com'),
+)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
