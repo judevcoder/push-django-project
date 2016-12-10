@@ -109,7 +109,7 @@ var PushMonkey = function(config) {
     var dialog = document.createElement("div");
     dialog.setAttribute("id", "pm_dialog");
     dialog.style.width = "100px";
-    dialog.style.height = "100px";
+    dialog.style.height = "110px";
     var top = window.innerHeight/3 - 50;
     var left = window.innerWidth/2 - 100;
     dialog.setAttribute("style", "background-color: "+pm.dialogBackgroundColor+"; position: absolute; top: "+top+"px; left: "+left+"px; width: 200px; height: 100px; text-align: center; padding: 10px; border-radius: 10px;");
