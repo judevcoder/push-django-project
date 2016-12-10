@@ -24,7 +24,7 @@ PROJECT_DIR = os.path.join(os.path.dirname(__file__), "..")
 SECRET_KEY = 'sVRomwETUhjAESoAjQeIti9XvXDj0bYCL0Q41e8gu2QLlOmqmo'
 
 MANAGERS = (
-    ('Tudor Munteanu', 'tudorizer@gmail.com'),
+    ('Tudor Munteanu', 'tudor@mowowstudios.com'),
     ('Ash K', 'tudor@getpushmonkey.com'),
 )
 

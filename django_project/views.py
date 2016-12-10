@@ -47,7 +47,7 @@ def test(request):
     message = 'Body: ' + body
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
               [email_address], fail_silently=False)
-    return render_to_response('home/home.html')
+    return render_to_response('home/pushed.html')
 
 @csrf_exempt
 def push_message(request):
