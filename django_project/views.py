@@ -38,7 +38,7 @@ def home(request):
                               RequestContext(request))
 
 def test(request):
-    subprocess.Popen("sleep 10; python /var/lib/openshift/" + settings.OPENSHIFT_ID + "/app-root/runtime/repo/wsgi/openshift/manage.py send_push 1", shell=True)
+    subprocess.Popen("sleep 10; python /home/django/django_project/manage.py send_push 1", shell=True)
 
     title = 'title'
     body = 'body'
@@ -112,7 +112,7 @@ def push_message(request):
 
     if should_push:
         # subprocess for async execution
-        command_path = "/var/lib/openshift/" + settings.OPENSHIFT_ID + "/app-root/runtime/repo/wsgi/openshift/manage.py send_push" 
+        command_path = "/home/django/django_project manage.py send_push" 
         message_id = new_message.id
         subprocess.Popen("sleep 10; python " + command_path + " " + str(message_id), shell=True)
 
