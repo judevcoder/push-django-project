@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, RedirectView
 
 admin.autodiscover()
 
-handler500 = 'views.server_error'
+handler500 = 'django_project.views.server_error'
 
 urlpatterns = patterns('',
   url(r'^push$', 'django_project.views.push', name='push'),
