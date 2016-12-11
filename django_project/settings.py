@@ -28,6 +28,8 @@ MANAGERS = (
     ('Ash K', 'tudor@getpushmonkey.com'),
 )
 
+ADMINS = MANAGERS
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -178,10 +180,17 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
+        'gunicorn': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': '/home/django/gunicorn.errors',
+            'maxBytes': 1024 * 1024 * 100,  # 100 mb
+        }        
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins', 'gunicorn'],
             'level': 'DEBUG',
             'propagate': True,
         },
