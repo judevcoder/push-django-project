@@ -2,3 +2,4 @@
 *.pye
 .local
 sqlite3.db
+gunicorn.errors
