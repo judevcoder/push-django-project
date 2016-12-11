@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from models import ClientProfile, ProfileImage
 from website_clusters.models import Website
+from captcha.fields import ReCaptchaField
 
 class UserForm(forms.ModelForm):
     first_name = forms.CharField()
     email = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
     password_confirm = forms.CharField(widget=forms.PasswordInput())
+    captcha = ReCaptchaField()
 
     class Meta:
         model = User

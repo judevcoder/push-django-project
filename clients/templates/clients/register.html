@@ -76,6 +76,7 @@
               <input type="password" class="form-control {% if user_form.password_confirm.errors %}error{% endif %}" name="{{ user_form.password_confirm.html_name }}" placeholder="Confirm Password">
             </div>
             <!-- .col -->
+            {{ form.captcha }}
 
             <input type="hidden" name="{{ profile_form.website_name.html_name }}" value="{{ profile_form.website_name.value }}" />
             <input type="hidden" name="{{ profile_form.return_url.html_name }}" value="{{ profile_form.return_url.value }}" />
