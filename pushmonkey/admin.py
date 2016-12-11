@@ -1,7 +1,10 @@
 from django.contrib import admin
 from models import Device, PushMessage, PushPackage, Batch, WebServiceDevice
 
-admin.site.register(WebServiceDevice)
+
+class WebServiceDeviceAdmin(admin.ModelAdmin):
+  list_display = ('subscription_id', 'endpoint', 'created_at', 'account_key', 'comment', 'mozilla', 'chrome')
+admin.site.register(WebServiceDevice, WebServiceDeviceAdmin)
 
 class DeviceAdmin(admin.ModelAdmin):
     list_filter = ('account_key',)
