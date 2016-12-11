@@ -31,7 +31,7 @@ MANAGERS = (
 ADMINS = MANAGERS
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = IS_LOCAL
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -69,7 +69,8 @@ INSTALLED_APPS = (
     'django_jfu_pushmonkey',
     'imagekit',
     'django_push_package',
-    'website_clusters'    
+    'website_clusters',
+    'captcha'  
 )
 
 MIDDLEWARE_CLASSES = (
@@ -164,9 +165,18 @@ MEDIA_URL = '/static/media/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
+if not IS_LOCAL:
+    STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 
 SITE_ID = 1
+
+RECAPTCHA_PUBLIC_KEY = '6LcBgg4UAAAAAGONxlPgKF-BbfaOrQ2JzQSEeIED'
+RECAPTCHA_PRIVATE_KEY = '6LcBgg4UAAAAAP3FWpQRVkaYAo5jaENY-xSVR9PE'
+NOCAPTCHA = True
+
+LOGGING_PATH = '/home/django/gunicorn.errors'
+if IS_LOCAL:
+    LOGGING_PATH = os.path.join(PROJECT_DIR, "gunicorn.errors")
 
 LOGGING = {
     'version': 1,
@@ -183,7 +193,7 @@ LOGGING = {
         'gunicorn': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/home/django/gunicorn.errors',
+            'filename': LOGGING_PATH,
             'maxBytes': 1024 * 1024 * 10,  # 10 mb
         }        
     },

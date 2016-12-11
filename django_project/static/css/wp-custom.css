@@ -431,3 +431,9 @@ ol.carousel-indicators li { border: 2px solid #0e47a1; }
 .home .webentry-content{ margin-bottom:0}
 .pushmonkey-dollar .pushmonkey-dollartext a{ color:#0e47a1;}
 
+/* captcha */
+
+.g-recaptcha div {
+  margin: 0 auto;
+}
+

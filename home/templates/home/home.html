@@ -355,19 +355,45 @@ Sending notifications on a big and reliable scale is not trivial, but our solid 
 <div class="screen-reader-response"></div>
 {% if form.errors %}
 <p class="bg-danger"> Hold on. Something is not right in the fields below.  </p>
-{{ form.errors }}
+{% for field in form %}
+    {% if field.html_name != "captcha" %}
+    {{ field.errors }}
+    {% endif %}
+{% endfor %}
 {% endif %}
 {% if message %}
 <p class="bg-success"> Cool, thank you for the message!  </p>
 {% endif %}
 <form action="/#Contact" method="post" class="wpcf7-form" novalidate="novalidate">
-                    {% csrf_token %}
-
-<p><span class="wpcf7-form-control-wrap your-name"><input type="text" name="{{ form.name.html_name }}" {% if form.name.value %}value="{{ form.name.value }}"{% endif %} size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true" aria-invalid="false" placeholder="Name"></span><br>
-<span class="wpcf7-form-control-wrap your-email"><input type="email" name="{{ form.email.html_name }}" {% if form.email.value %}value="{{ form.email.value }}"{% endif %} size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" aria-required="true" aria-invalid="false" placeholder="Email"></span><br>
-<span class="wpcf7-form-control-wrap your-message"><textarea name="{{ form.message.html_name }}" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false" placeholder="Message"></textarea></span><br>
-<input type="submit" value="Send" class="wpcf7-form-control wpcf7-submit"></p>
-<div class="wpcf7-response-output wpcf7-display-none"></div></form></div></div></div></div></div></div></div></div></div><div class="vc_row-full-width vc_clearfix"></div>
+{% csrf_token %}
+<p>
+    <span class="wpcf7-form-control-wrap your-name">
+        <input type="text" name="{{ form.name.html_name }}" {% if form.name.value %}value="{{ form.name.value }}"{% endif %} size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true" aria-invalid="false" placeholder="Name">
+    </span>
+    <br>
+    <span class="wpcf7-form-control-wrap your-email">
+        <input type="email" name="{{ form.email.html_name }}" {% if form.email.value %}value="{{ form.email.value }}"{% endif %} size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email" aria-required="true" aria-invalid="false" placeholder="Email">
+    </span>
+    <br>
+    <span class="wpcf7-form-control-wrap your-message">
+        <textarea name="{{ form.message.html_name }}" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false" placeholder="Message"></textarea>
+    </span>
+    <br>
+    {% if form.captcha.errors %}
+    <div class="wpcf7-form-control-wrap vc_col-sm-4 vc_col-sm-offset-4">
+        {{ form.captcha.errors }}
+    </div>
+    {% endif %}
+    <div class="wpcf7-form-control-wrap captcha vc_col-sm-12">
+        {{ form.captcha }}
+    </div>
+    <div class="wpcf7-form-control-wrap submit vc_col-sm-12">
+        <input type="submit" value="Send" class="wpcf7-form-control wpcf7-submit">
+    </div>
+</p>
+<div class="wpcf7-response-output wpcf7-display-none"></div>
+</form>
+</div></div></div></div></div></div></div></div></div><div class="vc_row-full-width vc_clearfix"></div>
     </div><!-- .entry-content -->
 
     
