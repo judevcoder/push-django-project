@@ -183,12 +183,16 @@ LOGGING = {
         'gunicorn': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'formatter': 'verbose',
             'filename': '/home/django/gunicorn.errors',
-            'maxBytes': 1024 * 1024 * 100,  # 100 mb
+            'maxBytes': 1024 * 1024 * 10,  # 10 mb
         }        
     },
     'loggers': {
+        'django': {
+            'handlers': ['mail_admins', 'gunicorn'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
         'django.request': {
             'handlers': ['mail_admins', 'gunicorn'],
             'level': 'DEBUG',

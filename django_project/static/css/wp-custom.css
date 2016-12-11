@@ -78,7 +78,7 @@ div.site { overflow-x: hidden; }
 .fullheader-banner strong { font-family: 'ralewaybold'; color: #2ecc71; font-weight: normal; }
 .fullheader-banner em { font-style: normal; color: #272727; }
 .fullheader-banner h2 { font-size: 22px; font-family: 'ralewayregular'; color: #000; line-height: 36px; font-weight: normal; }
-ul.errorlist { color: white; }
+ul.errorlist { background: #f2dede; }
 ul.errorlist li { list-style-type: none; }
 /* Page Heading */
 .page-heading .homepage-heading h3 { font-size: 48px; font-family: 'ralewaylight'; background: #0e47a1; color: #fff; display: inline-block; padding: 24px 60px; font-weight: normal; position: relative; margin-top: 30px; }
