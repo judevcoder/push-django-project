@@ -189,7 +189,6 @@ var PushMonkey = function(config) {
       registration.pushManager.subscribe({userVisibleOnly: true}).then(function(subscription) {
 
           pm.sendSubscriptionToServer(subscription);
-          // window.close();
         }).catch(function(e) {
 
           if (Notification.permission === 'denied') {
@@ -237,7 +236,6 @@ var PushMonkey = function(config) {
     pm.log(subscription);
     var mergedEndpoint = pm.endpointWorkaround(subscription);
     var url = pm.sdkHost + "/push/v1/register/" + pm.accountKey;
-    console.log(mergedEndpoint);
     jQuery.ajax({
           type: "POST",
           url: url,
@@ -246,12 +244,14 @@ var PushMonkey = function(config) {
           success: function (data) {
 
             pm.log("sendSubscriptionToServer saved: ");
-            pm.log(data);          
+            pm.log(data); 
+            window.close();         
           },
           error: function (err) {
 
             pm.log("sendSubscriptionToServer error: ");
             pm.log(error);
+            window.close();
           }
     });
   }
