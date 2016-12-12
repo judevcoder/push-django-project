@@ -205,11 +205,6 @@ LOGGING = {
             'propagate': True,
             'level': 'DEBUG',
         },
-        'django.request': {
-            'handlers': ['mail_admins', 'gunicorn'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
         'djacobs_apns.apns': {
             'handlers': ['console'],
             'level': 'DEBUG',
