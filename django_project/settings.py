@@ -28,7 +28,9 @@ MANAGERS = (
     ('Ash K', 'tudor@getpushmonkey.com'),
 )
 
-ADMINS = MANAGERS
+ADMINS =  (
+    ('Tudor Munteanu', 'tudor@mowowstudios.com'),
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = IS_LOCAL
@@ -199,7 +201,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['mail_admins', 'gunicorn'],
+            'handlers': ['gunicorn'],
             'propagate': True,
             'level': 'DEBUG',
         },
