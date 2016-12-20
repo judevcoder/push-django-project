@@ -10,10 +10,11 @@ $(function(){
   // })   
 });
 
-$(document).ready(function(){
+
+$(function() {
 
   if (window.safari) {
-    
+
     window.safari.pushNotification.requestPermission(
       "https://getpushmonkey.com/push",
       "web.com.pushmonkey.KNYA5C86QSOPRU4XM", {}, function(p) {
