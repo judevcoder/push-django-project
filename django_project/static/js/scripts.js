@@ -5,7 +5,7 @@ $(function(){
     ev.preventDefault();
     ev.stopPropagation();
     $('#demo-modal').modal();
-    $('head').append('<link rel="manifest" href="/AV8TFG72EMHJ5NXB0/manifest.json">');
-    $("head").append('<script src="/sdk/config-AV8TFG72EMHJ5NXB0.js"></script>');
+    $('head').append('<link rel="manifest" href="/KNYA5C86QSOPRU4XM/manifest.json">');
+    $("head").append('<script src="/sdk/config-KNYA5C86QSOPRU4XM.js"></script>');
   })
 });
