@@ -407,6 +407,36 @@ Sending notifications on a big and reliable scale is not trivial, but our solid 
 <!-- .website-content -->
 
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="demo-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Demo time!</h2>
+      </div>
+      <div class="modal-body">
+        <h3>
+            Have a look at the prompt that just popped up.
+        </h3>
+        <p>
+            Your browser will ask you for permission to subscribe to desktop push notifications.
+        </p>
+        <h3>
+            Wait a few seconds and bingo!
+        </h3>
+        <p>
+            This is what your readers will receive. Clicking on it will take you back to our home page.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <a href="{% url 'register' %}" class="btn btn-info">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 var wpaft = {"items":"6","single_item":"","slide_orderby":"date","slide_speed":"300","pagination_speed":"300","rewind_speed":"500","auto_play":"1","stop_on_hover":"1","navigation":"1","pagination":"","responsive":"1"};
 /*
