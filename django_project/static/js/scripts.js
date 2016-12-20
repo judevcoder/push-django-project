@@ -9,7 +9,7 @@ $(function(){
   //   $("head").append('<script src="/sdk/config-KNYA5C86QSOPRU4XM.js"></script>');
   // })   
   window.safari.pushNotification.requestPermission(
-    "https://www.getpushmonkey.com/push",
+    "https://getpushmonkey.com/push",
     "web.com.pushmonkey.KNYA5C86QSOPRU4XM", 
   {
     url: window.location.href
