@@ -26,7 +26,7 @@
 //   }
 // });
 
-document.onload = function() {
+window.onload = function() {
 
     // Ensure that the user can receive Safari Push Notifications.
 
