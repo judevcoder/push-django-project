@@ -205,6 +205,11 @@ LOGGING = {
         }        
     },
     'loggers': {
+        '': {
+            'handlers': ['gunicorn'],
+            'propagate': True,
+            'level': 'DEBUG'
+        },    
         'django': {
             'handlers': ['gunicorn'],
             'propagate': True,
