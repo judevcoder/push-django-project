@@ -313,8 +313,6 @@ var PushMonkey = function(config) {
       var a = navigator.userAgent.toLowerCase();
       return /windows phone/i.test(a) ? 6 : /android/i.test(a) ? 4 : /ipad|iphone|ipod/.test(a) && !window.MSStream ? 5 : /linux/i.test(a) ? 2 : /macintosh|mac os x/i.test(a) ? 3 : /windows|win32/i.test(a) ? 1 : 7
   }
-  // pm.serviceWorker = './service-worker-'+pm.accountKey+'.js';
-  // pm.windowSrc = pm.sdkHost + "/register-service-worker-" + config.accountKey;
   pm.accountKey = config.accountKey;
   pm.debug = config.debug;
   pm.deviceType = pm.getDevice();
