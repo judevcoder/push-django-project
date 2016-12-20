@@ -7,7 +7,7 @@ from django.core import exceptions
 from django.core.mail import send_mail
 from django.core.servers.basehttp import FileWrapper 
 from django.http import Http404
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.encoding import smart_str
@@ -145,7 +145,7 @@ def apn_push_package(request, website_push_id = ""):
         path = os.path.join(settings.STATIC_ROOT, website_push_id, 'pushPackage', 'pushPackage.zip')
         logger.error(path)
         wrapper = FileWrapper(file(path))
-        response = HttpResponse(wrapper, content_type='application/zip')
+        response = StreamingHttpResponse(wrapper, content_type='application/zip')
         response['Content-Length'] = os.path.getsize(path)
         return response 
     else:
@@ -153,7 +153,7 @@ def apn_push_package(request, website_push_id = ""):
         path = push_package.path()
         logger.error(path)
         wrapper = FileWrapper(file(path))
-        response = HttpResponse(wrapper, content_type='application/zip')
+        response = StreamingHttpResponse(wrapper, content_type='application/zip')
         response['Content-Length'] = os.path.getsize(path)
         return response 
     raise Http404
