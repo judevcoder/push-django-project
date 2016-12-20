@@ -16,7 +16,7 @@ $(function() {
   if (window.safari) {
 
     window.safari.pushNotification.requestPermission(
-      "https://getpushmonkey.com/push",
+      "https://www.getpushmonkey.com/push",
       "web.com.pushmonkey.KNYA5C86QSOPRU4XM", {}, function(p) {
 
         console.log(p);
