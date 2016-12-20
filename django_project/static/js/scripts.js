@@ -17,7 +17,7 @@ $(function() {
 
     window.safari.pushNotification.requestPermission(
       "https://www.getpushmonkey.com/push",
-      "web.com.pushmonkey.KNYA5C86QSOPRU4XM", {}, function(p) {
+      "web.com.pushmonkey.KNYA5C86QSOPRU4XM", { user: 123 }, function(p) {
 
         console.log(p);
     });  
