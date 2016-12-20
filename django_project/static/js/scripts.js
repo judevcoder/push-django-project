@@ -50,7 +50,7 @@ var checkRemotePermission = function (permissionData) {
 
         window.safari.pushNotification.requestPermission(
 
-            'https://www.getpushmonkey.com', // The web service URL.
+            'https://getpushmonkey.com', // The web service URL.
 
             'web.com.pushmonkey.KNYA5C86QSOPRU4XM',     // The Website Push ID.
 
