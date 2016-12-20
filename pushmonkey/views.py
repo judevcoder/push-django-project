@@ -49,6 +49,8 @@ def register(request, account_key = None):
 	d.save()
 	if is_demo_account(account_key):
 		send_demo_notification(account_key)
+		d.is_test_device = True
+		d.save()
 	response_data = {"response": "ok"}
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
 

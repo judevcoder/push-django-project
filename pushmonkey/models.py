@@ -32,7 +32,8 @@ class WebServiceDevice(models.Model):
     comment = models.CharField(max_length = 200, default = '', blank = True)
     mozilla = models.BooleanField(help_text = 'Indicates whether this is a Firefox device.', default = False)
     chrome = models.BooleanField(help_text = 'Indicates whether this is a Chrome device.', default = False)
-
+    is_test_device = models.BooleanField(help_text = 'If its a device registered after a demo', default = False)
+    tested = models.BooleanField(help_text = 'Demo has run', default = False)
     def __unicode__(self):
         return self.subscription_id
 

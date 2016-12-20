@@ -179,7 +179,7 @@ NOCAPTCHA = True
 
 SUBPROCESS_COMMAND_PATH = "/home/django/django_project/manage.py send_push"
 # demo on homepage
-DEMO_ACCOUNT_KEY = "KNYA5C86QSOPRU4XM"
+DEMO_ACCOUNT_KEY = "CW598XLRMJ3YUBTZI"
 
 LOGGING_PATH = '/home/django/gunicorn.errors'
 if IS_LOCAL:

@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from plans.models import Plan
 from plans.models import PlanVariant as plans
 from emails.managers import EmailManager
+from pushmonkey.helpers import is_demo_account
 from random import randint
 import json
 import logging
@@ -123,7 +124,7 @@ class Command(BaseCommand):
 
     def send_google_notifications(self, push_message):
         profile = ClientProfile.objects.get(account_key = push_message.account_key)
-        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, chrome = True)
+        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, chrome = True, is_test_device = True, tested = False)
         if len(devices) == 0:
 
             return 0
@@ -142,6 +143,10 @@ class Command(BaseCommand):
         if j.has_key("results"):
             for i, result in enumerate(j["results"]):
                 if result.has_key("message_id"):
+                    if is_demo_account(push_message.account_key):
+                        device = WebServiceDevice.objects.filter(subscription_id = subscription_ids[i])
+                        device.tested = True
+                    device.save()
                     total += 1
                 elif result.has_key("error"):
                     device = WebServiceDevice.objects.filter(subscription_id = subscription_ids[i])
@@ -150,11 +155,15 @@ class Command(BaseCommand):
 
     def send_mozilla_notifications(self, push_message):
         profile = ClientProfile.objects.get(account_key = push_message.account_key)
-        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, mozilla = True)
+        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, mozilla = True, is_test_device = True, tested = False)
         if len(devices) == 0:
 
             return 0
         subscription_ids = map(lambda d: d.subscription_id, devices)
+        if is_demo_account(push_message.account_key):
+            for d in devices:
+                d.tested = True
+                d.save()
         headers = {'TTL': '86400', 'Content-Type': 'application/json'}
         total = 0
         for s in subscription_ids:
