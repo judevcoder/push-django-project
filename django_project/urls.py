@@ -12,7 +12,7 @@ urlpatterns = patterns('',
   url(r'^test$', 'django_project.views.test', name='test'),
   url(r'^push_message$', 'django_project.views.push_message', name='push_message'),
   url(r'^push/v1/log$', 'django_project.views.apn_log', name='apn_log'),
-  url(r'^push/v1/pushPackages/(?P<website_push_id>.+)$', 'django_project.views.apn_push_package', name='apn_push_package'),
+  # url(r'^push/v1/pushPackages/(?P<website_push_id>.+)$', 'django_project.views.apn_push_package', name='apn_push_package'),
   url(r'^push/v1/devices/(?P<device_id>.+)/registrations/(?P<website_id>.+)$', 'django_project.views.apn_device_register', name='apn_device_register'),
   url(r'^report/daily_digest$', 'django_project.views.daily_digest_cron', name='daily_digest_cron'),
   #users
