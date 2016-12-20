@@ -133,6 +133,7 @@ def apn_log(request):
 
 @csrf_exempt
 def apn_push_package(request, website_push_id = ""):
+    logger.error("=== apn_push_package")
     if len(website_push_id) == 0:
         raise Exception("Website Push ID can't be empty")
     try:
@@ -142,12 +143,15 @@ def apn_push_package(request, website_push_id = ""):
     if not push_package:
         #ensure backwards compatibility
         path = os.path.join(settings.STATIC_ROOT, website_push_id, 'pushPackage', 'pushPackage.zip')
+        logger.error(path)
         wrapper = FileWrapper(file(path))
         response = HttpResponse(wrapper, content_type='application/zip')
         response['Content-Length'] = os.path.getsize(path)
         return response 
     else:
+        logger.error("=== we have a push package")
         path = push_package.path()
+        logger.error(path)
         wrapper = FileWrapper(file(path))
         response = HttpResponse(wrapper, content_type='application/zip')
         response['Content-Length'] = os.path.getsize(path)
