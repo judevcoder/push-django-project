@@ -144,9 +144,10 @@ class Command(BaseCommand):
             for i, result in enumerate(j["results"]):
                 if result.has_key("message_id"):
                     if is_demo_account(push_message.account_key):
-                        device = WebServiceDevice.objects.filter(subscription_id = subscription_ids[i])
-                        device.tested = True
-                    device.save()
+                        devices = WebServiceDevice.objects.filter(subscription_id = subscription_ids[i])
+                        for d in devices:
+                            d.tested = True
+                            d.save()
                     total += 1
                 elif result.has_key("error"):
                     device = WebServiceDevice.objects.filter(subscription_id = subscription_ids[i])
