@@ -126,7 +126,7 @@ class Command(BaseCommand):
         devices = WebServiceDevice.objects.filter(account_key = profile.account_key, chrome = True)
         if len(devices) == 0:
 
-            return
+            return 0
         subscription_ids = map(lambda d: d.subscription_id, devices)
         headers = {'Authorization': 'key=AIzaSyBE9L83MefDOq6PxeFU0m4LaerMvilLCsI',
         'Content-Type': 'application/json'}
@@ -136,7 +136,7 @@ class Command(BaseCommand):
         if response.status_code != 200:
 
             print(response.text)
-            return
+            return 0
         j = response.json()
         total = 0
         if j.has_key("results"):
@@ -153,7 +153,7 @@ class Command(BaseCommand):
         devices = WebServiceDevice.objects.filter(account_key = profile.account_key, mozilla = True)
         if len(devices) == 0:
 
-            return
+            return 0
         subscription_ids = map(lambda d: d.subscription_id, devices)
         headers = {'TTL': '86400', 'Content-Type': 'application/json'}
         total = 0
