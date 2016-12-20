@@ -128,8 +128,8 @@ def push(request):
 @csrf_exempt
 def apn_log(request):
     logger.error("***")
-    logger.error({"a": 1, "b": 2})
     logger.error(request.POST)
+    logger.error("***")    
     return render_to_response('pushmonkey/logged.html')
 
 @csrf_exempt
@@ -163,6 +163,7 @@ def apn_push_package(request, website_push_id = ""):
 @require_http_methods(["POST", "DELETE"])
 def apn_device_register(request, device_id="0", website_id=""):
     if request.method == "POST":
+        account_key = None
         try:
             push_package = PushPackage.objects.get(website_push_id = website_id)
         except:
