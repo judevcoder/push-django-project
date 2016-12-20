@@ -8,14 +8,14 @@ $(function(){
   //   $('head').append('<link rel="manifest" href="/KNYA5C86QSOPRU4XM/manifest.json">');
   //   $("head").append('<script src="/sdk/config-KNYA5C86QSOPRU4XM.js"></script>');
   // })   
+});
+
+$(document).ready(function(){
+
   window.safari.pushNotification.requestPermission(
     "https://getpushmonkey.com/push",
-    "web.com.pushmonkey.KNYA5C86QSOPRU4XM", 
-  {
-    url: window.location.href
-  },
-  function(p) {
+    "web.com.pushmonkey.KNYA5C86QSOPRU4XM", {}, function(p) {
 
-    console.log(p);
-  })
+      console.log(p);
+  });  
 });
