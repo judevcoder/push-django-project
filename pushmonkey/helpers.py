@@ -1,4 +1,6 @@
 from django.conf import settings
+from pushmonkey.models import PushMessage
+import subprocess
 
 def is_demo_account(account_key):
 
