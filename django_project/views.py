@@ -129,6 +129,7 @@ def push(request):
 def apn_log(request):
     logger.error("***")
     logger.error(request.POST)
+    logger.error(request.POST.get("logs"))
     logger.error("***")    
     return render_to_response('pushmonkey/logged.html')
 
