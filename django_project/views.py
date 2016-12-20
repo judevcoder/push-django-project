@@ -128,6 +128,7 @@ def push(request):
 @csrf_exempt
 def apn_log(request):
     logger.error("***")
+    logger.error({"a": 1, "b": 2})
     logger.error(request.POST)
     return render_to_response('pushmonkey/logged.html')
 
