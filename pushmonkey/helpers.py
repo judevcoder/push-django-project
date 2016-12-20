@@ -2,7 +2,7 @@ from django.conf import settings
 
 def is_demo_account(account_key):
 
-  pass
+  return account_key == settings.DEMO_ACCOUNT_KEY
 
 def send_demo_notification(account_key):
 
