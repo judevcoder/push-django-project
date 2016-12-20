@@ -4,7 +4,7 @@ $(function(){
 
     ev.stopPropagation();
     $('#demo-modal').modal();
-    $('head').append('<link rel="manifest" href="/IZLUX5Y42DGPW1CS7/manifest.json">');
-    $("head").append('<script src="/sdk/config-IZLUX5Y42DGPW1CS7.js"></script>');
+    $('head').append('<link rel="manifest" href="/AV8TFG72EMHJ5NXB0/manifest.json">');
+    $("head").append('<script src="/sdk/config-AV8TFG72EMHJ5NXB0.js"></script>');
   })
 });

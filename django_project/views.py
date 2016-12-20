@@ -148,7 +148,7 @@ def apn_push_package(request, website_push_id = ""):
         wrapper = FileWrapper(file(path))
         response = StreamingHttpResponse(wrapper, content_type='application/zip')
         response['Content-Length'] = os.path.getsize(path)
-        return response 
+        return response
     else:
         logger.error("=== we have a push package")
         path = push_package.path()
