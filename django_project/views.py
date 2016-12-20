@@ -22,6 +22,9 @@ from website_clusters.models import Website
 import HTMLParser
 import os
 import subprocess
+import logging
+
+logger = logging.getLogger(__name__)
 
 def home(request):
     message = None
@@ -124,8 +127,8 @@ def push(request):
 
 @csrf_exempt
 def apn_log(request):
-    print "***"
-    print request.POST
+    logger.error("***")
+    logger.error(request.POST)
     return render_to_response('pushmonkey/logged.html')
 
 @csrf_exempt

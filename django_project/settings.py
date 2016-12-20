@@ -201,7 +201,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOGGING_PATH,
-            'maxBytes': 1024 * 1024 * 10,  # 10 mb
+            'maxBytes': 1024 * 1024 * 1,  # 1 mb
         }        
     },
     'loggers': {
