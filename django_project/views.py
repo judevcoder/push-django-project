@@ -17,6 +17,7 @@ from plans.models import Plan
 from plans.models import PlanVariant as plans
 from plans.models import Prices as prices
 from pushmonkey.models import Device, PushMessage, PayloadSafari, PushPackage
+from pushmonkey.helpers import is_demo_account, send_demo_notification
 from website_clusters.models import Website
 import HTMLParser
 import os
@@ -112,7 +113,7 @@ def push_message(request):
 
     if should_push:
         # subprocess for async execution
-        command_path = "/home/django/django_project/manage.py send_push" 
+        command_path = settings.SUBPROCESS_COMMAND_PATH 
         message_id = new_message.id
         subprocess.Popen("sleep 10; python " + command_path + " " + str(message_id), shell=True)
 
@@ -180,7 +181,9 @@ def apn_device_register(request, device_id="0", website_id=""):
             new_device = Device(token = device_id, account_key = account_key)
         new_device.save()
         if new_device.id is not None:
-            pass
+            
+            if is_demo_account(account_key):
+                send_demo_notification(account_key)
         else:
             raise Exception("The device id didn't save " + device_id)
     elif request.method == "DELETE":

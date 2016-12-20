@@ -5,6 +5,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from pushmonkey.models import PushMessage, Device, WebServiceDevice
 from clients.models import ClientProfile
+from helpers import is_demo_account, send_demo_notification
 import json
 
 GCM_ENDPOINT = "https://android.googleapis.com/gcm/send"
@@ -46,6 +47,8 @@ def register(request, account_key = None):
 		chrome = is_chrome,
 		mozilla = is_mozilla)
 	d.save()
+	if is_demo_account(account_key):
+		send_demo_notification(account_key)
 	response_data = {"response": "ok"}
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
 

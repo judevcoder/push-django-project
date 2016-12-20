@@ -172,9 +172,14 @@ if not IS_LOCAL:
 
 SITE_ID = 1
 
+# captcha
 RECAPTCHA_PUBLIC_KEY = '6LcBgg4UAAAAAGONxlPgKF-BbfaOrQ2JzQSEeIED'
 RECAPTCHA_PRIVATE_KEY = '6LcBgg4UAAAAAP3FWpQRVkaYAo5jaENY-xSVR9PE'
 NOCAPTCHA = True
+
+SUBPROCESS_COMMAND_PATH = "/home/django/django_project/manage.py send_push"
+# demo on homepage
+DEMO_ACCOUNT_KEY = "IZLUX5Y42DGPW1CS7"
 
 LOGGING_PATH = '/home/django/gunicorn.errors'
 if IS_LOCAL:

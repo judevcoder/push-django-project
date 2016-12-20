@@ -10,6 +10,7 @@
           <div class="menu-login-button-container">
             <ul id="menu-login-button" class="headertop-menu">
               {% if user.is_authenticated %}
+
               <li id="menu-item-246" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-246">
                 <span class="username">Hey {{ user.first_name }}!</span>
               </li>
@@ -20,6 +21,9 @@
                 <a href="{% url 'logout' %}">Log out</a>
               </li>                            
               {% else %}
+              <li class="menu-item menu-item-demo">
+                <a href="#" id="try-now-button">Try it now!</a>
+              </li>              
               <li id="menu-item-248" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-248">
                 <a href="{% url 'login' %}">Sign In</a>
               </li>
