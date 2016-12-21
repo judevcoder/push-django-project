@@ -148,6 +148,7 @@ def apn_push_package(request, website_push_id = ""):
         logger.error(path)
         wrapper = FileWrapper(file(path))
         response = StreamingHttpResponse(wrapper, content_type='application/zip')
+        response['Content-Disposition'] = "attachment; filename=pushPackage.zip"
         response['Content-Length'] = os.path.getsize(path)
         return response
     else:
@@ -156,6 +157,7 @@ def apn_push_package(request, website_push_id = ""):
         logger.error(path)
         wrapper = FileWrapper(file(path))
         response = StreamingHttpResponse(wrapper, content_type='application/zip')
+        response['Content-Disposition'] = "attachment; filename=pushPackage.zip"
         response['Content-Length'] = os.path.getsize(path)
         return response 
     raise Http404
