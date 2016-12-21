@@ -9,8 +9,13 @@ $(function(){
     if ($("head link#pm-manifest").size() == 0) {
 
       $("head").append('<link id="pm-manifest" rel="manifest" href="/manifest-'+window._accountKey+'.json">');
-    } 
-    getRegistration();
+    }
+    if (window.safari) {
+
+      loadSDK();
+    } else {
+      getRegistration();
+    }
   })   
 });
 
