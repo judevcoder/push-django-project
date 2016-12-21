@@ -69,7 +69,7 @@ def resend_demo(request, account_key = None):
 	if not account_key:
 
 		raise Http404
-	if !is_demo_account(account_key):
+	if not is_demo_account(account_key):
 
 		raise Http404
 	endpoint = request.POST.get('endpoint', False)
