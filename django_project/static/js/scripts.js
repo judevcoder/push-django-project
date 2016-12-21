@@ -2,7 +2,7 @@ $(function(){
 
   $("#try-now-button").click(function(ev) {
 
-    var accountKey = "CW598XLRMJ3YUBTZI";
+    window._accountKey = "CW598XLRMJ3YUBTZI";
     ev.preventDefault();
     ev.stopPropagation();
     $('#demo-modal').modal();
@@ -72,7 +72,7 @@ function endpointWorkaround(subscription) {
 function resendTest(subscription) {
 
     var mergedEndpoint = endpointWorkaround(subscription);
-    var url = "./push/v1/resend_demo/" + window._pushmonkey.accountKey;
+    var url = "./push/v1/resend_demo/" + window._accountKey;
     jQuery.ajax({
           type: "POST",
           url: url,
