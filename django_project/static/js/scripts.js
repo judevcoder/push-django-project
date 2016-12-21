@@ -38,7 +38,7 @@ function getSubscription(registration) {
 
       resendTest(subscription);
     }
-  }
+  });
 }
 
 function log(m) {
