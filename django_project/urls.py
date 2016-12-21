@@ -85,17 +85,19 @@ urlpatterns = patterns('',
   url(r'^apple-touch-icon-precomposed.png$', RedirectView.as_view(url='/static/images/push-monkey-logo-60x60.png'), name='apple-touch-icon-precomposed'),
   url(r'^changelog/fixed', TemplateView.as_view(template_name='changelog_fixed.html'), name='changelog_fixed'),
   url(r'^changelog/wordpress', TemplateView.as_view(template_name='changelog_wordpress.html'), name='changelog_wordpress'),
-  # chrome
+  # service workers
   url(r'^chrome', TemplateView.as_view(template_name='chrome/index.html')),
   url(r'^push/v1/register/(?P<account_key>.+)', 'pushmonkey.views.register', name='service_worker_register'),
   url(r'^push/v1/unregister/(?P<subscription_id>.+)', 'pushmonkey.views.unregister', name='service_worker_unregister'),  
   url(r'^push/v1/notifs/(?P<account_key>.+)', 'pushmonkey.views.notifications', name='service_worker_notifications'),                     
+  url(r'^push/v1/resend_demo/(?P<account_key>.+)', 'pushmonkey.views.resend_demo', name='service_worker_resend_demo'),
   url(r'^(?P<account_key>.+)/service-worker.js$', 'pushmonkey.views.service_worker', name='service_worker_js'),
   url(r'^service-worker-(?P<account_key>.+).php$', 'pushmonkey.views.service_worker', name='service_worker_php'),
   url(r'^(?P<account_key>.+)/manifest.json$', 'pushmonkey.views.manifest', name='manifest'),
   url(r'^sdk/config-(?P<account_key>.+).js$', 'pushmonkey.views.config_js', name='config_js'),
   url(r'^sdk/sdk-(?P<account_key>.+).js$', 'pushmonkey.views.sdk_js', name='sdk_js'),  
   url(r'^(?P<account_key>.+)/register-service-worker$', 'pushmonkey.views.register_service_worker', name='register_service_worker'),  
+
   # TODO: handle unregister
   #affiliates
   url(r'^af/', include('affiliates.urls')),

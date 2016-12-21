@@ -64,6 +64,29 @@ def unregister(request, subscription_id = None):
 	response_data = {"response": "ok"}
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+@csrf_exempt
+def resend_demo(request, account_key = None):
+	if not account_key:
+
+		raise Http404
+	if !is_demo_account(account_key):
+
+		raise Http404
+	endpoint = request.POST.get('endpoint', False)
+	if not endpoint:
+
+		raise Http404
+	subscription_id = endpoint.split("/")[-1]
+	endpoint = endpoint.replace("/%s" % subscription_id, '')
+	d = WebServiceDevice.objects.filter(
+		account_key = account_key, 
+		subscription_id = subscription_id).first
+	d.tested = False
+	d.save()
+	send_demo_notification(account_key)
+	response_data = {"response": "ok"}
+	return HttpResponse(json.dumps(response_data), content_type="application/json")	
+
 @xframe_options_exempt
 def service_worker(request, account_key = None):
 	if not account_key:
