@@ -6,19 +6,21 @@ $(function(){
     ev.preventDefault();
     ev.stopPropagation();
     $('#demo-modal').modal();
-    if ($("head link#manifest").size() == 0) {
-
-      $("head").append('<link id="manifest" rel="manifest" href="/'+accountKey+'/manifest.json">');
-    } 
-    if ($("head script#pm-sdk").size() == 0) {
-
-      $("head").append('<script id="pm-sdk" src="/sdk/config-'+accountKey+'.js"></script>');
-    } else {
-
-      getRegistration();
-    }
+    getRegistration();
   })   
 });
+
+function loadSDK() {
+
+  if ($("head link#manifest").size() == 0) {
+
+    $("head").append('<link id="manifest" rel="manifest" href="/'+accountKey+'/manifest.json">');
+  } 
+  if ($("head script#pm-sdk").size() == 0) {
+
+    $("head").append('<script id="pm-sdk" src="/sdk/config-'+accountKey+'.js"></script>');
+  }
+}
 
 function getRegistration() {
 
@@ -34,6 +36,7 @@ function getSubscription(registration) {
 
     if (!subscription) {
 
+      loadSDK();
     } else {
 
       resendTest(subscription);
