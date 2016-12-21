@@ -201,7 +201,7 @@ class PushPackage(models.Model):
             "allowedDomains": website_variants,
             "urlFormatString": "https://" + site.domain + "/stats/track_open/%@",
             "authenticationToken": self.identifier,
-            "webServiceURL": "https://" + site.domain + "/safari"
+            "webServiceURL": "https://" + site.domain + "/push"
         }
         dirname = os.path.dirname(self.key_pem.path)
         website_json_path = os.path.join(dirname, 'website.json')
