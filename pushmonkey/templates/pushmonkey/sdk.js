@@ -245,13 +245,19 @@ var PushMonkey = function(config) {
 
             pm.log("sendSubscriptionToServer saved: ");
             pm.log(data); 
-            window.close();         
+            if (pm.isPopUp) {
+
+              window.close();  
+            }       
           },
           error: function (err) {
 
             pm.log("sendSubscriptionToServer error: ");
             pm.log(error);
-            window.close();
+            if (pm.isPopUp) {
+
+              window.close();
+            }
           }
     });
   }
