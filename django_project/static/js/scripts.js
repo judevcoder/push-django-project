@@ -25,7 +25,7 @@ function getRegistration() {
   var supportsNotifications = ("undefined" != typeof ServiceWorkerRegistration && 'showNotification' in ServiceWorkerRegistration.prototype && 'PushManager' in window);
   if (!supportsNotifications)
     return;
-  navigator.serviceWorker.serviceWorker.getRegistration().then(getSubscription);
+  navigator.serviceWorker.getRegistration().then(getSubscription);
 }
 
 function getSubscription(registration) {
