@@ -6,16 +6,16 @@ $(function(){
     ev.preventDefault();
     ev.stopPropagation();
     $('#demo-modal').modal();
+    if ($("head link#manifest").size() == 0) {
+
+      $("head").append('<link id="manifest" rel="manifest" href="/'+window._accountKey+'/manifest.json">');
+    } 
     getRegistration();
   })   
 });
 
 function loadSDK() {
 
-  if ($("head link#manifest").size() == 0) {
-
-    $("head").append('<link id="manifest" rel="manifest" href="/'+window._accountKey+'/manifest.json">');
-  } 
   if ($("head script#pm-sdk").size() == 0) {
 
     $("head").append('<script id="pm-sdk" src="/sdk/config-'+window._accountKey+'.js"></script>');
