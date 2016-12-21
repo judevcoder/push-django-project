@@ -32,6 +32,11 @@ function getRegistration() {
 
 function getSubscription(registration) {
 
+  if (!registration) {
+
+    loadSDK();
+    return;
+  }
   registration.pushManager.getSubscription().then(function(subscription) {
 
     if (!subscription) {
@@ -46,7 +51,7 @@ function getSubscription(registration) {
 
 function log(m) {
 
-  console.log(m);
+  // console.log(m);
 }
 
 function endpointWorkaround(subscription) {
