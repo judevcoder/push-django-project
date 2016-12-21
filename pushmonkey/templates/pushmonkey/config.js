@@ -1,7 +1,7 @@
 try {
     window.pushMonkeyConfig = {
         accountKey: "{{ account_key }}",
-        debug: 0,
+        debug: 1,
         dialogColor: "{{ dialog_color }}",
         dialogButtonColor: "{{ button_color }}"
     }
