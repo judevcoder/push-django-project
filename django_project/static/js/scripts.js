@@ -6,9 +6,9 @@ $(function(){
     ev.preventDefault();
     ev.stopPropagation();
     $('#demo-modal').modal();
-    if ($("head link#manifest").size() == 0) {
+    if ($("head link#pm-manifest").size() == 0) {
 
-      $("head").append('<link id="manifest" rel="manifest" href="/'+window._accountKey+'/manifest.json">');
+      $("head").append('<link id="pm-manifest" rel="manifest" href="/manifest-'+window._accountKey+'.json">');
     } 
     getRegistration();
   })   
