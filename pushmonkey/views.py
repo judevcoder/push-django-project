@@ -80,7 +80,7 @@ def resend_demo(request, account_key = None):
 	endpoint = endpoint.replace("/%s" % subscription_id, '')
 	d = WebServiceDevice.objects.filter(
 		account_key = account_key, 
-		subscription_id = subscription_id).first
+		subscription_id = subscription_id).first()
 	d.tested = False
 	d.save()
 	send_demo_notification(account_key)
