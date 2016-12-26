@@ -342,6 +342,7 @@ var PushMonkey = function(config) {
   pm.windowSrc = pm.sdkHost + "/" + config.accountKey + "/register-service-worker";  
 };
 (function(config) {
+  
   if ("object" !== typeof config) {
 
     console.log("Push Monkey: Missing configuration");
