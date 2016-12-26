@@ -18,7 +18,13 @@ var PushMonkey = function(config) {
           pm.registerServiceWorker();
         } else {
 
-          pm.registerLocalServiceWorker();
+          if (pm.isDemo) {
+
+            pm.registerServiceWorker();
+          } else {
+            
+            pm.registerLocalServiceWorker();
+          }
         }
       } else {
 
@@ -322,6 +328,7 @@ var PushMonkey = function(config) {
   pm.accountKey = config.accountKey;
   pm.debug = config.debug;
   pm.deviceType = pm.getDevice();
+  pm.isDemo = {{ is_demo }};
   pm.dialogBackgroundColor = config.dialogColor;
   pm.dialogButtonBackgroundColor = config.dialogButtonColor;
   pm.hasServiceWorkers = ('serviceWorker' in navigator);
@@ -342,7 +349,7 @@ var PushMonkey = function(config) {
   pm.windowSrc = pm.sdkHost + "/" + config.accountKey + "/register-service-worker";  
 };
 (function(config) {
-  
+
   if ("object" !== typeof config) {
 
     console.log("Push Monkey: Missing configuration");

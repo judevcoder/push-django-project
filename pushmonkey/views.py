@@ -134,9 +134,11 @@ def sdk_js(request, account_key = None):
 	if not account_key:
 
 		raise Http404
+	is_demo = {True: 1, False: 0}[is_demo_account(account_key)]
 	profile = ClientProfile.objects.get(account_key = account_key)
 	rendered = render_to_string('pushmonkey/sdk.js', {
 		"account_key": account_key,
-		"subdomain": profile.subdomain		
+		"subdomain": profile.subdomain,
+		"is_demo": is_demo
 		})
 	return HttpResponse(rendered, content_type="application/json")
