@@ -120,12 +120,14 @@ def config_js(request, account_key = None):
 	if not account_key:
 
 		raise Http404
+	is_demo = {True: 1, False: 0}[is_demo_account(account_key)]
 	dialog_color = request.GET.get("dialog_color", "red")
 	button_color = request.GET.get("button_color", "orange")
 	rendered = render_to_string('pushmonkey/config.js', {
 		"account_key": account_key,
 		"dialog_color": dialog_color,
-		"button_color": button_color
+		"button_color": button_color,
+		"is_demo": is_demo
 		})
 	return HttpResponse(rendered, content_type="application/json")
 

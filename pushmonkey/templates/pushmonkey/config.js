@@ -1,4 +1,6 @@
+{% if not is_demo %}
 window.onload = function() {
+{% endif %}
 
     try {
         window.pushMonkeyConfig = {
@@ -14,4 +16,6 @@ window.onload = function() {
         container.appendChild(script)
     } catch(err) {
     }
+{% if not is_demo %}    
 };
+{% endif %}
