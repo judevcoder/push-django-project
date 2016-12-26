@@ -23,7 +23,7 @@ function loadSDK() {
 
   if ($("head script#pm-sdk").size() == 0) {
 
-    $("head").append('<script id="pm-sdk" src="/sdk/config-'+window._accountKey+'.js"></script>');
+    $("head").append('<script type="text/javascript" id="pm-sdk" src="/sdk/config-'+window._accountKey+'.js"></script>');
   }
 }
 
