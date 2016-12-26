@@ -123,7 +123,11 @@ class Command(BaseCommand):
 
     def send_google_notifications(self, push_message):
         profile = ClientProfile.objects.get(account_key = push_message.account_key)
-        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, chrome = True, is_test_device = True, tested = False)
+        is_demo = is_demo_account(push_message.account_key)
+        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, 
+            chrome = True, 
+            is_test_device = is_demo, 
+            tested = False)
         if len(devices) == 0:
 
             return 0
@@ -142,7 +146,7 @@ class Command(BaseCommand):
         if j.has_key("results"):
             for i, result in enumerate(j["results"]):
                 if result.has_key("message_id"):
-                    if is_demo_account(push_message.account_key):
+                    if is_demo:
                         devices = WebServiceDevice.objects.filter(subscription_id = subscription_ids[i])
                         for d in devices:
                             d.tested = True
@@ -155,12 +159,16 @@ class Command(BaseCommand):
 
     def send_mozilla_notifications(self, push_message):
         profile = ClientProfile.objects.get(account_key = push_message.account_key)
-        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, mozilla = True, is_test_device = True, tested = False)
+        is_demo = is_demo_account(push_message.account_key)
+        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, 
+            mozilla = True, 
+            is_test_device = is_demo, 
+            tested = False)
         if len(devices) == 0:
 
             return 0
         subscription_ids = map(lambda d: d.subscription_id, devices)
-        if is_demo_account(push_message.account_key):
+        if is_demo:
             for d in devices:
                 d.tested = True
                 d.save()
