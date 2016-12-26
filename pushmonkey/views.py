@@ -15,8 +15,12 @@ MOZ_ENDPOINT = "https://updates.push.services.mozilla.com/wpush/v1"
 def notifications(request, account_key = None):
 	
 	if not account_key:
+
 		raise Http404
-	message = PushMessage.objects.filter(account_key = account_key).order_by('-created_at')[0]
+	message = PushMessage.objects.filter(account_key = account_key).order_by('-created_at').first()
+	if not message:
+
+		raise Http404
 	profile = ClientProfile.objects.get(account_key = account_key)
 	profile_image = ProfileImage.objects.get(profile = profile)
 	response_data = {

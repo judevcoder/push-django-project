@@ -20,7 +20,8 @@ self.addEventListener('push', function(event) {
       return  self.registration.showNotification(title, {
             body: body,
             icon: icon,
-            tag: tag
+            tag: tag,
+            requireInteraction: true            
         });
     });
   })
