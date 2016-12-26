@@ -126,7 +126,6 @@ class Command(BaseCommand):
         is_demo = is_demo_account(push_message.account_key)
         devices = WebServiceDevice.objects.filter(account_key = profile.account_key, 
             chrome = True, 
-            is_test_device = is_demo, 
             tested = False)
         if len(devices) == 0:
 
@@ -162,7 +161,6 @@ class Command(BaseCommand):
         is_demo = is_demo_account(push_message.account_key)
         devices = WebServiceDevice.objects.filter(account_key = profile.account_key, 
             mozilla = True, 
-            is_test_device = is_demo, 
             tested = False)
         if len(devices) == 0:
 
