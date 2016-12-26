@@ -20,7 +20,8 @@ var PushMonkey = function(config) {
 
           if (pm.isDemo) {
 
-            pm.registerServiceWorker();
+            window.addEventListener("message", pm.receiveMessage, false);
+            pm.createSubFrame();
           } else {
             
             pm.registerLocalServiceWorker();
