@@ -40,7 +40,7 @@
 .fullheader-banner h1 { margin-top: 60px; font-size: 50px; }
 .headerlive-banner iframe { height: 378px; }
 .fullheader-banner { height: 700px; }
-.headerlive-banner section.widget { height: 250px; padding: 50px 0; top: -349px; width: 250px; left: 60px; }
+.headerlive-banner section.widget { height: 250px; padding: 50px 0; top: -200px; width: 250px; left: 0; }
 .headerlive-banner section.widget::after { height: 272px; width: 272px; }
 .headerlive-banner section.widget h2.widget-title { font-size: 24px; }
 .headerlive-banner section.widget .textwidget { font-size: 16px; line-height: 22px; }
@@ -52,7 +52,7 @@
 .contact-form form.wpcf7-form span.your-name, .contact-form form.wpcf7-form span.your-email { width: 47%; }
 .contact-form form.wpcf7-form, .contact-form form.wpcf7-form span input, .contact-form form.wpcf7-form span.wpcf7-form-control-wrap textarea { width: 100% !important; }
 .headerlive-banner .desktop { display: none; }
-.headerlive-banner .mobile { display: inline-block; right: -120px; top: 70px !important; }
+.headerlive-banner .mobile { display: inline-block; right: 0; top: 70px !important; }
 .socialhead-navigation .social-links-menu li { padding-left: 8px; }
 .socialhead-navigation .social-links-menu li:last-child { padding-right: 10px; }
 .section-default .homepage-subheading { font-size: 16px; }
@@ -222,7 +222,7 @@ ul.headertop-menu li { display: inline-block; text-align: center; margin: auto; 
 .headerlive-banner section.widget .textwidget { font-size: 17px; width: 78%; margin: auto; }
 .headerlive-banner section.widget .textwidget img { width: 25%; }
 .headerlive-banner section.widget a.getpush-now { width: 150px; height: 46px; line-height: 46px; font-size: 20px; }
-.headerlive-banner section.widget { top: 0; }
+.headerlive-banner section.widget { top: 200px; }
 .fullheader-banner { height: 680px; }
 .program-fourbox .program-four .program-fourimg { float: left; padding-right: 0; text-align: center; width: 100%; margin-bottom: 20px; }
 .program-fourbox .program-four .program-fourtext { float: left; margin-bottom: 35px; padding-right: 0; padding-top: 0; text-align: center; width: 100%; }
