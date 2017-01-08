@@ -104,9 +104,14 @@ def register(request, preselected_plan = None):
 def register_thank_you(request, profile_id = None):
     try:
         profile = ClientProfile.objects.get(id = profile_id)
-        if profile.registration_step != 3:
+        if profile.from_envato:
+            if profile.registration_step != 2:
 
-            raise Http404("Wrong user.")
+                raise Http404("Wrong user from Envato.")
+        else:
+            if profile.registration_step != 3:
+
+                raise Http404("Wrong user.")
         profile.registration_step = 4
         profile.save()
     except:
