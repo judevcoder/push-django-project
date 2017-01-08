@@ -66,12 +66,12 @@ def is_cool_update_offer():
 def calculate_starter_monthly():
     if is_cool_update_offer():
         return 3
-    return 14.99
+    return 3.99
 
 def calculate_starter_yearly():
     if is_cool_update_offer():
         return 29 
-    return 9.99 * 12
+    return 2.99 * 12
 
 def calculate_sweet_spot_monthly():
     if is_black_friday():
