@@ -52,7 +52,7 @@ class ClientProfile(models.Model):
     def save(self, *args, **kwargs):
         if not self.subdomain and self.website_name:
             slug = slugify(self.website_name)
-            slug = Truncator(slug).chars(55)
+            slug = Truncator(slug).chars(30, truncate="")
             count = ClientProfile.objects.filter(subdomain = slug).count()
             if count == 0:
                 self.subdomain = slug
