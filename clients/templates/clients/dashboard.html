@@ -29,7 +29,34 @@
 <div class="site-inner">
   <div id="content" class="website-content">
     <div class="container" id="dashboard">
-      <div class="row">
+      <div class="row welcome-panel">
+        <div class="col-sm-12">
+        <h3>Welcome!</h3>
+          <p>
+            You now have two quick options to<br />install Push Monkey on your website:
+          </p>
+        </div><!-- .col -->
+        <div class="col-sm-6 text-center">
+          <img src="{{ STATIC_URL }}images/wordpress-logo-small.png" />
+          <h4>On Wordpress</h4>
+          <p>
+            To install Push Monkey on your Wordpress website,<br />please download 
+            the official plugin.
+            <br /><br />
+          </p>
+          <a href="https://wordpress.org/plugins/push-monkey-desktop-push-notifications/" class="btn btn-default">Download Plugin</a>
+        </div><!-- .col -->
+        <div class="col-sm-6 text-center">
+
+          <img src="{{ STATIC_URL }}images/html-logo.png" />
+          <h4>Any Platform</h4>
+          <p>
+            To install Push Monkey on your  website, regardless of the back-end or platform, please paste the following code before the <strong><i>&lt;/head&gt;</i></strong> tag.
+          </p>
+          <textarea id="code"><link id="pm-manifest" rel="manifest" href="/manifest-{{ profile.account_key }}.json"><script type="text/javascript" id="pm-sdk" src="/sdk/config-{{ profile.account_key }}.js"></script></textarea>
+        </div><!-- .col -->
+      </div><!-- .row -->
+      <div class="row panel">
         <div class="col-sm-7">
           <h3>Send Custom Push Notification</h3>
           <div class="form-container top-spacing">
@@ -90,29 +117,26 @@
         </div><!-- .col -->
       </div><!-- .row -->      
       <div class="row">
-        <div class="col-sm-8 left-statics">
+        <div class="col-sm-12">
           <h3>Statistics</h3>
+        </div>
+      </div><!-- .row -->
+      <div class="row">
+        <div class="col-sm-8 left-statics">
           <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <div class="number_box box_light_orange">
                 <p class="box_label hidden-xs">Subscribers</p>
                 <p class="box_label_small visible-xs-block ">Subscribers</p>
-
                 <p class="box_number hidden-xs">0</p>
                 <p class="box_number_small visible-xs-block">{{ subscribers }}</p>
-              </div>
-            </div>
-            <div class="col-sm-4">
+              </div><!-- .number_box -->              
               <div class="number_box box_green">
                 <p class="box_label hidden-xs">Sent Notifications</p>
                 <p class="box_label_small visible-xs-block">Sent <br> Notifications</p>
-
                 <p class="box_number hidden-xs">{{ sent_notifications }}</p>
                 <p class="box_number_small visible-xs-block">0</p>
               </div>
-            </div>
-            <div class="col-sm-4">
-
               <div class="number_box box_orange">
                 <p class="box_label hidden-xs">Notifications</p>
                 <p class="box_label_small visible-xs-block">Notifications</p>
@@ -120,38 +144,60 @@
                 <p class="box_number hidden-xs">{{ notifications }}</p>
                 <p class="box_number_small visible-xs-block">0</p>
               </div>
-            </div>
-
-            <div class="col-sm-12">
+            </div><!-- .col -->
+            <div class="col-sm-9">
               <div class="doughnut-chart-wrapper">
                 <canvas id="doughnut-chart"></canvas>
               </div> 
-              <div class="full">
-                <div class="row">
-                  <div class="col-sm-6"><div class="legend_dataset_three"> Remaining Notifications </div></div>
-                  <div class="col-sm-6"><div class="legend_dataset_two"> Sent Notifications </div></div>
-                </div>
-              </div>
-
+            </div><!-- .col -->
+          </div><!-- .row -->
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>Open Rate</h3>
             </div>
             <div class="col-sm-12">
               <div class="chart-wrapper">
                 <canvas id="myChart"></canvas>
               </div>
             </div>
-
             <div class="col-sm-6">
               <div class="legend_dataset_two"> Sent Notifications </div>
             </div>
             <div class="col-sm-6">
               <div class="legend_dataset_one"> Opened Notifications </div>
             </div>
-
-          </div>
-        </div>
+          </div><!-- .row -->
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>Recent Messages</h3>
+            </div>
+            <div class="col-sm-12">
+              <table class="table table-hover table-striped">              
+                <thead>
+                  <tr>
+                    <td>Title</td>
+                    <td>Message</td>
+                    <td>Date</td>
+                    <td>Readers</td>
+                    <td>Opens</td>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for p in push_messages %}
+                  <tr>
+                    <td>{{ p.title }}</td>
+                    <td>{{ p.body }}</td>
+                    <td>{{ p.created_at }}</td>
+                    <td>{{ p.device_num }}</td>
+                    <td>{{ p.opened_num }}</td>
+                  </tr>                  
+                {% endfor %}                  
+                </tbody>
+              </table>
+            </div><!-- .row -->
+          </div><!-- .row -->  
+        </div>      
         <div class="col-sm-4 right-details">
-
-
           <div class="side-full">
             <h3>Did you download the WordPress plugin?</h3>
             <div class="col-lg-3">
@@ -211,8 +257,8 @@
               <a class="btn btn-success" href="{% url 'affiliates_center' %}">Go to Affiliate Center</a>
             </div>
           </div>
-        </div>
-      </div><!-- .row -->
+        </div><!-- .col -->
+      </div>
     </div>
   </div>
   <!-- .website-content -->

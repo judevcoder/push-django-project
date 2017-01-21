@@ -368,6 +368,7 @@ def dashboard(request):
     if request.GET.get('upgrade_plan', False):
         wants_to_upgrade = True
     account_key = profile.account_key
+    push_messages = PushMessage.objects.filter(account_key = account_key)[:10]
     notifications = PushMessage.objects.filter(account_key = account_key).count()
     subscribers = Device.objects.filter(account_key = account_key).count()
     sent_notifications = PushMessage.objects.sent_notifications_count(account_key = account_key)
@@ -428,6 +429,7 @@ def dashboard(request):
                                'sent_notifications_dataset': sent_notifications_dataset,
                                'subscribers': subscribers, 
                                'wants_to_upgrade': wants_to_upgrade,
+                               'push_messages': list(push_messages) + list(push_messages)
                               }, 
                               RequestContext(request))
 
