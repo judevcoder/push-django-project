@@ -405,7 +405,89 @@ ol.carousel-indicators li { border: 2px solid #0e47a1; }
 .inner-st-content p { line-height: 24px; }
 .inner-st-content h2, .inner-st-content h3 { font-family: 'ralewaybold'; font-weight: normal; }
 .inner-st-content .vc_row.wpb_row.vc_inner.vc_row-fluid .vc_column-inner > .wpb_wrapper { background: #f7f7f7; padding: 25px; margin-bottom: 25px; }
+
 /* dashboard page */
+
+#dashboard input {
+  color: black;
+}
+
+#dashboard .form-container {
+  text-align: left;
+}
+
+#dashboard .form-container label {
+  margin: 0;
+}
+
+#dashboard .chrome-preview {
+  border: 1px solid #ccc;
+  margin: 10px 0 10px 0;
+}
+
+#dashboard .chrome-preview .icon {
+  float: left;
+  min-height: 90px;
+  width: 25%;
+}
+
+#dashboard .chrome-preview .body {
+  float: left;
+  min-height: 90px;
+  padding: 0 0 0 20px;
+  width: 75%;
+}
+
+#dashboard .chrome-preview .body .title {
+  margin-bottom: 0;
+  margin-top: 10px;
+  font-size:18px;
+}
+
+#dashboard .chrome-preview .body .source {
+  color:#999;
+  margin-bottom: 0;
+}
+
+#dashboard .firefox-preview {
+  background-color: #f0F0F0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin: 10px 0 10px 0;
+}
+
+#dashboard .firefox-preview .icon {
+  float: left;
+  min-height: 90px;
+  width: 25%;
+}
+
+#dashboard .firefox-preview .icon .firefox-icon {
+  height: 70%;
+  margin-top: 16px;
+  width: 70%;
+}
+
+#dashboard .firefox-preview .body {
+  float: left;
+  min-height: 90px;
+  padding: 0;
+  width: 75%;
+}
+
+#dashboard .firefox-preview .body .title {
+  margin-bottom: 0;
+  margin-top: 10px;
+  font-size:18px;
+}
+
+#dashboard .firefox-preview .body .source {
+}
+
+#dashboard .firefox-preview .body .message {
+  color:#999;
+  margin-bottom: 0;
+}
 
 .right-details .side-full { background: #0d47a1; color: #fff; padding: 20px; margin-bottom: 25px; float: left; width: 100%; }
 .right-details .side-full h3 { margin: 0 0 20px 0; }
@@ -454,6 +536,7 @@ ol.carousel-indicators li { border: 2px solid #0e47a1; }
 }
 
 /* demo modal */
+
 #demo-modal .modal-body p {
   text-align: left;
 }
@@ -505,3 +588,5 @@ ol.carousel-indicators li { border: 2px solid #0e47a1; }
 
     padding: 9% 4% 23%;
 }
+
+
