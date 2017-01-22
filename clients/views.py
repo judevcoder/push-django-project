@@ -22,7 +22,7 @@ from plans.models import PlanVariant as plans
 from plans.models import PlanVariant, Plan
 from plans.models import Prices as prices
 from pushmonkey.managers import PushPackageManager
-from pushmonkey.models import PushMessage, Device, PushPackage
+from pushmonkey.models import PushMessage, Device, PushPackage, WebServiceDevice
 from website_clusters.helpers import website_from_profile, clean_website_url
 from website_clusters.models import WebsiteCluster, Website, WebsiteIcon
 import hashlib
@@ -371,6 +371,7 @@ def dashboard(request):
     push_messages = PushMessage.objects.filter(account_key = account_key)[:10]
     notifications = PushMessage.objects.filter(account_key = account_key).count()
     subscribers = Device.objects.filter(account_key = account_key).count()
+    subscribers += WebServiceDevice.objects.filter(account_key = account_key).count()
     sent_notifications = PushMessage.objects.sent_notifications_count(account_key = account_key)
     #sent_notifications = 1300000
     number_of_days = 20
