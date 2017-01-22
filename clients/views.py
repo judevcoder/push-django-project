@@ -378,7 +378,7 @@ def dashboard(request):
         created_at__month = today.month,
         created_at__day = today.day
         ).count()
-    daily_subscribers += WebServiceDevice.objects.filter(account_key = account_key
+    daily_subscribers += WebServiceDevice.objects.filter(account_key = account_key,
         created_at__year = today.year,
         created_at__month = today.month,
         created_at__day = today.day
