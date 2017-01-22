@@ -9,6 +9,10 @@ var PushMonkey = function(config) {
     } else if (pm.isSubFrame) {
 
       pm.queryPermissions();
+    } else if (pm.isNotWordpress) {
+      
+      window.addEventListener("message", pm.receiveMessage, false);
+      pm.createSubFrame();
     } else if (pm.isHttps || pm.isPopUp) {
 
       if (pm.hasServiceWorkers) {
@@ -24,8 +28,7 @@ var PushMonkey = function(config) {
             pm.createSubFrame();
           } else {
             
-            // pm.registerLocalServiceWorker();
-            pm.registerServiceWorker();
+            pm.registerLocalServiceWorker();
           }
         }
       } else {
@@ -337,6 +340,7 @@ var PushMonkey = function(config) {
   pm.isChrome = pm.checkIfChrome();
   pm.isFirefox = pm.checkIfFirefox();
   pm.isHttps = (document.location.protocol == "https:"); 
+  pm.isNotWordpress = config.isNotWordpress;
   pm.isPopUp = (window.opener != undefined);
   pm.isSafari = pm.checkIfSafari();
   pm.isSubFrame = (window.top != window);

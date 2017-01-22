@@ -7,7 +7,8 @@ window.onload = function() {
             accountKey: "{{ account_key }}",
             debug: 0,
             dialogColor: "{{ dialog_color }}",
-            dialogButtonColor: "{{ button_color }}"
+            dialogButtonColor: "{{ button_color }}",
+            isNotWordpress: {{ is_not_wordpress }}
         }
         var container = document.body ? document.body : document.head;
         var script = document.createElement("script");
