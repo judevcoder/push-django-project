@@ -24,7 +24,8 @@ var PushMonkey = function(config) {
             pm.createSubFrame();
           } else {
             
-            pm.registerLocalServiceWorker();
+            // pm.registerLocalServiceWorker();
+            pm.registerServiceWorker();
           }
         }
       } else {
