@@ -372,6 +372,17 @@ def dashboard(request):
     notifications = PushMessage.objects.filter(account_key = account_key).count()
     subscribers = Device.objects.filter(account_key = account_key).count()
     subscribers += WebServiceDevice.objects.filter(account_key = account_key).count()
+    today = datetime.today()
+    daily_subscribers = Device.objects.filter(account_key = account_key,
+        created_at__year = today.year,
+        created_at__month = today.month,
+        created_at__day = today.day
+        ).count()
+    daily_subscribers += WebServiceDevice.objects.filter(account_key = account_key
+        created_at__year = today.year,
+        created_at__month = today.month,
+        created_at__day = today.day
+        ).count()
     sent_notifications = PushMessage.objects.sent_notifications_count(account_key = account_key)
     #sent_notifications = 1300000
     number_of_days = 20
@@ -412,6 +423,7 @@ def dashboard(request):
                               {
                                'account_key': account_key,
                                'already_had_trial': already_had_trial,
+                               'daily_subscribers': daily_subscribers,
                                'has_only_expired_plans': has_only_expired_plans,
                                'has_preselected_plan': has_preselected_plan,
                                'image': image,
@@ -425,12 +437,12 @@ def dashboard(request):
                                'plans': PlanVariant,
                                'prices': prices,
                                'profile': profile,
+                               'push_messages': push_messages,
                                'remaining_notifications': remaining_notifications,
                                'sent_notifications': sent_notifications,
                                'sent_notifications_dataset': sent_notifications_dataset,
                                'subscribers': subscribers, 
                                'wants_to_upgrade': wants_to_upgrade,
-                               'push_messages': push_messages
                               }, 
                               RequestContext(request))
 
