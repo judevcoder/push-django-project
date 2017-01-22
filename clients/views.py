@@ -429,7 +429,7 @@ def dashboard(request):
                                'sent_notifications_dataset': sent_notifications_dataset,
                                'subscribers': subscribers, 
                                'wants_to_upgrade': wants_to_upgrade,
-                               'push_messages': list(push_messages) + list(push_messages)
+                               'push_messages': push_messages
                               }, 
                               RequestContext(request))
 
