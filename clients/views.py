@@ -368,7 +368,7 @@ def dashboard(request):
     if request.GET.get('upgrade_plan', False):
         wants_to_upgrade = True
     account_key = profile.account_key
-    push_messages = PushMessage.objects.filter(account_key = account_key)[:10]
+    push_messages = PushMessage.objects.filter(account_key = account_key)[:20]
     notifications = PushMessage.objects.filter(account_key = account_key).count()
     subscribers = Device.objects.filter(account_key = account_key).count()
     subscribers += WebServiceDevice.objects.filter(account_key = account_key).count()
