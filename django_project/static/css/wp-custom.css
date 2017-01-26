@@ -345,9 +345,17 @@ color:#316bc5
 .col-lg-10.col-lg-offset-1.text-left p { color: #FFF; }
 .fileinput-button { margin-top: 13px; }
 .btn-success, .btn-success.submit { background: #2ecc71; }
-.notification-placeholder .icon, #icon-upload .notification-placeholder .icon { float: left; height: 32px; margin-left: 10px; margin-right: 10px; margin-top: 2px; width: 32px; }
+.notification-placeholder .icon { float: left; height: 32px; margin-left: 10px; margin-right: 10px; margin-top: 2px; width: 32px; }
+#icon-upload .notification-placeholder .icon { 
+  float: left; height: 32px; margin-left: 10px; margin-right: 10px; 
+  margin-top: 5px; width: 32px; }
 .notification-placeholder, #icon-upload .notification-placeholder { position: relative; }
-.notification-placeholder .notification, #icon-upload .notification-placeholder .notification { background: #d9d9d9; border-radius: 4px; border-bottom: 1px solid #555; border-right: 1px solid #555; font-size: 10px; height: 50px; padding-top: 4px; position: absolute; left: 50px; right: 50px; top: 50px; width: 250px; }
+.notification-placeholder .notification { background: #d9d9d9; border-radius: 4px; border-bottom: 1px solid #555; border-right: 1px solid #555; font-size: 10px; height: 50px; padding-top: 4px; position: absolute; left: 50px; right: 50px; top: 50px; width: 250px; }
+#icon-upload .notification-placeholder .notification { 
+  background: #d9d9d9; border-radius: 4px; border-bottom: 1px solid #555; 
+  border-right: 1px solid #555; font-size: 10px; height: 50px; padding-top: 4px; 
+  position: absolute; left: 50px; right: 50px; top: 90px; width: 250px; 
+}
 .btn-success.btn-lg, .btn-success.submit.btn-lg { font-size: 22px; font-family: 'ralewaylight'; }
 #overview .reg-steps { margin-top: 21px; }
 #overview .dark-background { background: #363636; border-radius: 10px; margin-top: 55px; padding-bottom: 13px; padding-top: 89px; position: relative; }

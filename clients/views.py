@@ -14,7 +14,7 @@ from django.template.context import RequestContext
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from forms import UserForm, ClientProfileForm, ResendConfirmForm, ProfileImageForm, CustomiseForm, LoginForm, WebsiteForm
+from forms import UserForm, ClientProfileForm, ResendConfirmForm, ProfileImageForm, CustomiseForm, LoginForm, WebsiteForm, UpdateProfileImageForm
 from managers import ClientsEmailManager
 from models import ClientProfile, ProfileConfirmation, ProfileImage
 from plans.managers import PlansEmailManager
@@ -261,9 +261,8 @@ def icon_upload(request):
         profile_image = ProfileImage.objects.get(profile = profile)
     except ProfileImage.DoesNotExist:
         profile_image = None
-    success = False
     if request.method == 'POST':
-        form = ProfileImageForm(request.POST, request.FILES)
+        form = UpdateProfileImageForm(request.POST, request.FILES)
         if form.is_valid():
             new_profile_image = form.save(commit = False)
             if profile_image:
@@ -273,14 +272,15 @@ def icon_upload(request):
                 new_profile_image.profile = profile
                 new_profile_image.save()
                 profile_image = new_profile_image
-            success = True
+            return redirect("icon_upload")
+        else:
+            print(form.errors)
     else:
-        form = ProfileImageForm()
-    return render_to_response('clients/icon-upload.html', 
+        form = UpdateProfileImageForm()
+    return render_to_response('clients/icon_upload.html', 
                               {'form': form,
                                'profile': profile,
                                'profile_image': profile_image,
-                               'success': success,
                               }, 
                               RequestContext(request))
 

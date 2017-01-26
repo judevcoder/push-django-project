@@ -20,7 +20,6 @@
     <div class="fullheader-banner inner-banner text-left">
       <div class="container">
         <h3>Hey {{ user.first_name }}</h3>
-        <h4></h4>
       </div>
     </div>
   </div>
@@ -32,9 +31,9 @@
       <div class="row welcome-panel">
         <div class="col-sm-12">
         <h3>Welcome!</h3>
-          <p>
-            You now have two quick options to install Push Monkey on your website:
-          </p>
+        <p>
+          You now have two quick options to install Push Monkey on your website:
+        </p>
         </div><!-- .col -->
         <div class="col-sm-6 text-center">
           <img src="{{ STATIC_URL }}images/wordpress-logo-small.png" />
@@ -101,7 +100,7 @@
               <p class="title" id="chrome-title">Notification title</p>
               <p class="message" id="chrome-message">Notification message</p>
               <p class="source">{{ profile.subdomain }}.getpushmonkey.com</p>
-            </div>            
+            </div>
           </div><!-- .chrome-preview -->
           <i aria-hidden="true" class="fa fa-firefox"></i>
           <strong>Firefox on Desktop</strong>
@@ -114,8 +113,23 @@
               <p class="source">via {{ profile.subdomain }}.getpushmonkey.com</p>
               <p class="message" id="firefox-message">Notification message</p>
             </div>            
-          </div><!-- .chrome-preview -->
-
+          </div><!-- .firefox-preview -->
+          <i aria-hidden="true" class="fa fa-safari"></i>
+          <strong>Safari on Desktop</strong>
+          <div class="firefox-preview clearfix">
+            <div class="icon text-center">
+              <img src="{{ image.image.url }}" class="firefox-icon"/>
+            </div>
+            <div class="body">
+              <p class="title" id="firefox-title">Notification title</p>
+              <p class="message" id="firefox-message">Notification message</p>
+            </div>            
+          </div><!-- .safari-preview -->          
+          <div class="text-right">
+            <a href="{% url 'icon_upload' %}">Want to change icon?</a>
+            <br />
+            <br />            
+          </div>
         </div><!-- .col -->
       </div><!-- .row -->      
       <div class="row">

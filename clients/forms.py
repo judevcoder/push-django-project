@@ -56,6 +56,12 @@ class ProfileImageForm(forms.ModelForm):
         model = ProfileImage
         fields = ('image', )
 
+class UpdateProfileImageForm(forms.ModelForm):
+
+    class Meta:
+        model = ProfileImage
+        fields = ('image', )        
+
 class CustomiseForm(forms.Form):
     website_url = forms.URLField()
     website_name = forms.CharField()
@@ -67,4 +73,5 @@ class LoginForm(AuthenticationForm):
 class WebsiteForm(forms.Form):
     website_url = forms.URLField(help_text = "The full URL of your WordPress website where Push Monkey is installed. E.g. http://blog.getpushmonkey.com")
     website_name = forms.CharField()
-    icon = forms.ImageField()        
+    icon = forms.ImageField()  
+    
