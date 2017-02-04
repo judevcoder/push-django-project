@@ -4,8 +4,10 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 from clients.models import ClientProfile
-from models import PushPackage, Device
+from models import PushPackage, Device, WebServiceDevice, PushMessage
 from managers import PushPackageManager
+from management.commands.weekly_report import Command as WeeklyReportCommand
+from datetime import datetime, timedelta
 
 c = Client()
 
@@ -45,12 +47,17 @@ class PushMonkeyTests(TestCase):
         self.assertEqual(websites, expected)
 
     def test_device_registration_no_push_package(self):
+        push_package = PushPackage(website_push_id = 'web.com.pushmonkey.1', 
+            used = True, identifier = "B1")
+        push_package.save()
         user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         profile = ClientProfile(website_push_id = 'web.com.pushmonkey.1', user = user)
         profile.save()
-        response = c.post(reverse('apn_device_register', args = ["ABC", 'web.com.pushmonkey.1']))
+        response = c.post(reverse('apn_device_register', 
+            args = ["ABC", push_package.website_push_id]))
         added_devices_count = Device.objects.all().count()
-        resp = c.delete(reverse('apn_device_register', args = ["ABC", 'web.com.pushmonkey.1']))
+        resp = c.delete(reverse('apn_device_register', 
+            args = ["ABC", push_package.website_push_id]))
         deleted_devices_count = Device.objects.all().count()
         
         self.assertTrue(profile.id > 0)
@@ -64,9 +71,11 @@ class PushMonkeyTests(TestCase):
         profile.save()
         push_package = PushPackage(website_push_id = 'web.com.pushmonkey.1', used = True, identifier = "B1")
         push_package.save()
-        response = c.post(reverse('apn_device_register', args = ["ABC", 'web.com.pushmonkey.1']))
+        response = c.post(reverse('apn_device_register', 
+            args = ["ABC", push_package.website_push_id]))
         added_devices_count = Device.objects.all().count()
-        resp = c.delete(reverse('apn_device_register', args = ["ABC", 'web.com.pushmonkey.1']))
+        resp = c.delete(reverse('apn_device_register', 
+            args = ["ABC", push_package.website_push_id]))
         deleted_devices_count = Device.objects.all().count()
         
         self.assertTrue(profile.id > 0)
@@ -76,6 +85,7 @@ class PushMonkeyTests(TestCase):
         self.assertEqual(deleted_devices_count, 0)
 
     def test_get_push_package(self):
+
         user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         profile = ClientProfile(website_push_id = 'web.com.pushmonkey.1', user = user)
         profile.save()
@@ -95,3 +105,33 @@ class PushMonkeyTests(TestCase):
         self.assertTrue(p2 != None)
         self.assertEqual(outbox_count1, 1)
         self.assertEqual(outbox_count2, 2)
+
+    def test_weekly_report(self):
+
+        user = User.objects.create_user('john', 'tudorizer@gmail.com', 'johnpassword')
+        user.first_name = "Tudor"
+        user.save()
+        message = PushMessage.objects.create(title = "yo", 
+            body = "body", 
+            account_key = "123")
+        profile = ClientProfile(account_key = "123", 
+            confirmed = True,
+            status = "active", 
+            registration_step = 4,            
+            website_push_id = 'web.com.pushmonkey.1', 
+            user = user)
+        profile.save()
+        d1 = Device.objects.create(account_key = "123", token = "abc")
+        d2 = Device.objects.create(account_key = "123", token = "abcd")
+        d3 = Device.objects.create(account_key = "123", token = "abcdx")        
+        d3.created_at = datetime.now() - timedelta(days = 8)
+        d3.save()
+
+        command = WeeklyReportCommand()
+        command.handle()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox[0].alternatives), 1)
+        html = mail.outbox[0].alternatives[0]
+        print(html)
+        self.assertIn("Total Subscribers  \n\n3", mail.outbox[0].body)
+        self.assertIn("New Subscribers\n\n2\n\n%2 growth", mail.outbox[0].body)       

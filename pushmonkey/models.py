@@ -12,6 +12,7 @@ import string, random, os, json, shutil, urlparse
 
 
 class Device(models.Model):
+    
     token = models.CharField(max_length=200)
     updated_at = models.DateTimeField(auto_now=True, default=datetime.now)
     created_at = models.DateTimeField(auto_now_add=True, default=datetime.now)
