@@ -13,7 +13,7 @@ class Command(BaseCommand):
       status = "active", 
       registration_step = 4,
       account_key__isnull = False,
-      user__email = "tudor@toadlondon.com")
+      user__email = ["tudor@toadlondon.com", "akchirpy@gmail.com"])
     email_manager = PushMonkeyEmailManager()
     for profile in profiles:
 
