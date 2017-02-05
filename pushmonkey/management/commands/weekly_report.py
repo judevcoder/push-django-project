@@ -12,8 +12,7 @@ class Command(BaseCommand):
       confirmed = True, 
       status = "active", 
       registration_step = 4,
-      account_key__isnull = False,
-      user__email__in = ["tudor@toadlondon.com", "akchirpy@gmail.com"])
+      account_key__isnull = False)
     email_manager = PushMonkeyEmailManager()
     for profile in profiles:
 
