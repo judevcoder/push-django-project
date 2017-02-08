@@ -48,8 +48,8 @@ class PushPackage(object):
         zipf.close()
 
         # remove the tmp dir
-        if os.path.exists(tmpdir_path):
-            shutil.rmtree(tmpdir_path)
+        # if os.path.exists(tmpdir_path):
+        #     shutil.rmtree(tmpdir_path)
 
     def zipdir(self, path, zip):
         for root, dirs, files in os.walk(path):
