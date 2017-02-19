@@ -351,12 +351,13 @@ def overview(request, profile_id = None):
 @login_required
 def dashboard(request):
     try:
-        profile = ClientProfile.objects.get(user = request.user)         
+        profile = ClientProfile.objects.get(user = request.user)
     except ClientProfile.DoesNotExist:
         profile = None
     if profile:
         #force image upload step if not done before        
         image = None
+        website = None        
         try:
             image = ProfileImage.objects.get(profile = profile)
         except ProfileImage.DoesNotExist:
@@ -401,9 +402,13 @@ def dashboard(request):
 
     already_had_trial = Plan.objects.already_had_trial(request.user)
     plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(request.user)
+    websites = None
     if not plan and website:
         owner = website.cluster.creator
         plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(owner)
+    elif plan and plan.type == plans.PRO:
+        cluster = WebsiteCluster.objects.get(creator = profile.user)
+        websites = cluster.website_set.all()
 
     #use the modal layout
     modal_pricing_table = True
@@ -451,6 +456,8 @@ def dashboard(request):
                                'sent_notifications_dataset': sent_notifications_dataset,
                                'subscribers': subscribers, 
                                'wants_to_upgrade': wants_to_upgrade,
+                               'website': website,
+                               'websites': websites,
                               }, 
                               RequestContext(request))
 

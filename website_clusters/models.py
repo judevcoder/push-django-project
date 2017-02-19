@@ -7,7 +7,9 @@ from django.db.models.signals import post_delete
 from django.dispatch.dispatcher import receiver
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from django.utils.text import Truncator
 import os
+from django.utils.text import slugify
 
 class WebsiteCluster(models.Model):
 	creator = models.OneToOneField(User)
@@ -19,13 +21,14 @@ class WebsiteCluster(models.Model):
 
 class Website(models.Model):
   account_key = models.CharField(max_length = 200, null = True, blank = True)
+  agent = models.ForeignKey(User, null = True, blank = True)
   cluster = models.ForeignKey(WebsiteCluster)
-  comment = models.CharField(max_length = 400, default = '')
+  comment = models.CharField(max_length = 400, default = '', blank = True)
   created_at = models.DateTimeField(default = datetime.now)
-  return_url = models.CharField(max_length = 400, default = '')
+  return_url = models.CharField(max_length = 400, default = '', blank = True)
+  subdomain = models.CharField(max_length = 60, null=True, blank = True)
   website_name = models.CharField(max_length = 300, default = '')
   website_url = models.URLField()
-  agent = models.ForeignKey(User, null = True, blank = True)
 
   def __unicode__(self):
 		return str(self.website_url)
@@ -37,6 +40,17 @@ class Website(models.Model):
 		except WebsiteIcon.DoesNotExist:
 			profile_image = profile_image_for_cluster(self.cluster)
 			return profile_image
+
+  def save(self, *args, **kwargs):
+      if not self.subdomain and self.website_name:
+          slug = slugify(self.website_name)
+          slug = Truncator(slug).chars(30, truncate="")
+          count = Website.objects.filter(subdomain = slug).count()
+          if count == 0:
+              self.subdomain = slug
+          else:
+              self.subdomain = "%s-%s" % (slug, count+1)
+      super(Website, self).save(*args, **kwargs)      
 
 
 class WebsiteIcon(models.Model):

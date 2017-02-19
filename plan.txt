@@ -11,11 +11,16 @@
       x user account is created = 2
       x user account is assigned to website = 2
       - client profile? Not needed, because a profile should be able to manage multiple websites.
-    - appointee only sees her website(s) in the Dashboard = 3
+    x appointee only sees her website(s) in the Dashboard = 3
   - can resend invitation email to appointee = 3
   - display agent email on list of websites = 1
   - mark time of accepting invitation (updated_at field) = 1
+- agent:
+  - can log into WP
+  - can install JS
+  x can see dashboard
 
+- schedule a notification
 
 - to test:
   - sending notifications to multiple websites

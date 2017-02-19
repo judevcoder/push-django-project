@@ -291,7 +291,7 @@ class RegistrationTest(TestCase):
         website = Website(
             cluster = cluster, 
             return_url = "http://testwebsite2.com/wp-admin/index.php", 
-            website_name = "Test Website 2",
+            website_name = u"Test Website 2",
             website_url = "http://testwebsite2.com")
         package2 = create_push_package(os.path.join(settings.MEDIA_ROOT, 'test2'))
         website.account_key = package2.identifier
@@ -492,7 +492,7 @@ def prepare_agent_registration():
     website = Website.objects.create(
         website_url = "https://funktown.com", 
         cluster = cluster, 
-        website_name = "Funk Town"
+        website_name = u"Funk Town"
     )
     website_icon = WebsiteIcon.objects.create(website = website)
     image_path = os.path.join(settings.MEDIA_ROOT, 'test', 'image.png')

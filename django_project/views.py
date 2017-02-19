@@ -57,23 +57,16 @@ def test(request):
 def push_message(request):
     if request.method != "POST":
         raise Http404
-    title = ''
-    if request.POST.has_key('title'):
-        title = request.POST['title']
-    body = ''
-    if request.POST.has_key('body'):
-        body = request.POST['body']
-    url_args = ''
-    if request.POST.has_key('url_args'):
-        url_args = request.POST['url_args']
-    account_key = ''
-    if request.POST.has_key('account_key'):
-        account_key = request.POST['account_key']
+    title = request.POST.get('title', '')
+    body = request.POST.get('body', '')
+    url_args = request.POST.get('url_args', '')
+    account_key = request.POST.get('account_key', None)
+    account_keys = request.POST.getlist("account_keys", None)
     if not len(title):
         raise Exception("Submitted title is empty. Body: " + body)
     if not len(body):
         raise Exception("Submitted body is empty. Title: " + title)
-    if not len(account_key):
+    if not account_key and not account_keys:
         raise Exception("Submitted Account Key is empty. Title: " + title)
     custom = request.POST.get('custom', False)
     if custom:
@@ -90,36 +83,43 @@ def push_message(request):
 
     should_push = False
     comment = ''
-    try:
-        profile = ClientProfile.objects.get(account_key = account_key, status = 'active')
+    command_path = settings.SUBPROCESS_COMMAND_PATH
+    if account_key:
         try:
-            plan = Plan.objects.exclude(type = plans.NONE).exclude(status = 'expired').filter(user = profile.user, status = 'active').latest('created_at')
-            sent_notifications = PushMessage.objects.sent_notifications_count(account_key = account_key)
-            should_push = True
-            if sent_notifications >= plan.number_of_notifications:
-                should_push = False
-                comment = 'Notifications number for plan exceeded.'
-        except Plan.DoesNotExist:
-            comment = 'No price plan for user_id: ' + str(profile.user.id)
-    except ClientProfile.DoesNotExist:
-        comment = 'No user for this account key or profile is not active.'
-    if not should_push:
-        try:
-            website = Website.objects.get(account_key = account_key)
-            comment = ''
-        except Website.DoesNotExist:
-            comment = 'No user for this account key or profile is not active or no website cluster.'
-
-    new_message = PushMessage(title = title, body = body, url_args = url_args, 
-                              account_key = account_key, custom = custom, comment = comment)
-    new_message.save();
-
-    if should_push:
-        # subprocess for async execution
-        command_path = settings.SUBPROCESS_COMMAND_PATH 
-        message_id = new_message.id
-        subprocess.Popen("sleep 10; python " + command_path + " " + str(message_id), shell=True)
-
+            profile = ClientProfile.objects.get(account_key = account_key, status = 'active')
+            try:
+                plan = Plan.objects.exclude(type = plans.NONE).exclude(status = 'expired').filter(user = profile.user, status = 'active').latest('created_at')
+                sent_notifications = PushMessage.objects.sent_notifications_count(account_key = account_key)
+                should_push = True
+                if sent_notifications >= plan.number_of_notifications:
+                    should_push = False
+                    comment = 'Notifications number for plan exceeded.'
+            except Plan.DoesNotExist:
+                comment = 'No price plan for user_id: ' + str(profile.user.id)
+        except ClientProfile.DoesNotExist:
+            comment = 'No user for this account key or profile is not active.'
+        if not should_push:
+            try:
+                website = Website.objects.get(account_key = account_key)
+                comment = ''
+                should_push = True
+            except Website.DoesNotExist:
+                comment = 'No user for this account key or profile is not active or no website cluster.'
+            new_message = PushMessage.objects.create(title = title, body = body, url_args = url_args, 
+                              account_key = account_key, custom = custom, comment = comment)                
+            if should_push:
+                # subprocess for async execution 
+                subprocess.Popen("sleep 10; python " + command_path + " " + str(message_id), shell=True)
+    elif account_keys:
+        print("=== here")
+        print(account_keys)
+        websites = Website.objects.filter(account_key__in = account_keys)
+        for w in websites:
+            notif = PushMessage.objects.create(title = title, 
+                body = body, url_args = url_args, 
+                account_key = w.account_key, custom = custom, 
+                comment = comment) 
+            subprocess.Popen("sleep 10; python " + command_path + " " + str(notif.id), shell=True)
     return render_to_response('pushmonkey/pushed.html')
 
 def push(request):

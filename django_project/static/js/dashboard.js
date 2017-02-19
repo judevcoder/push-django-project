@@ -96,4 +96,22 @@ $(function() {
       }
     });
   });
+
+  $('#account_keys').multiSelect({
+    selectableHeader: "<div class='websites-header'>Available Websites</div>",
+    selectionHeader: "<div class='websites-header'>Selected Websites</div>",
+    afterInit: function(container){
+
+      $('#websites-select-all').click(function(){
+
+        $('#account_keys').multiSelect('select_all');
+        return false;
+      });
+      $('#websites-unselect-all').click(function(){
+
+        $('#account_keys').multiSelect('deselect_all');
+        return false;
+      });      
+    }
+  });
 });

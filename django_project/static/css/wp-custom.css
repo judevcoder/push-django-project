@@ -524,6 +524,15 @@ ol.carousel-indicators li { border: 2px solid #0e47a1; }
   border: 0;
 }
 
+#dashboard .ms-container {
+    margin-left: 15px;
+}
+
+#dashboard .websites-header,
+#dashboard .websites-footer {
+  background: #eee;
+}
+
 
 
 .right-details .side-full { background: #0d47a1; color: #fff; padding: 20px; margin-bottom: 25px; float: left; width: 100%; }

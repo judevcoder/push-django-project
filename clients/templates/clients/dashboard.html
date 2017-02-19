@@ -6,6 +6,8 @@
 
 {% block extrajs %}
 {% include "stats/stats-js-block.html" %}
+<link href="{{ STATIC_URL }}css/multi-select.css" rel="stylesheet" type="text/css">
+<script src="{{ STATIC_URL }}js/jquery.multi-select.js"></script>
 <script src="{{ STATIC_URL }}js/dashboard.js"></script>
 {% endblock %}
 
@@ -28,6 +30,7 @@
 <div class="site-inner">
   <div id="content" class="website-content">
     <div class="container" id="dashboard">
+      {% if profile %}
       <div class="row welcome-panel">
         <div class="col-sm-12">
         <h3>Welcome!</h3>
@@ -56,9 +59,13 @@
 <link id="pm-manifest" rel="manifest" href="https://getpushmonkey.com/manifest-{{ profile.account_key }}.json"><script type="text/javascript" id="pm-sdk" src="https://getpushmonkey.com/sdk/config-{{ profile.account_key }}.js?not_wp=1"></script></textarea>
         </div><!-- .col -->
       </div><!-- .row -->
+      {% endif %}
       <div class="row panel">
         <div class="col-sm-7">
           <h3>Send Custom Push Notification</h3>
+          {% if website %}
+          <span>for {{ website.website_name }} ({{ website.website_url }})</span>
+          {% endif %}
           <div class="form-container top-spacing">
             <form method="post" class="form-horizontal" id="custom-notification">
               <div class="form-group">
@@ -77,9 +84,30 @@
                 <label for="url" class="col-sm-4 control-label">Landing Page URL</label>
                 <div class="col-sm-8">                
                   <input type="text" maxlength="300" class="form-control" name="url_args" value="">
-                  <input type="hidden" name="account_key" value="{{ profile.account_key }}">
                 </div><!-- .col -->
               </div>
+              {% if websites %}
+              <div class="row">
+                <div class="col-md-4 text-right">
+                    <label for="account_keys" class="control-label">Websites</label>
+                </div>
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <select id="account_keys" name="account_keys" multiple='multiple'>
+                      {% for w in websites %}
+                      <option value="{{ w.account_key }}">{{ w.website_name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div><!-- .form-group -->
+                </div><!-- .col -->
+                <div class="col-md-offset-4 col-md-8">
+                  <a id="websites-select-all" class="btn btn-xs btn-success">Select All</a>
+                  <a id="websites-unselect-all" class="btn btn-xs btn-danger">Deselect All</a>
+                </div><!-- .col -->
+              </div><!-- .row -->
+              {% else %}
+              <input type="hidden" name="account_key" value="{{ profile.account_key }}">
+              {% endif %}              
               <div class="form-group text-right">
                 <div class="col-sm-12">
                   <button type="submit" class="btn btn-success">Send</button>
@@ -99,7 +127,7 @@
             <div class="body">
               <p class="title" id="chrome-title">Notification title</p>
               <p class="message" id="chrome-message">Notification message</p>
-              <p class="source">{{ profile.subdomain }}.getpushmonkey.com</p>
+              <p class="source">{% if profile %}{{ profile.subdomain }}{% else %}{{ website.subdomain }}{% endif %}.getpushmonkey.com</p>
             </div>
           </div><!-- .chrome-preview -->
           <i aria-hidden="true" class="fa fa-firefox"></i>
@@ -110,7 +138,7 @@
             </div>
             <div class="body">
               <p class="title" id="firefox-title">Notification title</p>
-              <p class="source">via {{ profile.subdomain }}.getpushmonkey.com</p>
+              <p class="source">via {% if profile %}{{ profile.subdomain }}{% else %}{{ website.subdomain }}{% endif %}.getpushmonkey.com</p>
               <p class="message" id="firefox-message">Notification message</p>
             </div>            
           </div><!-- .firefox-preview -->
@@ -262,7 +290,7 @@
           </div>
           {% endif %}
 
-          {% if plan.type == plans.PRO %}
+          {% if plan.type == plans.PRO and profile %}
           <div class="side-full">
               <h3>Manage Websites</h3>
               <p>Because you are on the PRO plan, you can have up to 5 websites.</p>
