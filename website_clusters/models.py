@@ -18,18 +18,19 @@ class WebsiteCluster(models.Model):
 		return str(self.creator)
 
 class Website(models.Model):
-	account_key = models.CharField(max_length = 200, null = True, blank = True)
-	cluster = models.ForeignKey(WebsiteCluster)
-	comment = models.CharField(max_length = 400, default = '')
-	created_at = models.DateTimeField(default = datetime.now)
-	return_url = models.CharField(max_length = 400, default = '')
-	website_name = models.CharField(max_length = 300, default = '')
-	website_url = models.URLField()
+  account_key = models.CharField(max_length = 200, null = True, blank = True)
+  cluster = models.ForeignKey(WebsiteCluster)
+  comment = models.CharField(max_length = 400, default = '')
+  created_at = models.DateTimeField(default = datetime.now)
+  return_url = models.CharField(max_length = 400, default = '')
+  website_name = models.CharField(max_length = 300, default = '')
+  website_url = models.URLField()
+  agent = models.ForeignKey(User, null = True, blank = True)
 
-	def __unicode__(self):
+  def __unicode__(self):
 		return str(self.website_url)
 
-	def icon(self):
+  def icon(self):
 		from helpers import profile_image_for_cluster
 		try:
 			return self.websiteicon
@@ -62,6 +63,16 @@ class WebsiteIcon(models.Model):
 
 	def __unicode__(self):
 		return str(self.website)
+
+class WebsiteInvitation(models.Model):
+  accepted = models.BooleanField(default = False)
+  created_at = models.DateTimeField(default = datetime.now)
+  email = models.EmailField()
+  website = models.ForeignKey(Website)
+  resent = models.IntegerField(default = 0)
+
+  def __unicode__(self):
+    return "%s - %s" % (self.website, self.email)
 
 @receiver(post_delete, sender=WebsiteIcon)
 def profile_image_delete(sender, instance, **kwargs):

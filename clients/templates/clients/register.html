@@ -50,7 +50,7 @@
         <form method="post">
           <div class="top">
             <div class="full">
-              <input type="text" class="{% if user_form.first_name.errors %}error{% endif %} form-control" name="{{ user_form.first_name.html_name }}" value="{{ user_form.first_name.value }}" placeholder="First Name">
+              <input type="text" class="{% if user_form.first_name.errors %}error{% endif %} form-control" name="{{ user_form.first_name.html_name }}" value="{% if user_form.first_name.valule %}{{ user_form.first_name.value }}{% endif %}" placeholder="First Name">
               {{ user_form.first_name.errors }}
             </div>
             <!-- .col -->

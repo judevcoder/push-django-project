@@ -5,14 +5,14 @@ from django.core.urlresolvers import reverse
 from models import ClientProfile, ProfileImage
 from website_clusters.models import Website
 from captcha.fields import ReCaptchaField
+import os
 
 class UserForm(forms.ModelForm):
     first_name = forms.CharField()
     email = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
     password_confirm = forms.CharField(widget=forms.PasswordInput())
-    captcha = ReCaptchaField()
-
+    captcha = ReCaptchaField(required = os.environ.get('RECAPTCHA_TESTING', 'False') != 'True')
     class Meta:
         model = User
         fields = ('first_name', 'email', 'password')
@@ -71,7 +71,8 @@ class LoginForm(AuthenticationForm):
     username = forms.EmailField(label=("Email"), max_length = 100)
 
 class WebsiteForm(forms.Form):
-    website_url = forms.URLField(help_text = "The full URL of your WordPress website where Push Monkey is installed. E.g. http://blog.getpushmonkey.com")
-    website_name = forms.CharField()
+    agent = forms.EmailField(help_text="Optional. The email of the person who will manage the notifications for this website will receive an invitation email. If left blank, only the current account can send notifications.", required = False)
     icon = forms.ImageField()  
+    website_name = forms.CharField()
+    website_url = forms.URLField(help_text = "The full URL of your WordPress website where Push Monkey is installed. E.g. http://blog.getpushmonkey.com")
     

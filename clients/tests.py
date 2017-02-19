@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
@@ -7,7 +8,7 @@ from django.test.client import Client
 from models import ClientProfile, ProfileImage
 from plans.models import Plan, PlanVariant
 from pushmonkey.models import PushPackage
-from website_clusters.models import WebsiteCluster, Website, WebsiteIcon
+from website_clusters.models import WebsiteCluster, Website, WebsiteIcon, WebsiteInvitation
 import os
 import shutil
 import urllib
@@ -15,6 +16,9 @@ import urllib
 c = Client()
 
 class RegistrationTest(TestCase):
+
+    def setUp(self):
+        os.environ['RECAPTCHA_TESTING'] = 'True'
 
     def tearDown(self):
         for directory in ['test', 'test2']:
@@ -24,10 +28,10 @@ class RegistrationTest(TestCase):
             icon.delete()
         for profile_image in ProfileImage.objects.all():
             profile_image.delete()
+        os.environ['RECAPTCHA_TESTING'] = 'False'
 
     def test_registration(self):
         response = c.get(reverse('register'))
-
         self.assertEqual(response.status_code, 200)
 
     def test_registration_from_wp_get(self):
@@ -57,6 +61,8 @@ class RegistrationTest(TestCase):
     def test_registration_thank_you_from_wp(self):
         register_user_from_wp()
         profile = ClientProfile.objects.all()[0]
+        profile.registration_step = 3
+        profile.save()
         resp = c.get(reverse('register_thank_you', args = [profile.id]))
 
         self.assertRedirects(resp, profile.return_url + '&push_monkey_package_pending=1&push_monkey_registered=1')
@@ -85,6 +91,8 @@ class RegistrationTest(TestCase):
     def test_registration_thank_you_from_homepage(self):
         register_user_from_homepage()
         profile = ClientProfile.objects.all()[0]
+        profile.registration_step = 3
+        profile.save()
         resp = c.get(reverse('register_thank_you', args = [profile.id]))
 
         self.assertEqual(resp.status_code, 200)
@@ -173,10 +181,11 @@ class RegistrationTest(TestCase):
         resp = register_user_from_wp()
         profile = ClientProfile.objects.all()[0]
         profile.account_key = "123"
+        profile.registration_step = 3
         profile.save()
         resp = c.get(reverse('register_thank_you', args = [profile.id]))
-        # make profile active after accessing register_thank_you, because register_thank_you redirects 
-        # active profiles.
+        # make profile active after accessing register_thank_you, 
+        # because register_thank_you redirects active profiles.
         profile.status = 'active'
         profile.save()
 
@@ -211,6 +220,8 @@ class RegistrationTest(TestCase):
         # register
         resp = register_user_from_wp()
         profile = ClientProfile.objects.all()[0]
+        profile.registration_step = 3
+        profile.save()
         # upload icon
         profile_image = ProfileImage(profile = profile)
         image_path = os.path.join(settings.MEDIA_ROOT, 'test', 'image.png')
@@ -317,26 +328,8 @@ class RegistrationTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_website_adding_post(self):
-        # create a push package
-        package = create_push_package(os.path.join(settings.MEDIA_ROOT, 'test2'))
-        # create and log in a user
-        register_user_from_homepage()
-        logged_in = c.login(username = 'john@gmail.com', password = 'holymomma')
-        profile = ClientProfile.objects.all()[0]
-        # add an account_key because the test will not actually associate a push 
-        # package to this profile
-        profile.account_key = "123"
-        profile.save()
-        plan = Plan(user = profile.user, type = PlanVariant.PRO, status = 'active')
-        plan.save()
-        # assert that he logged in
-        self.assertTrue(logged_in)
-        self.assertEqual(WebsiteIcon.objects.count(), 0)
 
-        # get the URL first, to create the website cluster
-        resp = c.get(reverse('websites'))
-        self.assertEqual(resp.status_code, 200)
-
+        package = prepare_adding_website_to_cluster(self)
         # fill in the form
         icon_file = open(os.path.join(settings.MEDIA_ROOT, 'test2', 'image.png'))
         resp = c.post(reverse('websites'), {
@@ -344,16 +337,66 @@ class RegistrationTest(TestCase):
             'icon': icon_file, 
             'website_name': "Ze Test",
             })
+        cluster = WebsiteCluster.objects.all()[0]
 
         # assert that websites have been created
         self.assertRedirects(resp, reverse('websites'))
         self.assertEqual(WebsiteIcon.objects.count(), 1)
         self.assertEqual(WebsiteCluster.objects.count(), 1)
-        cluster = WebsiteCluster.objects.all()[0]
         self.assertEqual(cluster.website_set.count(), 2)
         for website in cluster.website_set.all():
             self.assertTrue(website.account_key != None)
         self.assertEqual(cluster.website_set.filter(account_key = package.identifier).count(), 1)
+
+    def test_website_adding_post_with_agent(self):
+
+        prepare_adding_website_to_cluster(self)
+        # fill in the form
+        icon_file = open(os.path.join(settings.MEDIA_ROOT, 'test2', 'image.png'))
+        resp = c.post(reverse('websites'), {
+            'website_url': 'http://test2.com', 
+            'icon': icon_file, 
+            'website_name': "Ze Test",
+            'agent': "test@gmail.com"
+            })
+        invitation = WebsiteInvitation.objects.all()[0]
+        contains_link = False
+        for e in mail.outbox:
+            link = "https://www.getpushmonkey.com/accept/%s" % invitation.id
+            contains_link = link in e.body
+            if contains_link:
+                break
+        self.assertEqual(WebsiteInvitation.objects.count(), 1)
+        # 1 welcome email
+        # 1 notif of new user to admin
+        # 1 invitaion to website
+        # 1 for no push packages left        
+        self.assertEqual(len(mail.outbox), 4)
+        self.assertTrue(contains_link)
+
+    def test_anonymous_click_on_website_invitation(self):
+        invitation = prepare_agent_registration()
+        resp = c.get(reverse('website_invitation_accept', args = [invitation.id]))
+        self.assertRedirects(resp, reverse("website_register_agent", args = [invitation.id]))
+
+    def test_logged_in_click_on_website_invitation(self):
+        invitation = prepare_agent_registration()
+        logged_in = c.login(username = 'john@gmail.com', password = 'holymomma')
+        resp = c.get(reverse('website_invitation_accept', args = [invitation.id]))
+        self.assertEqual(resp.status_code, 302)
+
+    def test_agent_registering(self):
+        invitation = prepare_agent_registration()
+        user_count = User.objects.count()
+        data = {
+            "first_name": "Nissan",
+            "email": invitation.email,
+            "password": "iamrock",
+            "password_confirm": "iamrock"
+        }
+        resp = c.post(reverse('website_register_agent', args = [invitation.id]), data)
+        self.assertTrue(User.objects.count(), user_count+1)
+        self.assertRedirects(resp, reverse("dashboard"))
 
 def register_user_from_wp():
     resp = c.post(reverse('register') + '?registering=1', {
@@ -419,3 +462,40 @@ def clean_push_package_files(path):
     iconset_path = os.path.join(settings.MEDIA_ROOT, path, 'iconset')
     if os.path.exists(iconset_path) and os.path.isdir(iconset_path):
         shutil.rmtree(iconset_path)
+
+def prepare_adding_website_to_cluster(self):
+    # create a push package
+    package = create_push_package(os.path.join(settings.MEDIA_ROOT, 'test2'))
+    # create and log in a user
+    register_user_from_homepage()
+    logged_in = c.login(username = 'john@gmail.com', password = 'holymomma')
+    profile = ClientProfile.objects.all()[0]
+    # add an account_key because the test will not actually associate a push 
+    # package to this profile
+    profile.account_key = "123"
+    profile.save()
+    plan = Plan(user = profile.user, type = PlanVariant.PRO, status = 'active')
+    plan.save()
+    # assert that he logged in
+    self.assertTrue(logged_in)
+    self.assertEqual(WebsiteIcon.objects.count(), 0)
+
+    # get the URL first, to create the website cluster
+    resp = c.get(reverse('websites'))
+    self.assertEqual(resp.status_code, 200)
+    return package
+
+def prepare_agent_registration():
+    register_user_from_homepage()
+    user = User.objects.get(email = "john@gmail.com")
+    cluster = WebsiteCluster.objects.create(creator = user)
+    website = Website.objects.create(
+        website_url = "https://funktown.com", 
+        cluster = cluster, 
+        website_name = "Funk Town"
+    )
+    website_icon = WebsiteIcon.objects.create(website = website)
+    image_path = os.path.join(settings.MEDIA_ROOT, 'test', 'image.png')
+    website_icon.image = SimpleUploadedFile(name='test_image.png', content=open(image_path, 'rb').read(), content_type='image/png')
+    website_icon.save()
+    return WebsiteInvitation.objects.create(website = website, email = "agent@gmail.com")    

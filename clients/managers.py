@@ -29,6 +29,15 @@ class ClientsEmailManager(EmailManager):
         }
         self.send_email(subject, template_html, context_dict, to_email)
 
+    def send_website_invitation(self, email, website_name, id):
+        template_html = 'clients/email_website_invitation.html'
+        subject = "Invitation to manage push notification for %s" % website_name
+        context = {
+            "link": "https://www.getpushmonkey.com/accept/%s" % id,
+            "website_name": website_name
+        }
+        self.send_email(subject, template_html, context, email)
+
     def send_admin_new_client(self, client_email):
         template_html = 'clients/email_admin_new_client.html'
         subject = "Capt'n, " + client_email + " signed up."

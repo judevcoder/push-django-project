@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import WebsiteCluster, Website, WebsiteIcon
+from models import WebsiteCluster, Website, WebsiteIcon, WebsiteInvitation
 
 
 class WebsiteAdmin(admin.ModelAdmin):
@@ -9,3 +9,4 @@ admin.site.register(Website, WebsiteAdmin)
 
 admin.site.register(WebsiteCluster)
 admin.site.register(WebsiteIcon)
+admin.site.register(WebsiteInvitation)

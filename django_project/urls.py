@@ -30,7 +30,9 @@ urlpatterns = patterns('',
   url(r'^password_reset_complete$', 'django.contrib.auth.views.password_reset_complete', 
   {'template_name': 'clients/password-reset-complete.html'}, 
   name='password_reset_complete'),
-  #clients
+  #
+  # clients
+  #
   url(r'^login$', 'clients.views.login', name="login"),
   url(r'^register$', 'clients.views.register', name='register'),
   url(r'^register/customise$', 'clients.views.customise', name='customise'),
@@ -41,8 +43,12 @@ urlpatterns = patterns('',
   url(r'^confirm/(?P<confirmation_key>.+)$', 'clients.views.register_confirm', name='register_confirm'),
   url(r'^dashboard$', 'clients.views.dashboard', name='dashboard'),
   url(r'^dashboard/icon_upload$', 'clients.views.icon_upload', name='icon_upload'),
+  # multiple website management
   url(r'^dashboard/websites$', 'clients.views.websites', name='websites'),                     
-  url(r'^dashboard/websites/delete/(?P<website_id>.+)$', 'clients.views.websites_delete', name='websites_delete'),                                            
+  url(r'^dashboard/websites/delete/(?P<website_id>.+)$', 'clients.views.websites_delete', name='websites_delete'),
+  url(r'^register_agent/(?P<invitation_id>.+)$', 'clients.views.website_register_agent', name='website_register_agent'),
+  url(r'^accept/(?P<invitation_id>.+)$', 'clients.views.website_invitation_accept', name='website_invitation_accept'),  
+  # API
   url(r'^clients/get_website_push_id$', 'clients.views.get_website_push_id', name='get_website_push_id'),
   url(r'^clients/icon/(?P<account_key>.+)$', 'clients.views.notification_icon', name='notification_icon'),
   url(r'^clients/send_account_key/v2/(?P<email>.+)$', 'clients.views.send_account_key', name='send_account_key'),
@@ -50,25 +56,35 @@ urlpatterns = patterns('',
   url(r'^clients/api/sign_in$', 'clients.views.api_sign_in', name='api_sign_in'),
   url(r'^clients/api/get_plan_name$', 'clients.views.api_get_plan_name', name='api_get_plan_name'),
   url(r'^clients/api/is_expired$', 'clients.views.api_is_expired', name='api_is_expired'),
+  #
   #stats
+  #
   url(r'^stats/$', 'stats.views.stats', name='stats'),
   url(r'^stats/api$', 'stats.views.stats_api', name='stats_api'),
   url(r'^stats/track_open/(?P<push_message_id>.+)$', 'stats.views.track', name='track_open'),
   url(r'^stats/(?P<account_key>.+)$', 'stats.views.stats', name='stats'),
+  #
   #plans
+  #
   url(r'^plans/payment_overview/(?P<type>.+)/(?P<selected_plan>.+)/coupon/(?P<coupon_id>.+)$', 
   'plans.views.payment_overview', 
   name='payment_overview_coupon'),
   url(r'^plans/payment_overview/(?P<type>.+)/(?P<selected_plan>.+)$', 'plans.views.payment_overview', name='payment_overview'),
   url(r'^plans/payment/apply_coupon$', 'plans.views.payment_apply_coupon', name='payment_apply_coupon'),
   url(r'^plans/trial/thank_you$', 'plans.views.trial_thank_you', name='trial_thank_you'),
+  #
   #paypal
+  #
   (r'^plans/paypal/', include('paypal.standard.ipn.urls')),
   url(r'^plans/paypal/payment_processing/(?P<selected_plan>.+)$', 'plans.views.payment_processing', name='payment_processing'),
   url(r'^plans/paypal/payment_cancelled$', 'plans.views.payment_cancelled', name='payment_cancelled'),
+  #
   #coupons
+  #
   url(r'^coupons/redeem$', 'coupons.views.redeem', name='redeem_coupon'),
+  #
   #pages
+  #
   url(r'^terms-and-conditions', TemplateView.as_view(template_name='tc.html'), name='tc'),
   url(r'^privacy-policy', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
   url(r'^404', TemplateView.as_view(template_name='404.html'), name='page_404'),
@@ -82,7 +98,9 @@ urlpatterns = patterns('',
   url(r'^apple-touch-icon-precomposed.png$', RedirectView.as_view(url='/static/images/push-monkey-logo-60x60.png'), name='apple-touch-icon-precomposed'),
   url(r'^changelog/fixed', TemplateView.as_view(template_name='changelog_fixed.html'), name='changelog_fixed'),
   url(r'^changelog/wordpress', TemplateView.as_view(template_name='changelog_wordpress.html'), name='changelog_wordpress'),
+  #
   # service workers
+  #
   url(r'^chrome', TemplateView.as_view(template_name='chrome/index.html')),
   url(r'^push/v1/register/(?P<account_key>.+)', 'pushmonkey.views.register', name='service_worker_register'),
   url(r'^push/v1/unregister/(?P<subscription_id>.+)', 'pushmonkey.views.unregister', name='service_worker_unregister'),  

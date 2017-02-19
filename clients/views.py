@@ -8,8 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core import exceptions
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import redirect
-from django.shortcuts import render_to_response
+from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
@@ -24,7 +23,7 @@ from plans.models import Prices as prices
 from pushmonkey.managers import PushPackageManager
 from pushmonkey.models import PushMessage, Device, PushPackage, WebServiceDevice
 from website_clusters.helpers import website_from_profile, clean_website_url
-from website_clusters.models import WebsiteCluster, Website, WebsiteIcon
+from website_clusters.models import WebsiteCluster, Website, WebsiteIcon, WebsiteInvitation
 import hashlib
 import json
 import os
@@ -277,6 +276,7 @@ def icon_upload(request):
             print(form.errors)
     else:
         form = UpdateProfileImageForm()
+    print("==== finally here")
     return render_to_response('clients/icon_upload.html', 
                               {'form': form,
                                'profile': profile,
@@ -288,7 +288,6 @@ def customise(request):
     profile_id = request.GET.get('profile_id', '')
     try:
         profile = ClientProfile.objects.get(id = profile_id)
-        print(profile.registration_step)
         if profile.registration_step > 2:
             raise Http404("Wrong user for profile_id=" + str(profile_id))
         profile.registration_step = 2
@@ -351,23 +350,29 @@ def overview(request, profile_id = None):
 
 @login_required
 def dashboard(request):
-    profile = ClientProfile.objects.get(user = request.user) 
-
-    #force image upload step if not done before
-    image = None
     try:
-        image = ProfileImage.objects.get(profile = profile)
-    except ProfileImage.DoesNotExist:
-        return redirect('icon_upload')
-
-    if request.GET.get('change_plan'):
-        profile.preselected_plan = ''
-        profile.save()
+        profile = ClientProfile.objects.get(user = request.user)         
+    except ClientProfile.DoesNotExist:
+        profile = None
+    if profile:
+        #force image upload step if not done before        
+        image = None
+        try:
+            image = ProfileImage.objects.get(profile = profile)
+        except ProfileImage.DoesNotExist:
+            return redirect(reverse('icon_upload'))    
+        if request.GET.get('change_plan'):
+            profile.preselected_plan = ''
+            profile.save()  
+        account_key = profile.account_key                      
+    else:
+        website = Website.objects.get(agent = request.user)
+        account_key = website.account_key
+        image = WebsiteIcon.objects.get(website = website)
 
     wants_to_upgrade = False
     if request.GET.get('upgrade_plan', False):
         wants_to_upgrade = True
-    account_key = profile.account_key
     push_messages = PushMessage.objects.filter(account_key = account_key)[:20]
     notifications = PushMessage.objects.filter(account_key = account_key).count()
     subscribers = Device.objects.filter(account_key = account_key).count()
@@ -396,6 +401,9 @@ def dashboard(request):
 
     already_had_trial = Plan.objects.already_had_trial(request.user)
     plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(request.user)
+    if not plan and website:
+        owner = website.cluster.creator
+        plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(owner)
 
     #use the modal layout
     modal_pricing_table = True
@@ -408,7 +416,7 @@ def dashboard(request):
     has_preselected_plan = False
     plan_type = None
     plan_type_length = None
-    if len(profile.preselected_plan):
+    if profile and len(profile.preselected_plan):
         has_preselected_plan = True
         split = profile.preselected_plan.split('-')
         plan_type = split[0]
@@ -471,6 +479,12 @@ def websites(request):
             # create the website icon
             website_icon = WebsiteIcon(website = website, image = form.cleaned_data.get('icon'))
             website_icon.save()
+            # create an agent if required
+            agent = form.cleaned_data.get("agent")
+            if agent:
+                email_manager = ClientsEmailManager()
+                invitation = WebsiteInvitation.objects.create(website = website, email = agent)
+                email_manager.send_website_invitation(agent, website.website_name, invitation.id)
             # associate a push package
             package_manager = PushPackageManager()
             package = package_manager.get_push_package(profile)
@@ -501,12 +515,49 @@ def websites(request):
 
 @login_required
 def websites_delete(request, website_id):
+
     website = Website.objects.get(id = website_id)
     account_key = website.account_key
-    package = PushPackage.objects.get(identifier = account_key)
-    package.prepare_for_reuse()
+    try:
+        package = PushPackage.objects.get(identifier = account_key)
+        package.prepare_for_reuse()
+    except:
+        pass
     website.delete()
     return HttpResponseRedirect(reverse('websites'))
+
+def website_invitation_accept(request, invitation_id):
+    if request.user.is_authenticated():
+        return redirect(reverse("dashboard"))
+    invitation = get_object_or_404(WebsiteInvitation, pk = invitation_id)
+    return redirect(reverse('website_register_agent', args = [invitation_id]))
+
+def website_register_agent(request, invitation_id):
+    invitation = get_object_or_404(WebsiteInvitation, pk = invitation_id)
+    if request.method == "POST":
+        user_form = UserForm(data=request.POST)
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            user.set_password(user.password)
+            user.username = user.email[0:28] #Because emails can be much longer than 30 chars, the limit for a username
+            user.save()
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            if user:
+                auth_login(request, user)            
+            invitation.accepted = True
+            invitation.save()
+            invitation.website.agent = user
+            invitation.website.save()
+            return redirect(reverse("dashboard"))
+        else:
+            print(user_form.errors)
+    user_form = UserForm(initial = {
+        'email': invitation.email
+    })
+    return render_to_response('clients/register_agent.html', 
+                          {'user_form': user_form,           
+                          }, 
+                          RequestContext(request))
 
 @never_cache
 def login(request):
@@ -515,13 +566,21 @@ def login(request):
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            profile = ClientProfile.objects.get(user = user)
-            if profile.confirmed:
-                auth_login(request, form.get_user())
-                url = request.GET.get('next')
-                if not url:
-                    url = settings.LOGIN_REDIRECT_URL
-                return redirect(url)
+            try:
+                profile = ClientProfile.objects.get(user = user)
+                if profile.confirmed:
+                    auth_login(request, form.get_user())
+                    url = request.GET.get('next')
+                    if not url:
+                        url = settings.LOGIN_REDIRECT_URL
+                    return redirect(url)                                    
+            except ClientProfile.DoesNotExist:
+                if Website.objects.filter(agent = user).count() == 1:
+                    auth_login(request, form.get_user())
+                    url = request.GET.get('next')
+                    if not url:
+                        url = settings.LOGIN_REDIRECT_URL
+                    return redirect(url)                
     else:
         request.session.set_test_cookie()
         form = AuthenticationForm(request)
