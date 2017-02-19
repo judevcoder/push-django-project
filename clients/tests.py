@@ -398,6 +398,63 @@ class RegistrationTest(TestCase):
         self.assertTrue(User.objects.count(), user_count+1)
         self.assertRedirects(resp, reverse("dashboard"))
 
+class APITest(TestCase):
+
+    def setUp(self):
+        os.environ['RECAPTCHA_TESTING'] = 'True'
+
+    def tearDown(self):
+        for directory in ['test', 'test2']:
+            clean_push_package_files(directory)
+        # must call .delete() manually for the post_delete hook to clean the created files
+        for icon in WebsiteIcon.objects.all():
+            icon.delete()
+        for profile_image in ProfileImage.objects.all():
+            profile_image.delete()
+        os.environ['RECAPTCHA_TESTING'] = 'False'
+
+    def test_wp_login(self):
+        prepare_agent_wp()
+        user = User.objects.get(email = "jane@gmail.com")
+        website = user.website_set.all()[0]
+        data = {
+            'account_key': website.account_key, 
+            'api_token': user.email, 
+            'api_secret': "iamrock", 
+            'website_url': website.website_url
+        }
+        res = c.post(reverse('api_sign_in'), data)
+
+        self.assertEqual(res.content, '{"signed_in": true, "email": "jane@gmail.com", "account_key": "xyz"}')
+
+    def test_get_website_push_ID(self):
+        prepare_agent_wp()
+        user = User.objects.get(email = "jane@gmail.com")
+        website = user.website_set.all()[0]
+        package = create_push_package(os.path.join(settings.MEDIA_ROOT, 'test2'))
+        package.identifier = website.account_key
+        package.save()
+        data = {
+            "account_key": website.account_key
+        }
+        res = c.post(reverse('get_website_push_id'), data)
+
+        self.assertTrue(website.account_key in res.content)
+
+    def test_get_plan_name(self):
+
+        prepare_agent_wp()
+        user = User.objects.get(email = "jane@gmail.com")
+        website = user.website_set.all()[0]
+        plan = Plan.objects.create(user = website.cluster.creator, 
+            type = PlanVariant.PRO, 
+            status = 'active')        
+        data = {
+           "account_key": website.account_key 
+        }
+        res = c.post(reverse('api_get_plan_name'), data)
+        self.assertContains(res, '"plan_name": "Pro"')
+
 def register_user_from_wp():
     resp = c.post(reverse('register') + '?registering=1', {
         'first_name': 'John', 
@@ -498,4 +555,25 @@ def prepare_agent_registration():
     image_path = os.path.join(settings.MEDIA_ROOT, 'test', 'image.png')
     website_icon.image = SimpleUploadedFile(name='test_image.png', content=open(image_path, 'rb').read(), content_type='image/png')
     website_icon.save()
-    return WebsiteInvitation.objects.create(website = website, email = "agent@gmail.com")    
+    return WebsiteInvitation.objects.create(website = website, email = "agent@gmail.com")
+
+def prepare_agent_wp():
+    register_user_from_homepage()
+    user = User.objects.get(email = "john@gmail.com")
+    agent = User.objects.create(username = "jane@gmail.com", email = "jane@gmail.com", 
+        first_name = "jane")
+    agent.set_password("iamrock")
+    agent.save()
+    cluster = WebsiteCluster.objects.create(creator = user)
+    website = Website.objects.create(
+        website_url = "https://funktown.com", 
+        cluster = cluster, 
+        website_name = u"Funk Town",
+        agent = agent,
+        account_key = "xyz"
+    )
+    website_icon = WebsiteIcon.objects.create(website = website)
+    image_path = os.path.join(settings.MEDIA_ROOT, 'test', 'image.png')
+    website_icon.image = SimpleUploadedFile(name='test_image.png', content=open(image_path, 'rb').read(), content_type='image/png')
+    website_icon.save()
+

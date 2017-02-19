@@ -141,7 +141,7 @@ class PushPackage(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk:
             self.identifier = ''.join(random.sample(string.uppercase + '1234567890', 17)) 
-            self.website_push_id = 'web.com.pushmonkey.' + self.identifier
+        self.website_push_id = 'web.com.pushmonkey.' + self.identifier
         super(PushPackage, self).save(*args, **kwargs)
 
     def path(self):

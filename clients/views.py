@@ -469,7 +469,7 @@ def websites(request):
     cluster, created = WebsiteCluster.objects.get_or_create(creator = request.user)
     profile = ClientProfile.objects.get(user = request.user)
     too_many_websites = False
-    if cluster.website_set.count() >= settings.MAX_NUMBER_OF_WEBSITES_ON_PRO:
+    if cluster.website_set.count() >= cluster.max_number_of_websites:
         too_many_websites = True
     if created:
         default_website = website_from_profile(profile, cluster)
@@ -668,6 +668,13 @@ def api_sign_in(request):
                         response_data["account_key"] = website.account_key
                     except Website.DoesNotExist:
                         response_data["log"] = "No website found in cluster."
+            except ClientProfile.DoesNotExist:
+                website = Website.objects.get(agent = user)
+                response_data = {
+                    'signed_in': True,
+                    'account_key': website.account_key,
+                    'email': website.agent.email,
+                }
             except Exception, e:
                 response_data = {
                     'error': "Your account has not been verified yet. Please try again later.",

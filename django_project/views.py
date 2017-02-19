@@ -57,14 +57,14 @@ def test(request):
 def push_message(request):
     if request.method != "POST":
         raise Http404
-    title = request.POST.get('title', '')
-    body = request.POST.get('body', '')
+    title = request.POST.get('title', None)
+    body = request.POST.get('body', None)
     url_args = request.POST.get('url_args', '')
     account_key = request.POST.get('account_key', None)
     account_keys = request.POST.getlist("account_keys", None)
-    if not len(title):
+    if not title:
         raise Exception("Submitted title is empty. Body: " + body)
-    if not len(body):
+    if not body:
         raise Exception("Submitted body is empty. Title: " + title)
     if not account_key and not account_keys:
         raise Exception("Submitted Account Key is empty. Title: " + title)
@@ -111,8 +111,6 @@ def push_message(request):
                 # subprocess for async execution 
                 subprocess.Popen("sleep 10; python " + command_path + " " + str(message_id), shell=True)
     elif account_keys:
-        print("=== here")
-        print(account_keys)
         websites = Website.objects.filter(account_key__in = account_keys)
         for w in websites:
             notif = PushMessage.objects.create(title = title, 

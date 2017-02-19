@@ -30,7 +30,6 @@
 <div class="site-inner">
   <div id="content" class="website-content">
     <div class="container" id="dashboard">
-      {% if profile %}
       <div class="row welcome-panel">
         <div class="col-sm-12">
         <h3>Welcome!</h3>
@@ -56,10 +55,9 @@
             To install Push Monkey on your  website, regardless of the back-end or platform, please paste the following code before the <strong><i>&lt;/head&gt;</i></strong> tag.
           </p>
           <textarea id="code" rows="3"><!-- Push Monkey code -->
-<link id="pm-manifest" rel="manifest" href="https://getpushmonkey.com/manifest-{{ profile.account_key }}.json"><script type="text/javascript" id="pm-sdk" src="https://getpushmonkey.com/sdk/config-{{ profile.account_key }}.js?not_wp=1"></script></textarea>
+<link id="pm-manifest" rel="manifest" href="https://getpushmonkey.com/manifest-{{ profile.account_key }}.json"><script type="text/javascript" id="pm-sdk" src="https://getpushmonkey.com/sdk/config-{% if profile %}{{ profile.account_key }}{% else %}{{ website.account_key }}{% endif %}.js?not_wp=1"></script></textarea>
         </div><!-- .col -->
       </div><!-- .row -->
-      {% endif %}
       <div class="row panel">
         <div class="col-sm-7">
           <h3>Send Custom Push Notification</h3>

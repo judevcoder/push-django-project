@@ -140,9 +140,6 @@ else:
 PAYPAL_SUBSCRIPTION_IMAGE = "/static/images/paypal-button.png"
 PAYPAL_SUBSCRIPTION_SANDBOX_IMAGE = "/static/images/paypal-button.png"
 
-# Max number of website for Pro plan
-MAX_NUMBER_OF_WEBSITES_ON_PRO = 5
-
 # ImageKit
 IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.Optimistic'
 

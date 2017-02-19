@@ -1,13 +1,14 @@
-from django.template.context import RequestContext
-from django.shortcuts import render_to_response
-from django.views.decorators.clickjacking import xframe_options_exempt
-from pushmonkey.models import PushMessage, Device, WebServiceDevice
 from clients.models import ClientProfile
 from datetime import datetime, timedelta
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
-from plans.models import Plan
+from django.shortcuts import render_to_response
+from django.template.context import RequestContext
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
+from plans.models import Plan
+from pushmonkey.models import PushMessage, Device, WebServiceDevice
+from website_clusters.models import Website
 import random
 import json
 
@@ -59,7 +60,6 @@ def stats(request, account_key = None):
 
 @csrf_exempt
 def stats_api(request):
-    print request.POST
     account_key = request.POST.get('account_key', None)
     if not account_key:
         response_data = {'Error': 'Wrong Account Key'}
@@ -81,7 +81,8 @@ def stats_api(request):
             profile = ClientProfile.objects.get(account_key = account_key)
             plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(profile.user)
         except ClientProfile.DoesNotExist:
-            profile = None
+            website = Website.objects.get(account_key = account_key)
+            plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(website.agent)
     remaining_notifications = 0
     if plan:
         remaining_notifications = plan.number_of_notifications - sent_notifications

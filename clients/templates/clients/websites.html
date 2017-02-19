@@ -32,6 +32,10 @@
                   <strong>{{ website.website_name }}</strong>
                   <br />
                   <span>{{ website.website_url }}</span>
+                  {% if website.agent %}
+                  <br />
+                  <span>{{ website.agent }}</span>
+                  {% endif %}
                   <div class="text-right">
                     <a class="btn btn-xs btn-danger" href="{% url 'websites_delete' website.id %}">delete</a>
                   </div>

@@ -12,12 +12,13 @@ import os
 from django.utils.text import slugify
 
 class WebsiteCluster(models.Model):
-	creator = models.OneToOneField(User)
-	created_at = models.DateTimeField(default = datetime.now)
-	comment = models.CharField(max_length = 400, default = '')
+  creator = models.OneToOneField(User)
+  created_at = models.DateTimeField(default = datetime.now)
+  comment = models.CharField(max_length = 400, default = '')
+  max_number_of_websites = models.IntegerField(default = 5)
 
-	def __unicode__(self):
-		return str(self.creator)
+  def __unicode__(self):
+    return str(self.creator)
 
 class Website(models.Model):
   account_key = models.CharField(max_length = 200, null = True, blank = True)
@@ -82,8 +83,9 @@ class WebsiteInvitation(models.Model):
   accepted = models.BooleanField(default = False)
   created_at = models.DateTimeField(default = datetime.now)
   email = models.EmailField()
-  website = models.ForeignKey(Website)
   resent = models.IntegerField(default = 0)
+  updated_at = models.DateTimeField(auto_now=True, default=datetime.now)
+  website = models.ForeignKey(Website)
 
   def __unicode__(self):
     return "%s - %s" % (self.website, self.email)
