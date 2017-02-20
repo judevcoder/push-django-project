@@ -1,6 +1,7 @@
 from affiliates.models import RegisteredUser, AffiliateLink
 from datetime import datetime, timedelta
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -532,6 +533,18 @@ def websites_delete(request, website_id):
         pass
     website.delete()
     return HttpResponseRedirect(reverse('websites'))
+
+def websites_resend_invitation(request, website_id):
+    website = Website.objects.get(id = website_id)
+    invitation = WebsiteInvitation.objects.get(website = website)
+    if invitation.resent > 2:
+        messages.add_message(request, messages.ERROR, 'Already invited 3 times.')
+        return HttpResponseRedirect(reverse('websites'))        
+    email_manager = ClientsEmailManager()
+    email_manager.send_website_invitation(invitation.email, website.website_name, invitation.id)
+    invitation.resent += 1
+    invitation.save()
+    return HttpResponseRedirect(reverse('websites'))    
 
 def website_invitation_accept(request, invitation_id):
     if request.user.is_authenticated():

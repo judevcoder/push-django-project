@@ -374,6 +374,23 @@ class RegistrationTest(TestCase):
         self.assertEqual(len(mail.outbox), 4)
         self.assertTrue(contains_link)
 
+    def test_resending_invitation(self):
+        invitation = prepare_agent_registration()
+        profile = ClientProfile.objects.all()[0]
+        logged_in = c.login(username = 'john@gmail.com', password = 'holymomma')
+        plan = Plan.objects.create(user = profile.user, 
+            type = PlanVariant.PRO, 
+            status = 'active')
+        res = c.get(reverse('websites_resend_invitation', args = [invitation.id]))
+        invitation = WebsiteInvitation.objects.all()[0]
+        self.assertEqual(WebsiteInvitation.objects.count(), 1)
+        self.assertEqual(invitation.resent, 1)
+        self.assertRedirects(res, reverse('websites'))
+        # 1 for admin to show a user signed up
+        # 1 welcome email
+        # 1 invitation
+        self.assertEqual(len(mail.outbox), 3)
+
     def test_anonymous_click_on_website_invitation(self):
         invitation = prepare_agent_registration()
         resp = c.get(reverse('website_invitation_accept', args = [invitation.id]))

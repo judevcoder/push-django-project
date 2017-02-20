@@ -46,6 +46,7 @@ urlpatterns = patterns('',
   # multiple website management
   url(r'^dashboard/websites$', 'clients.views.websites', name='websites'),                     
   url(r'^dashboard/websites/delete/(?P<website_id>.+)$', 'clients.views.websites_delete', name='websites_delete'),
+  url(r'^dashboard/websites/resend/(?P<website_id>.+)$', 'clients.views.websites_resend_invitation', name='websites_resend_invitation'),
   url(r'^register_agent/(?P<invitation_id>.+)$', 'clients.views.website_register_agent', name='website_register_agent'),
   url(r'^accept/(?P<invitation_id>.+)$', 'clients.views.website_invitation_accept', name='website_invitation_accept'),  
   # API
