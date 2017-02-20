@@ -97,13 +97,19 @@ class PushMessage(models.Model):
     updated_at = models.DateTimeField(auto_now=True, default=datetime.now)
     created_at = models.DateTimeField(default=datetime.now, editable=True)
     account_key = models.CharField(max_length=200, null=True)
-    comment = models.CharField(max_length = 300, default="")
+    comment = models.CharField(max_length = 300, default="", blank = True)
     custom = models.BooleanField(default = False)
+    scheduled_at = models.DateTimeField(null = True, blank = True)
 
     objects = StatisticsManager()
 
     def __unicode__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.scheduled_at:
+            self.scheduled_at = self.scheduled_at.replace(second=0, microsecond=0)
+        super(PushMessage, self).save(*args, **kwargs)
 
 class PayloadSafari(Payload):
 

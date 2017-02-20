@@ -533,8 +533,6 @@ ol.carousel-indicators li { border: 2px solid #0e47a1; }
   background: #eee;
 }
 
-
-
 .right-details .side-full { background: #0d47a1; color: #fff; padding: 20px; margin-bottom: 25px; float: left; width: 100%; }
 .right-details .side-full h3 { margin: 0 0 20px 0; }
 .hey-title h2 { font-size: 50px; font-family: 'ralewaybold'; font-weight: normal; margin-bottom: 50px; }
@@ -672,5 +670,16 @@ ol.carousel-indicators li { border: 2px solid #0e47a1; }
 
 #websites table {
   border: 0;
+}
+
+/* Date picker */
+.timepicker table,
+.timepicker td,
+.timepicker th,
+.datepicker table,
+.datepicker td,
+.datepicker th {
+  border: 0 !important;
+  border-width: 0 !important;
 }
 

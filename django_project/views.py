@@ -55,6 +55,7 @@ def test(request):
 
 @csrf_exempt
 def push_message(request):
+    print(request.POST)
     if request.method != "POST":
         raise Http404
     title = request.POST.get('title', None)
@@ -62,12 +63,16 @@ def push_message(request):
     url_args = request.POST.get('url_args', '')
     account_key = request.POST.get('account_key', None)
     account_keys = request.POST.getlist("account_keys", None)
+    scheduled_at = request.POST.get('scheduled_at', None)
+
     if not title:
         raise Exception("Submitted title is empty. Body: " + body)
     if not body:
         raise Exception("Submitted body is empty. Title: " + title)
     if not account_key and not account_keys:
         raise Exception("Submitted Account Key is empty. Title: " + title)
+    if scheduled_at:
+        scheduled_at = datetime.strptime(scheduled_at, '%m/%d/%Y %I:%M %p')
     custom = request.POST.get('custom', False)
     if custom:
         custom = True
@@ -105,19 +110,23 @@ def push_message(request):
                 should_push = True
             except Website.DoesNotExist:
                 comment = 'No user for this account key or profile is not active or no website cluster.'
-            new_message = PushMessage.objects.create(title = title, body = body, url_args = url_args, 
-                              account_key = account_key, custom = custom, comment = comment)                
-            if should_push:
-                # subprocess for async execution 
-                subprocess.Popen("sleep 10; python " + command_path + " " + str(message_id), shell=True)
+        new_message = PushMessage.objects.create(title = title, body = body, 
+            url_args = url_args, account_key = account_key, 
+            custom = custom, comment = comment, scheduled_at = scheduled_at)
+        if should_push and scheduled_at:
+            should_push = False
+        if should_push:
+            # subprocess for async execution 
+            subprocess.Popen("sleep 10; python " + command_path + " " + str(new_message.id), shell=True)
     elif account_keys:
         websites = Website.objects.filter(account_key__in = account_keys)
         for w in websites:
             notif = PushMessage.objects.create(title = title, 
                 body = body, url_args = url_args, 
                 account_key = w.account_key, custom = custom, 
-                comment = comment) 
-            subprocess.Popen("sleep 10; python " + command_path + " " + str(notif.id), shell=True)
+                comment = comment, scheduled_at = scheduled_at) 
+            if not scheduled_at:
+                subprocess.Popen("sleep 10; python " + command_path + " " + str(notif.id), shell=True)
     return render_to_response('pushmonkey/pushed.html')
 
 def push(request):

@@ -6,7 +6,10 @@
 
 {% block extrajs %}
 {% include "stats/stats-js-block.html" %}
+<link href="{{ STATIC_URL }}css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="{{ STATIC_URL }}css/multi-select.css" rel="stylesheet" type="text/css">
+<script src="{{ STATIC_URL }}js/moment-with-locales.min.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.multi-select.js"></script>
 <script src="{{ STATIC_URL }}js/dashboard.js"></script>
 {% endblock %}
@@ -84,10 +87,29 @@
                   <input type="text" maxlength="300" class="form-control" name="url_args" value="">
                 </div><!-- .col -->
               </div>
+              <div class="form-group">
+                <div class="col-sm-4 text-right">
+                  <label for="scheduled_at" class="control-label">Scheduled At</label>
+                  <p><strong>Optional.</strong> Leave blank to send the notifications right now.</p>
+                </div>
+                <div class="col-sm-8">
+                  <div class="input-group date" id="datetimepicker">
+                    <input type="text" id="scheduled_at" name="scheduled_at" class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>                    
+                  </div>
+                </div>
+              </div>              
               {% if websites %}
               <div class="row">
                 <div class="col-md-4 text-right">
                     <label for="account_keys" class="control-label">Websites</label>
+                    <br />
+                    <p>to send the notification as.</p>
+                    <br />
+                    <p>The subcribers of the selected websites will receive the notification
+                      as coming from the respective website.</p>
                 </div>
                 <div class="col-md-8">
                   <div class="form-group">

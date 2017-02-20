@@ -71,7 +71,7 @@ class LoginForm(AuthenticationForm):
     username = forms.EmailField(label=("Email"), max_length = 100)
 
 class WebsiteForm(forms.Form):
-    agent = forms.EmailField(help_text="Optional. The email of the person who will manage the notifications for this website will receive an invitation email. If left blank, only the current account can send notifications.", required = False)
+    agent = forms.EmailField(help_text="Optional. The email of the person who will manage the notifications for this website will receive an invitation email. If left blank, only the current account can send notifications.", required = False, label = "Agent Email")
     icon = forms.ImageField()  
     website_name = forms.CharField()
     website_url = forms.URLField(help_text = "The full URL of your WordPress website where Push Monkey is installed. E.g. http://blog.getpushmonkey.com")

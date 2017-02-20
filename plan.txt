@@ -16,11 +16,14 @@
   x display agent email on list of websites = 1
   x mark time of accepting invitation (updated_at field) = 1
 - agent:
-  - can log into WP
+  x can log into WP
   x can install JS
   x can see dashboard
 
 - schedule a notification
+  x UI
+  x cron job
+  - time zones
 - tab layout on Dashboard
 
 - to test:

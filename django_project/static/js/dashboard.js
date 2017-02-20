@@ -59,9 +59,15 @@ $(function() {
     ev.preventDefault();
     var values = $(this).serializeArray();
     var empty = false;
+    var excluded_fields = ["scheduled_at"];
     $.each(values, function(i, v){
 
-      if (v["value"].trim().length === 0) {
+      var excluded = false;
+      if (excluded_fields.indexOf(v["name"]) != -1) {
+
+        excluded = true;
+      }
+      if (v["value"].trim().length === 0 && !excluded) {
 
         empty = true;
         return;
@@ -113,5 +119,18 @@ $(function() {
         return false;
       });      
     }
+  });
+
+  $('#datetimepicker').datetimepicker({
+    sideBySide: true,
+    showToday: true,
+    format: "MM/DD/YYYY H:mm A",
+    widgetPositioning: {
+      horizontal: 'left'
+   }
+  });
+  $("#scheduled_at").focus(function(){
+
+    $('.input-group-addon').click();
   });
 });
