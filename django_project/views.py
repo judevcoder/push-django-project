@@ -64,6 +64,8 @@ def push_message(request):
     account_key = request.POST.get('account_key', None)
     account_keys = request.POST.getlist("account_keys", None)
     scheduled_at = request.POST.get('scheduled_at', None)
+    if len(scheduled_at) == 0:
+        scheduled_at = None
 
     if not title:
         raise Exception("Submitted title is empty. Body: " + body)
@@ -72,7 +74,7 @@ def push_message(request):
     if not account_key and not account_keys:
         raise Exception("Submitted Account Key is empty. Title: " + title)
     if scheduled_at:
-        scheduled_at = datetime.strptime(scheduled_at, '%m/%d/%Y %I:%M %p')
+        scheduled_at = datetime.strptime(scheduled_at, '%m/%d/%Y %H:%M %p')
     custom = request.POST.get('custom', False)
     if custom:
         custom = True
