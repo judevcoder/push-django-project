@@ -4,6 +4,8 @@ $(function() {
   var chromeDefaultMessage = $("#chrome-message").html();
   var firefoxDefaultTitle = $("#firefox-title").html();  
   var firefoxDefaultMessage = $("#firefox-message").html();    
+  var safariDefaultTitle = $("#firefox-title").html();
+  var safariDefaultMessage = $("#firefox-message").html();  
   $('#dashboard form .form-control').unbind('keyup change input paste').bind('keyup change input paste',function(e){
 
     var $this = $(this);
@@ -23,10 +25,12 @@ $(function() {
 
       $('#chrome-title').html(val);
       $('#firefox-title').html(val);
+      $('#safari-title').html(val);
     } else {
 
-      $('#chrome-title').html(chromeDefaultTitle);      
-      $('#firefox-title').html(firefoxDefaultTitle);      
+      $('#chrome-title').html(chromeDefaultTitle);    
+      $('#firefox-title').html(firefoxDefaultTitle);
+      $('#safari-title').html(safariDefaultTitle);      
     }
   });
   $('#message').on('input', function() {
@@ -36,11 +40,13 @@ $(function() {
     if (val.length > 0) {
 
       $('#chrome-message').html(val);
-      $('#firefox-message').html(val);      
+      $('#firefox-message').html(val);
+      $('#safari-message').html(val);      
     } else {
 
       $('#chrome-message').html(chromeDefaultMessage);      
-      $('#firefox-message').html(firefoxDefaultMessage);            
+      $('#firefox-message').html(firefoxDefaultMessage);
+      $('#safari-message').html(firefoxDefaultMessage);      
     }
   });
   $("#code").focus(function() {
@@ -86,11 +92,11 @@ $(function() {
       data: data,
       success: function(data, status) {
 
-        console.log(data);
-        console.log(status);
         if (status == "success") {
 
           $('#custom-notification-success').modal();
+          $('#send-notification form input').val('');
+          $('#send-notification form textarea').val('');
         } else {
 
           $('#custom-notification-failed').modal();          
