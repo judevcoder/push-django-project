@@ -412,7 +412,7 @@ def dashboard(request):
             user = profile.user
         elif website:
             user = website.agent
-        cluster, created = WebsiteCluster.objects.get_or_create(creator = profile.user)
+        cluster, created = WebsiteCluster.objects.get_or_create(creator = user)
         websites = cluster.website_set.all()
 
     #use the modal layout
