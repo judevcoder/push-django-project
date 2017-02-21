@@ -95,7 +95,7 @@ $(function() {
         if (status == "success") {
 
           $('#custom-notification-success').modal();
-          $('#send-notification form input').val('');
+          $('#send-notification form input').not('[type=hidden]').val('');
           $('#send-notification form textarea').val('');
         } else {
 
