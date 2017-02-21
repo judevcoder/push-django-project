@@ -32,27 +32,37 @@
         <div class="col-md-4">
           <h3>Existing Websites</h3>
           <table class="table table-striped">
+            <tr class="row">
+              <td class="col-md-2">
+                <img src="{{ profile.profileimage.image.image32.url }}" />
+              </td>
+              <td class="col-md-10">
+                <strong>{{ profile.website_name }}</strong>
+                <br />
+                <span>{{ profile.website_url }}</span>
+              </td>
+            </tr>
             {% for website in cluster.website_set.all %}
-              <tr class="row">
-                <td class="col-md-2">
-                  <img src="{{ website.icon.image32.url }}" />
-                </td>
-                <td class="col-md-10">
-                  <strong>{{ website.website_name }}</strong>
-                  <br />
-                  <span>{{ website.website_url }}</span>
+            <tr class="row">
+              <td class="col-md-2">
+                <img src="{{ website.icon.image32.url }}" />
+              </td>
+              <td class="col-md-10">
+                <strong>{{ website.website_name }}</strong>
+                <br />
+                <span>{{ website.website_url }}</span>
+                {% if website.agent %}
+                <br />
+                <span>{{ website.agent }}</span>
+                {% endif %}
+                <div class="text-right">
+                  <a class="btn btn-xs btn-danger" href="{% url 'websites_delete' website.id %}">delete</a>
                   {% if website.agent %}
-                  <br />
-                  <span>{{ website.agent }}</span>
+                  <a class="btn btn-xs btn-warning" href="{% url 'websites_resend_invitation' website.id %}">resend</a>
                   {% endif %}
-                  <div class="text-right">
-                    <a class="btn btn-xs btn-danger" href="{% url 'websites_delete' website.id %}">delete</a>
-                    {% if website.agent %}
-                    <a class="btn btn-xs btn-warning" href="{% url 'websites_resend_invitation' website.id %}">resend</a>
-                    {% endif %}
-                  </div>
-                </td>
-              </tr>
+                </div>
+              </td>
+            </tr>
             {% endfor %}
           </table>          
         </div><!-- .col -->
