@@ -408,7 +408,7 @@ def dashboard(request):
         owner = website.cluster.creator
         plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(owner)
     elif plan and plan.type == plans.PRO:
-        cluster = WebsiteCluster.objects.get(creator = profile.user)
+        cluster = WebsiteCluster.objects.get_or_create(creator = profile.user)
         websites = cluster.website_set.all()
 
     #use the modal layout
