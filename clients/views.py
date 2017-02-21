@@ -408,6 +408,10 @@ def dashboard(request):
         owner = website.cluster.creator
         plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(owner)
     elif plan and plan.type == plans.PRO:
+        if profile:
+            user = profile.user
+        elif website:
+            user = website.agent
         cluster, created = WebsiteCluster.objects.get_or_create(creator = profile.user)
         websites = cluster.website_set.all()
 
