@@ -12,7 +12,7 @@
       x user account is assigned to website = 2
       x client profile? Not needed, because a profile should be able to manage multiple websites.
     x appointee only sees her website(s) in the Dashboard = 3
-  - can resend invitation email to appointee = 3
+  x can resend invitation email to appointee = 2
   x display agent email on list of websites = 1
   x mark time of accepting invitation (updated_at field) = 1
 x agent:
