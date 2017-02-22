@@ -79,9 +79,44 @@
                   <h4>Any Platform</h4>
                   <p>
                     To install Push Monkey on your  website, regardless of the back-end or platform, please paste the following code before the <strong><i>&lt;/head&gt;</i></strong> tag.
+                    <br />
+                    <br />
                   </p>
-                  <textarea id="code" rows="3"><!-- Push Monkey code -->
-        <link id="pm-manifest" rel="manifest" href="https://getpushmonkey.com/manifest-{{ profile.account_key }}.json"><script type="text/javascript" id="pm-sdk" src="https://getpushmonkey.com/sdk/config-{% if profile %}{{ profile.account_key }}{% else %}{{ website.account_key }}{% endif %}.js?not_wp=1"></script></textarea>
+                  <!-- Accordion -->
+                  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="heading-default">
+                        <h4 class="panel-title">
+                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-default" aria-expanded="true" aria-controls="collapse-default">
+                            For {{ profile.website_name }}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-default" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-default">
+                        <div class="panel-body">
+                          <textarea class="code" rows="3"><!-- Push Monkey code -->
+<link id="pm-manifest" rel="manifest" href="https://getpushmonkey.com/manifest-{{ profile.account_key }}.json"><script type="text/javascript" id="pm-sdk" src="https://getpushmonkey.com/sdk/config-{{ profile.account_key }}.js?not_wp=1"></script></textarea>        
+                        </div>
+                      </div>
+                    </div>
+                    {% for website in websites %}
+                    <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="heading-{{ forloop.counter }}">
+                        <h4 class="panel-title">
+                          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse-{{ forloop.counter }}">
+                            For {{ website.website_name }}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{ forloop.counter }}">
+                        <div class="panel-body">
+                          <textarea class="code" rows="3"><!-- Push Monkey code -->
+<link id="pm-manifest" rel="manifest" href="https://getpushmonkey.com/manifest-{{ profile.account_key }}.json"><script type="text/javascript" id="pm-sdk" src="https://getpushmonkey.com/sdk/config-{{ website.account_key }}.js?not_wp=1"></script></textarea>        
+                        </div>
+                      </div>
+                    </div>                    
+                    {% endfor %}
+                  </div>
                 </div><!-- .col -->
               </div><!-- .row -->
             </div>

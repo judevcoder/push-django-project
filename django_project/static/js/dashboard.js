@@ -49,7 +49,7 @@ $(function() {
       $('#safari-message').html(firefoxDefaultMessage);      
     }
   });
-  $("#code").focus(function() {
+  $("textarea.code").focus(function() {
       var $this = $(this);
       $this.select();
 
