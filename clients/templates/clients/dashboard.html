@@ -66,17 +66,17 @@
       <div class="row">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">Stats</a></li>
-          <li role="presentation" class=""><a href="#send-notification" aria-controls="send-notification" role="tab" data-toggle="tab">Send Notifications</a></li>
+          <li role="presentation" {% if tab == "stats" %}class="active"{% endif %}><a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">Stats</a></li>
+          <li role="presentation" {% if tab == "send-notification" %}class="active"{% endif %}><a href="#send-notification" aria-controls="send-notification" role="tab" data-toggle="tab">Send Notifications</a></li>
           {% if plan.type == plans.PRO and profile %}
           <li role="presentation"><a href="#manage-websites" aria-controls="manage-websites" role="tab" data-toggle="tab">Manage Websites</a></li>
           {% endif %}
-          <li role="presentation"><a href="#more" aria-controls="more" role="tab" data-toggle="tab">More</a></li>
+          <li role="presentation" {% if tab == "more" %}class="active"{% endif %} ><a href="#more" aria-controls="more" role="tab" data-toggle="tab">More</a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="stats">
+          <div role="tabpanel" class="tab-pane {% if tab == "stats" %}active{% endif %}" id="stats">
             <div class="container">
               <div class="row panel">
                 <div class="col-sm-12 left-statics">
@@ -164,7 +164,7 @@
               </div><!-- .row -->
             </div>
           </div>
-          <div role="tabpanel" class="tab-pane" id="send-notification">
+          <div role="tabpanel" class="tab-pane {% if tab == "send-notification" %}active{% endif %}" id="send-notification">
             <div class="container">
               <div class="row panel">
                 <div class="col-sm-7">
@@ -311,51 +311,45 @@
             </div>
           </div><!-- .tabpanel -->
           {% endif %}
-          <div role="tabpanel" class="tab-pane" id="more">
+          <div role="tabpanel" class="tab-pane {% if tab == "more" %}active{% endif %}" id="more">
             <div class="container">
               <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 right-details">
+                  {% if plan %}
+                  <div>
+                    <h3>Plan</h3>
+                    {% if plan.type == plans.STARTER %}
+                    <p>You are currently rocking the <strong>Starter</strong> plan. Good for you!</p>
+                    {% elif plan.type == plans.SWEET_SPOT %}
+                    <p>You are currently rocking the <strong>Sweet Spot</strong> plan. Awesome!</p>
+                    {% elif plan.type == plans.PRO %}
+                    <p>You are currently rocking the <strong>Pro</strong> plan. You mean business!</p>
+                    {% elif plan.type == plans.TRIAL %}
+                    <p>You are currently rocking the <strong>FREE TRIAL</strong> plan. How is that working for you?</p>
+                    {% endif %}            
 
+                    <h5>Date activated</h5>
+                    <span>{{ plan.start_at|date:"Y M j" }}</span>
+                    <h5>Date when plan ends</h5>
+                    <span>{{ plan.end_at|date:"Y M j" }}</span>
 
-              <div class="col-sm-6 col-sm-offset-3 right-details">
-                {% if plan %}
-                <div>
-                  <h3>Plan</h3>
-                  {% if plan.type == plans.STARTER %}
-                  <p>You are currently rocking the <strong>Starter</strong> plan. Good for you!</p>
-                  {% elif plan.type == plans.SWEET_SPOT %}
-                  <p>You are currently rocking the <strong>Sweet Spot</strong> plan. Awesome!</p>
-                  {% elif plan.type == plans.PRO %}
-                  <p>You are currently rocking the <strong>Pro</strong> plan. You mean business!</p>
-                  {% elif plan.type == plans.TRIAL %}
-                  <p>You are currently rocking the <strong>FREE TRIAL</strong> plan. How is that working for you?</p>
-                  {% endif %}            
+                    {% if plan.type != plans.PRO %}
+                    <div class="text-right">
+                        <a class="btn btn-success" href="{% url 'dashboard' %}?upgrade_plan=1">Upgrade Plan</a>
+                    </div>
+                    {% endif %}
 
-                  <h5>Date activated</h5>
-                  <span>{{ plan.start_at|date:"Y M j" }}</span>
-                  <h5>Date when plan ends</h5>
-                  <span>{{ plan.end_at|date:"Y M j" }}</span>
-
-                  {% if plan.type != plans.PRO %}
-                  <div class="text-right">
-                      <a class="btn btn-success" href="{% url 'dashboard' %}?upgrade_plan=1">Upgrade Plan</a>
                   </div>
                   {% endif %}
 
-                </div>
-                {% endif %}
-
-                <div class="">
-                  <h3>Affiliate info</h3>
-                  <p>You are part of our affiliate program. Go to your Affiliate Center to see more info and stats.</p>
-                  <div class="text-right">
-                    <a class="btn btn-success" href="{% url 'affiliates_center' %}">Go to Affiliate Center</a>
+                  <div class="">
+                    <h3>Affiliate info</h3>
+                    <p>You are part of our affiliate program. Go to your Affiliate Center to see more info and stats.</p>
+                    <div class="text-right">
+                      <a class="btn btn-success" href="{% url 'affiliates_center' %}">Go to Affiliate Center</a>
+                    </div>
                   </div>
-                </div>
-              </div><!-- .col -->
-
-
-
-
+                </div><!-- .col -->
               </div><!-- .row -->
             </div>
           </div>

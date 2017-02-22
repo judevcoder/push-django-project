@@ -351,6 +351,7 @@ def overview(request, profile_id = None):
 
 @login_required
 def dashboard(request):
+    print(request);
     try:
         profile = ClientProfile.objects.get(user = request.user)
     except ClientProfile.DoesNotExist:
@@ -433,6 +434,7 @@ def dashboard(request):
             plan_type_length = 'yearly'
         if plan_type:
             plan_type = int(plan_type)
+    tab = request.GET.get('tab', 'stats')
     return render_to_response('clients/dashboard.html', 
                               {
                                'account_key': account_key,
@@ -459,6 +461,7 @@ def dashboard(request):
                                'wants_to_upgrade': wants_to_upgrade,
                                'website': website,
                                'websites': websites,
+                               'tab': tab
                               }, 
                               RequestContext(request))
 
