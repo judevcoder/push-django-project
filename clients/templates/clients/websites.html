@@ -104,6 +104,11 @@
             <div class="form-group {% if form.agent.errors %}has-error{% endif %}">
                <label class="control-label" for="{{ form.agent.html_name }}">{{ form.agent.label }}</label>
                <input value="{{ form.agent.value|default:"" }}" type="text" id="{{ form.agent.html_name }}" name="{{ form.agent.html_name }}"/>
+               {% if form.agent.errors %}
+                {% for error in form.agent.errors %}
+                  <p class="bg-danger">{{ error }}</p>
+                {% endfor %}
+               {% endif %}
                <span class="help-block">{{ form.agent.help_text }}</span>
             </div><!-- .form-group -->            
             <div class="form-group {% if form.icon.errors %}has-error{% endif %}">

@@ -351,7 +351,6 @@ def overview(request, profile_id = None):
 
 @login_required
 def dashboard(request):
-    print(request);
     try:
         profile = ClientProfile.objects.get(user = request.user)
     except ClientProfile.DoesNotExist:

@@ -75,4 +75,12 @@ class WebsiteForm(forms.Form):
     icon = forms.ImageField()  
     website_name = forms.CharField()
     website_url = forms.URLField(help_text = "The full URL of your WordPress website where Push Monkey is installed. E.g. http://blog.getpushmonkey.com")
+
+    def clean_agent(self):
+        agent = self.cleaned_data.get('agent')
+        websites = Website.objects.filter(agent__email = agent).count()
+        if websites != 0:
+            raise forms.ValidationError('The email of the Agent must be unique.')
+        return agent
+
     
