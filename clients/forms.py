@@ -82,5 +82,3 @@ class WebsiteForm(forms.Form):
         if websites != 0:
             raise forms.ValidationError('The email of the Agent must be unique.')
         return agent
-
-    

@@ -425,6 +425,29 @@ ol.carousel-indicators li { border: 2px solid #0e47a1; }
   background-color: #eee;
 }
 
+#dashboard .tab-install {
+  background: #2ecc71;
+  color: white;
+}
+
+#dashboard .tab-install:hover {
+  background: #25B160;
+  border-color: transparent;
+}
+
+#dashboard .nav-tabs > li.active > a, 
+#dashboard .nav-tabs > li.active > a:hover, 
+#dashboard .nav-tabs > li.active > a:focus {
+  background-color: #eee;
+}
+
+#dashboard .nav-tabs > li.active > a.tab-install, 
+#dashboard .nav-tabs > li.active > a.tab-install:hover, 
+#dashboard .nav-tabs > li.active > a.tab-install:focus {
+  background: #2ecc71;
+  cursor: pointer;
+}
+
 #dashboard .welcome-panel {
   background: #2ecc71;
   color: white;

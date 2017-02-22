@@ -34,6 +34,30 @@
   <div id="content" class="website-content">
     <div class="container" id="dashboard">
 
+      <div class="row">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation">
+            <a href="#install" class="tab-install" aria-controls="install" role="tab" data-toggle="tab">How To Install</a>
+          </li>
+          <li role="presentation" {% if tab == "stats" %}class="active"{% endif %}>
+            <a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">Stats</a>
+          </li>
+          <li role="presentation" {% if tab == "send-notification" %}class="active"{% endif %}>
+            <a href="#send-notification" aria-controls="send-notification" role="tab" data-toggle="tab">Send Notifications</a>
+          </li>
+          {% if plan.type == plans.PRO and profile %}
+          <li role="presentation"><a href="#manage-websites" aria-controls="manage-websites" role="tab" data-toggle="tab">Manage Websites</a></li>
+          {% endif %}
+          <li role="presentation" {% if tab == "more" %}class="active"{% endif %} ><a href="#more" aria-controls="more" role="tab" data-toggle="tab">More</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane" id="install">
+            <div class="container">
+
+
       <div class="row welcome-panel">
         <div class="col-sm-12">
         <h3>Welcome!</h3>
@@ -63,19 +87,10 @@
         </div><!-- .col -->
       </div><!-- .row -->
 
-      <div class="row">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" {% if tab == "stats" %}class="active"{% endif %}><a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">Stats</a></li>
-          <li role="presentation" {% if tab == "send-notification" %}class="active"{% endif %}><a href="#send-notification" aria-controls="send-notification" role="tab" data-toggle="tab">Send Notifications</a></li>
-          {% if plan.type == plans.PRO and profile %}
-          <li role="presentation"><a href="#manage-websites" aria-controls="manage-websites" role="tab" data-toggle="tab">Manage Websites</a></li>
-          {% endif %}
-          <li role="presentation" {% if tab == "more" %}class="active"{% endif %} ><a href="#more" aria-controls="more" role="tab" data-toggle="tab">More</a></li>
-        </ul>
 
-        <!-- Tab panes -->
-        <div class="tab-content">
+
+            </div>
+          </div>
           <div role="tabpanel" class="tab-pane {% if tab == "stats" %}active{% endif %}" id="stats">
             <div class="container">
               <div class="row panel">
@@ -313,7 +328,7 @@
           {% endif %}
           <div role="tabpanel" class="tab-pane {% if tab == "more" %}active{% endif %}" id="more">
             <div class="container">
-              <div class="row">
+              <div class="row panel">
                 <div class="col-sm-6 col-sm-offset-3 right-details">
                   {% if plan %}
                   <div>
