@@ -31,6 +31,9 @@
       <div class="row">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation">
+            <a href="{% url 'dashboard' %}?tab=install" class="tab-install">How To Install</a>
+          </li>          
           <li role="presentation" class=""><a href="{% url 'dashboard' %}?tab=stats">Stats</a></li>
           <li role="presentation" class=""><a href="{% url 'dashboard' %}?tab=send-notification">Send Notifications</a></li>
           <li role="presentation" class="active"><a href="#" aria-controls="manage-websites" role="tab" data-toggle="tab">Manage Websites</a></li>
