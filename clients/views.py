@@ -14,7 +14,7 @@ from django.template.context import RequestContext
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from forms import UserForm, ClientProfileForm, ResendConfirmForm, ProfileImageForm, CustomiseForm, LoginForm, WebsiteForm, UpdateProfileImageForm
+from forms import UserForm, ClientProfileForm, ResendConfirmForm, ProfileImageForm, CustomiseForm, LoginForm, WebsiteForm, UpdateProfileImageForm, WebsiteIconForm
 from managers import ClientsEmailManager
 from models import ClientProfile, ProfileConfirmation, ProfileImage
 from plans.managers import PlansEmailManager
@@ -284,6 +284,36 @@ def icon_upload(request):
                                'profile_image': profile_image,
                               }, 
                               RequestContext(request))
+@login_required
+def website_icon_upload(request, website_id):
+    website = get_object_or_404(Website, pk = website_id)
+    if website.cluster.creator.id != request.user.id:
+        raise Http404("You are not the owner of this Website.")
+    try:
+        website_icon = WebsiteIcon.objects.get(website = website)
+    except WebsiteIcon.DoesNotExist:
+        website_icon = None
+    if request.method == 'POST':
+        form = WebsiteIconForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_website_icon = form.save(commit = False)
+            if website_icon:
+                website_icon.image = new_website_icon.image
+                website_icon.save()
+            else:
+                new_website_icon.website = website
+                new_website_icon.save()
+            messages.add_message(request, messages.SUCCESS, 'Icon Successfully Changed.')
+            return redirect(reverse("website_icon_upload", args = [website.id]))
+    else:        
+        form = WebsiteIconForm()
+    return render_to_response('clients/website_icon_upload.html',
+        {
+        "form": form,
+        "website": website,
+        "website_icon": website_icon
+        },
+        RequestContext(request))
 
 def customise(request):
     profile_id = request.GET.get('profile_id', '')

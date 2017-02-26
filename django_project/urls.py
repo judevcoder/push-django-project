@@ -43,6 +43,7 @@ urlpatterns = patterns('',
   url(r'^confirm/(?P<confirmation_key>.+)$', 'clients.views.register_confirm', name='register_confirm'),
   url(r'^dashboard$', 'clients.views.dashboard', name='dashboard'),
   url(r'^dashboard/icon_upload$', 'clients.views.icon_upload', name='icon_upload'),
+  url(r'^dashboard/website_icon_upload/(?P<website_id>.+)$', 'clients.views.website_icon_upload', name='website_icon_upload'),  
   # multiple website management
   url(r'^dashboard/websites$', 'clients.views.websites', name='websites'),                     
   url(r'^dashboard/websites/delete/(?P<website_id>.+)$', 'clients.views.websites_delete', name='websites_delete'),

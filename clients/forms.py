@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from models import ClientProfile, ProfileImage
-from website_clusters.models import Website
+from website_clusters.models import Website, WebsiteIcon
 from captcha.fields import ReCaptchaField
 import os
 
@@ -60,7 +60,13 @@ class UpdateProfileImageForm(forms.ModelForm):
 
     class Meta:
         model = ProfileImage
-        fields = ('image', )        
+        fields = ('image', )  
+
+class WebsiteIconForm(forms.ModelForm):
+
+    class Meta:
+        model = WebsiteIcon
+        fields = ('image', )
 
 class CustomiseForm(forms.Form):
     website_url = forms.URLField()

@@ -52,6 +52,9 @@
                 <strong>{{ profile.website_name }}</strong>
                 <br />
                 <span>{{ profile.website }}</span>
+                <div class="text-right">
+                  <a class="btn btn-xs btn-warning" href="{% url 'icon_upload' %}">change icon</a>
+                </div>
               </td>
             </tr>
             {% for website in cluster.website_set.all %}
@@ -69,6 +72,7 @@
                 {% endif %}
                 <div class="text-right">
                   <a class="btn btn-xs btn-danger" href="{% url 'websites_delete' website.id %}">delete</a>
+                  <a class="btn btn-xs btn-warning" href="{% url 'website_icon_upload' website.id %}">change icon</a>
                   {% if website.agent %}
                   <a class="btn btn-xs btn-warning" href="{% url 'websites_resend_invitation' website.id %}">resend</a>
                   {% endif %}

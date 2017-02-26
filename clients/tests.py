@@ -415,6 +415,27 @@ class RegistrationTest(TestCase):
         self.assertTrue(User.objects.count(), user_count+1)
         self.assertRedirects(resp, reverse("dashboard"))
 
+    def test_website_icon_upload_get(self):
+        prepare_agent_registration()
+        website = Website.objects.all()[0]
+        logged_in = c.login(username = 'john@gmail.com', password = 'holymomma')
+        res = c.get(reverse('website_icon_upload', args = [website.id]))
+        self.assertEqual(res.status_code, 200)
+
+    def test_website_icon_upload_post(self):
+        prepare_agent_registration()
+        website = Website.objects.all()[0]
+        logged_in = c.login(username = 'john@gmail.com', password = 'holymomma')
+        icon_file = open(os.path.join(settings.MEDIA_ROOT, 'test2', 'image.png'))
+        data = {
+            "image": icon_file
+        }
+        res = c.post(reverse('website_icon_upload', args = [website.id]), data)
+        self.assertRedirects(res, reverse("website_icon_upload", args = [website.id]))
+        self.assertEqual(WebsiteIcon.objects.count(), 1)
+
+
+
 class APITest(TestCase):
 
     def setUp(self):
