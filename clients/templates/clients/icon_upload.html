@@ -21,9 +21,34 @@
   <div id="content" class="website-content">
     <div class="container" id="icon-upload">
 
+      {% if messages %}
+      {% for message in messages %}
       <div class="row">
-        <div class="col-lg-6 col-lg-offset-1">
+        <div class="col-md-12">
+          <p class="bg-{{ message.tags }}">{{ message }}</p>
+        </div><!-- .col -->
+      </div><!-- .row -->
+      {% endfor %}
+      {% endif %}
+
+      <div class="row">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation">
+            <a href="{% url 'dashboard' %}?tab=install" class="tab-install">How To Install</a>
+          </li>          
+          <li role="presentation" class=""><a href="{% url 'dashboard' %}?tab=stats">Stats</a></li>
+          <li role="presentation" class=""><a href="{% url 'dashboard' %}?tab=send-notification">Send Notifications</a></li>
+          <li role="presentation" class=""><a href="{% url 'dashboard' %}?tab=manage-websites">Manage Websites</a></li>
+          <li role="presentation"><a href="{% url 'dashboard' %}?tab=more">More</a></li>
+        </ul>
+      </div><!-- .row -->   
+
+
+      <div class="row">
+        <div class="col-lg-4 col-lg-offset-1">
           <p>
+            <br />
             Please upload an icon that you wish to appear together with each notification. Usually your site icon. 
             <br />
             Ideally square. And colorful. And recognizable...

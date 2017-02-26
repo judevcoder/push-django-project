@@ -47,7 +47,7 @@
             <a href="#send-notification" aria-controls="send-notification" role="tab" data-toggle="tab">Send Notifications</a>
           </li>
           {% if plan.type == plans.PRO and profile %}
-          <li role="presentation"><a href="#manage-websites" aria-controls="manage-websites" role="tab" data-toggle="tab">Manage Websites</a></li>
+          <li role="presentation" {% if tab == "manage-websites" %}class="active"{% endif %}><a href="#manage-websites" aria-controls="manage-websites" role="tab" data-toggle="tab">Manage Websites</a></li>
           {% endif %}
           <li role="presentation" {% if tab == "more" %}class="active"{% endif %} ><a href="#more" aria-controls="more" role="tab" data-toggle="tab">More</a></li>
         </ul>
@@ -334,7 +334,7 @@
             </div><!-- .container -->
           </div><!-- .tabpanel -->
           {% if plan.type == plans.PRO and profile %}
-          <div role="tabpanel" class="tab-pane" id="manage-websites">
+          <div role="tabpanel" class="tab-pane {% if tab == "manage-websites" %}active{% endif %}" id="manage-websites">
             <div class="container">
               <div class="row panel">
                 <div class="col-md-6 col-md-offset-3">

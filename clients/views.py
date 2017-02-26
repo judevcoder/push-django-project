@@ -272,12 +272,12 @@ def icon_upload(request):
                 new_profile_image.profile = profile
                 new_profile_image.save()
                 profile_image = new_profile_image
+            messages.add_message(request, messages.SUCCESS, 'Icon Successfully Changed.')
             return redirect("icon_upload")
         else:
             print(form.errors)
     else:
         form = UpdateProfileImageForm()
-    print("==== finally here")
     return render_to_response('clients/icon_upload.html', 
                               {'form': form,
                                'profile': profile,

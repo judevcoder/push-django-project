@@ -356,6 +356,9 @@ color:#316bc5
   border-right: 1px solid #555; font-size: 10px; height: 50px; padding-top: 4px; 
   position: absolute; left: 50px; right: 50px; top: 90px; width: 250px; 
 }
+#icon-upload .bg-success {
+  padding: 10px;
+}
 .btn-success.btn-lg, .btn-success.submit.btn-lg { font-size: 22px; font-family: 'ralewaylight'; }
 #overview .reg-steps { margin-top: 21px; }
 #overview .dark-background { background: #363636; border-radius: 10px; margin-top: 55px; padding-bottom: 13px; padding-top: 89px; position: relative; }
