@@ -64,7 +64,7 @@ def push_message(request):
     account_key = request.POST.get('account_key', None)
     account_keys = request.POST.getlist("account_keys", None)
     scheduled_at = request.POST.get('scheduled_at', None)
-    if len(scheduled_at) == 0:
+    if not scheduled_at or len(scheduled_at) == 0:
         scheduled_at = None
 
     if not title:
