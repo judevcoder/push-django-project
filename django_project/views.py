@@ -63,9 +63,9 @@ def push_message(request):
     url_args = request.POST.get('url_args', '')
     account_key = request.POST.get('account_key', None)
     account_keys = request.POST.getlist("account_keys", None)
-    print("==== debug")
-    print(account_keys)
-    print(account_key)
+    logger.error("==== debug")
+    logger.error(account_keys)
+    logger.error(account_key)
     scheduled_at = request.POST.get('scheduled_at', None)
     if not scheduled_at or len(scheduled_at) == 0:
         scheduled_at = None
@@ -124,7 +124,7 @@ def push_message(request):
             # subprocess for async execution 
             subprocess.Popen("sleep 10; python " + command_path + " " + str(new_message.id), shell=True)
     elif account_keys:
-        print(account_keys)
+        logger.error(account_keys)
         websites = Website.objects.filter(account_key__in = account_keys)
         for w in websites:
             notif = PushMessage.objects.create(title = title, 
