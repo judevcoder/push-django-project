@@ -63,6 +63,9 @@ def push_message(request):
     url_args = request.POST.get('url_args', '')
     account_key = request.POST.get('account_key', None)
     account_keys = request.POST.getlist("account_keys", None)
+    print("==== debug")
+    print(account_keys)
+    print(account_key)
     scheduled_at = request.POST.get('scheduled_at', None)
     if not scheduled_at or len(scheduled_at) == 0:
         scheduled_at = None
