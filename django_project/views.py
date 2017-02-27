@@ -121,6 +121,7 @@ def push_message(request):
             # subprocess for async execution 
             subprocess.Popen("sleep 10; python " + command_path + " " + str(new_message.id), shell=True)
     elif account_keys:
+        print(account_keys)
         websites = Website.objects.filter(account_key__in = account_keys)
         for w in websites:
             notif = PushMessage.objects.create(title = title, 
