@@ -464,6 +464,8 @@ def dashboard(request):
         max_notifications = plan.number_of_notifications
         remaining_notifications = max_notifications - sent_notifications
 
+    scheduled_notifications = PushMessage.objects.filter(scheduled_at__gte = datetime.now())
+
     #has pre-selected plan
     has_preselected_plan = False
     plan_type = None
@@ -489,6 +491,7 @@ def dashboard(request):
                                'has_preselected_plan': has_preselected_plan,
                                'image': image,
                                'labels_dataset': labels_dataset,
+                               'max_notifications': max_notifications,
                                'modal_pricing_table': modal_pricing_table,
                                'notifications':notifications, 
                                'opened_notifications_dataset': opened_notifications_dataset,
@@ -499,15 +502,15 @@ def dashboard(request):
                                'prices': prices,
                                'profile': profile,
                                'push_messages': push_messages,
-                               'max_notifications': max_notifications,
                                'remaining_notifications': remaining_notifications,
+                               'scheduled_notifications': [],
                                'sent_notifications': sent_notifications,
                                'sent_notifications_dataset': sent_notifications_dataset,
                                'subscribers': subscribers, 
+                               'tab': tab,
                                'wants_to_upgrade': wants_to_upgrade,
                                'website': website,
                                'websites': websites,
-                               'tab': tab
                               }, 
                               RequestContext(request))
 

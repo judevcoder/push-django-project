@@ -55,7 +55,6 @@ def test(request):
 
 @csrf_exempt
 def push_message(request):
-    print(request.POST)
     if request.method != "POST":
         raise Http404
     title = request.POST.get('title', None)
