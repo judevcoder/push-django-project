@@ -187,8 +187,8 @@ a:hover, a:active { outline: 0; }
 .main-navigation ul .toggled-on { display: block; }
 .main-navigation .primary-menu { border-bottom: 1px solid #d1d1d1; }
 .main-navigation .menu-item-has-children > a { margin-right: 56px; }
-.dropdown-toggle { background-color: transparent; border: 0; border-radius: 0; color: #1a1a1a; content: ""; height: 48px; padding: 0; position: absolute; right: 0; text-transform: none; top: 0; width: 48px; }
-.dropdown-toggle:after { border: 0 solid #d1d1d1; border-left-width: 1px; content: "\f431"; font-size: 24px; left: 1px; position: relative; width: 48px; }
+.dropdown-toggle { background-color: transparent; border: 0; border-radius: 0; color: #1a1a1a; content: ""; padding: 0; position: absolute; right: 0; text-transform: none; top: 0; }
+.dropdown-toggle:after { border: 0 solid #d1d1d1; border-left-width: 1px; font-size: 24px; left: 1px; position: relative; width: 48px; }
 .dropdown-toggle:hover, .dropdown-toggle:focus { background-color: transparent; color: #007acc; }
 .dropdown-toggle:focus { outline: thin dotted; outline-offset: -1px; }
 .dropdown-toggle:focus:after { border-color: transparent; }

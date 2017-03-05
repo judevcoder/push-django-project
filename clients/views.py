@@ -381,6 +381,7 @@ def overview(request, profile_id = None):
 
 @login_required
 def dashboard(request):
+    querystring_account_key = request.GET.get("ak", None)
     try:
         profile = ClientProfile.objects.get(user = request.user)
     except ClientProfile.DoesNotExist:
@@ -396,11 +397,24 @@ def dashboard(request):
         if request.GET.get('change_plan'):
             profile.preselected_plan = ''
             profile.save()  
-        account_key = profile.account_key                      
+        account_key = profile.account_key
     else:
         website = Website.objects.get(agent = request.user)
         account_key = website.account_key
         image = WebsiteIcon.objects.get(website = website)
+
+    if querystring_account_key:
+        is_part_of_owned_cluster = False
+        try:
+            w = Website.objects.get(account_key = querystring_account_key)
+            if w.cluster.creator.id == request.user.id:
+                is_part_of_owned_cluster = True
+        except Website.DoesNotExist:
+            pass
+        if account_key == querystring_account_key:
+            pass
+        elif is_part_of_owned_cluster:
+            account_key = querystring_account_key
 
     wants_to_upgrade = False
     if request.GET.get('upgrade_plan', False):
@@ -426,8 +440,8 @@ def dashboard(request):
     sent_notifications_dataset, opened_notifications_dataset = \
             PushMessage.objects.sent_and_opened_datasets(number_of_days = number_of_days, 
                                                          account_key = account_key)
-    #sent_notifications_dataset = [random.randint(60, 100) for i in range(0, number_of_days)]
-    #opened_notifications_dataset = [random.randint(30, 60) for i in range(0, number_of_days)]
+    # sent_notifications_dataset = [random.randint(60, 100) for i in range(0, number_of_days)]
+    # opened_notifications_dataset = [random.randint(30, 60) for i in range(0, number_of_days)]
 
     labels_dataset = PushMessage.objects.labels_dataset(number_of_days = number_of_days)
 
@@ -444,9 +458,11 @@ def dashboard(request):
     #use the modal layout
     modal_pricing_table = True
 
+    max_notifications = 0
     remaining_notifications = 0
     if plan:
-        remaining_notifications = plan.number_of_notifications - sent_notifications
+        max_notifications = plan.number_of_notifications
+        remaining_notifications = max_notifications - sent_notifications
 
     #has pre-selected plan
     has_preselected_plan = False
@@ -483,6 +499,7 @@ def dashboard(request):
                                'prices': prices,
                                'profile': profile,
                                'push_messages': push_messages,
+                               'max_notifications': max_notifications,
                                'remaining_notifications': remaining_notifications,
                                'sent_notifications': sent_notifications,
                                'sent_notifications_dataset': sent_notifications_dataset,
