@@ -73,7 +73,8 @@ INSTALLED_APPS = (
     'imagekit',
     'django_push_package',
     'website_clusters',
-    'captcha'  
+    'captcha',
+    'segments'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -179,7 +180,12 @@ NOCAPTCHA = True
 
 SUBPROCESS_COMMAND_PATH = "/home/django/django_project/manage.py send_push"
 # demo on homepage
-DEMO_ACCOUNT_KEY = "CW598XLRMJ3YUBTZI"
+# TODO: revert back to original account key
+# DEMO_ACCOUNT_KEY = "CW598XLRMJ3YUBTZI"
+DEMO_ACCOUNT_KEY = "abcd"
+
+DEFAULT_DIALOG_BACKGROUND = "#CEDE9B"
+DEFAULT_DIALOG_BUTTON = "#99CC56"
 
 LOGGING_PATH = '/home/django/gunicorn.errors'
 if IS_LOCAL:

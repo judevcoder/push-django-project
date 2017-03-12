@@ -258,8 +258,12 @@ var PushMonkey = function(config) {
             pm.log(data); 
             if (pm.isPopUp) {
 
-              window.close();  
+              window.close();
             }       
+            if (pm.segmentationEnabled) {
+
+              pm.retrieveSegments(mergedEndpoint);
+            }
           },
           error: function (err) {
 
@@ -271,6 +275,63 @@ var PushMonkey = function(config) {
             }
           }
     });
+  }
+  pm.retrieveSegments = function(endpoint) {
+
+    var url = pm.sdkHost + "/push/v1/segments/" + pm.accountKey + "?backgroundColor=" + encodeURIComponent(pm.dialogBackgroundColor);
+    jQuery.ajax({
+          type: "POST",
+          url: url,
+          crossDomain: true,
+          data: jQuery.param({"endpoint": endpoint}),
+          success: function (data) {
+
+            if (data.segments) {
+            
+              pm.showSegmentsDialog(data.segments, data.template, endpoint);
+            } else {
+
+              pm.log("error retrieving segments: ");
+              pm.log(data);
+            }
+          },
+          error: function (err) {
+
+            pm.log("error retrieving segments: ");
+            pm.log(err);
+          }
+    });
+  }
+  pm.showSegmentsDialog = function(segments, template, endpoint) {
+
+    var link = document.createElement("a");
+    link.setAttribute('href',"#");
+    // link.setAttribute('onclick',"window._pushmonkey.openWindow();");  
+    // link.setAttribute("style", "display: block; background-color: "+pm.dialogButtonBackgroundColor+"; width: 50px; border-radius: 5px; margin: 15px auto 0 auto; padding: 5px; color: black;");
+    // link.innerHTML = "Done";
+    // var header = document.createElement("h3");
+    // header.setAttribute("style", "line-height: 20px; margin: 0; font-size: 18px;");
+    // header.innerHTML = "What are your topics of interest?";
+    var dialog = document.createElement("div");
+    dialog.setAttribute("id", "pm_segments_dialog");
+    var dialogWidth = 300;
+    var top = window.innerHeight/3 - 50;
+    var left = window.innerWidth/2 - dialogWidth/2;
+    dialog.setAttribute("style", "background-color: "+pm.dialogBackgroundColor+"; position: absolute; top: "+top+"px; left: "+left+"px; width: "+dialogWidth+"px; text-align: left; padding: 10px; border-radius: 10px;");
+    dialog.innerHTML = template;
+    // dialog.appendChild(header);
+    // dialog.appendChild(link);
+    var overlay = document.createElement("div");
+    overlay.setAttribute("style", "background-color: rgba(0, 0, 0, 0.32); position: absolute; z-index: 9999; width: 100%; height: 100%; top: 0; left: 0;");
+    overlay.appendChild(dialog);
+    overlay.setAttribute("id", "pm_overlay");
+    document.body.appendChild(overlay); 
+    var saveLink = document.getElementById("pm_segments_save");
+    saveLink.setAttribute("onclick", "console.log('yo yo!');");    
+  }
+  pm.hideSegmentsDialog = function() {
+
+    document.getElementById("pm_overlay").remove()
   }
   pm.checkIfFirefox = function() {
 
@@ -348,7 +409,12 @@ var PushMonkey = function(config) {
   pm.safariHost = "https://www.getpushmonkey.com";   
   pm.safariEndpointURL = pm.safariHost + "/push";
   pm.safariWebPushID = "web.com.pushmonkey." + pm.accountKey;
-  pm.sdkHost = "https://{{ subdomain }}.getpushmonkey.com";
+  //
+  // TODO: remove debug
+  //
+  // pm.sdkHost = "https://{{ subdomain }}.getpushmonkey.com";
+  pm.sdkHost = "http://127.0.0.1:8000";
+  pm.segmentationEnabled = config.segmentation;
   pm.serviceWorker = './service-worker.js';  
   pm.serviceWorkerLocal = './service-worker-'+pm.accountKey+'.php';
   pm.serviceWorkersSupportNotifications = ("undefined" != typeof ServiceWorkerRegistration && 'showNotification' in ServiceWorkerRegistration.prototype && 'PushManager' in window);

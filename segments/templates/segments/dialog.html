@@ -1,0 +1,93 @@
+<style>
+  #pm_segments_dialog label {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #pm_segments_dialog li {
+    border-radius: 10px;
+    border: 1px solid {{ darkColor }};
+    cursor: pointer;
+    line-height: 30px;
+    list-style-type: none;
+    margin-top: 10px;
+    padding: 0 10px;
+    text-align: center;
+    vertical-align: middle;    
+  }
+
+  #pm_segments_dialog li:hover {
+    background-color: {{ lightColor }};
+  }
+
+  #pm_segments_dialog li.true_selected {
+    background-color: {{ darkColor }};
+  }
+
+  #pm_segments_dialog li.true_selected:after {
+      content: " ✔";
+  }
+
+  #pm_segments_dialog h3 {
+    font-size: 18px;
+    line-height: 20px; 
+    margin: 0; 
+    margin-bottom: 20px;
+  }
+
+  #pm_segments_dialog input[type=checkbox] {
+    display: none;
+  }
+
+  #pm_segments_dialog .actions {
+    margin-top: 10px;
+    text-align: right;
+  }
+
+  #pm_segments_save {
+    background-color: {{ buttonColor }}; 
+    border-radius: 5px; 
+    color: {{ darkestColor }};
+    line-height: 30px;
+    margin: 15px auto 0 auto; 
+    padding: 5px 15px;
+    width: 50px; 
+  }
+
+  #pm_segments_save:hover {
+    background-color: {{ darkColor }}; 
+  }
+
+  #pm_segments_dialog a:hover {
+    text-transform: none;
+    text-decoration: none;
+  }
+
+  #pm_segments_cancel {
+    color: {{ darkestColor }};
+    margin-right: 10px;
+  }
+
+  #pm_segments_dialog ul {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+</style>
+<h3>
+  What are your topics of interest?
+</h3>
+<form>
+  <ul>
+    {% for s in segments %}
+    <li onclick="javascript:var el = document.getElementById('pm_segment_id_{{ s.id }}');el.checked = !el.checked;el.parentElement.setAttribute('class', el.checked + '_selected');">
+      <input type="checkbox" name="{{ s.id }}" id="pm_segment_id_{{ s.id }}">
+      <label>{{ s.name }}<label>
+    </li>
+    {% endfor %}    
+  </ul>
+</form>
+<div class="actions">
+  <a href="#" id="pm_segments_cancel">Cancel</a>
+  <a href="#" id="pm_segments_save">Save</a>
+</div>

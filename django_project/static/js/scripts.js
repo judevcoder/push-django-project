@@ -2,7 +2,9 @@ $(function(){
 
   $("#try-now-button").click(function(ev) {
 
-    window._accountKey = "CW598XLRMJ3YUBTZI";
+    // window._accountKey = "CW598XLRMJ3YUBTZI";
+    // TODO: remove debug
+    window._accountKey = "abcd";
     ev.preventDefault();
     ev.stopPropagation();
     $('#demo-modal').modal();

@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from pushmonkey.models import PushMessage, Device, WebServiceDevice
 from clients.models import ClientProfile
 from helpers import is_demo_account, send_demo_notification
+from django.conf import settings
 import json
 
 GCM_ENDPOINT = "https://android.googleapis.com/gcm/send"
@@ -122,8 +123,8 @@ def config_js(request, account_key = None):
 		raise Http404
 	is_not_wordpress = request.GET.get("not_wp", 0)
 	is_demo = {True: 1, False: 0}[is_demo_account(account_key)]
-	dialog_color = request.GET.get("dialog_color", "red")
-	button_color = request.GET.get("button_color", "orange")
+	dialog_color = request.GET.get("dialog_color", settings.DEFAULT_DIALOG_BACKGROUND)
+	button_color = request.GET.get("button_color", settings.DEFAULT_DIALOG_BUTTON)
 	rendered = render_to_string('pushmonkey/config.js', {
 		"account_key": account_key,
 		"dialog_color": dialog_color,

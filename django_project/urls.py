@@ -116,6 +116,11 @@ urlpatterns = patterns('',
   url(r'^sdk/sdk-(?P<account_key>.+).js$', 'pushmonkey.views.sdk_js', name='sdk_js'),  
   url(r'^(?P<account_key>.+)/register-service-worker$', 'pushmonkey.views.register_service_worker', name='register_service_worker'),  
 
+  #
+  # segments
+  #
+  url(r'^push/v1/segments/(?P<account_key>.+)', 'segments.views.segments', name='segments'),  
+
   # TODO: handle unregister
   #affiliates
   url(r'^af/', include('affiliates.urls')),
