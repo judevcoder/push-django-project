@@ -50,7 +50,9 @@ class StatisticsManager(models.Manager):
         """
         sent_notifications = 0
         today = datetime.now()
-        for notif in self.filter(account_key = account_key, created_at__year = today.year, created_at__month = today.month):
+        for notif in self.filter(account_key = account_key, 
+            created_at__year = today.year, 
+            created_at__month = today.month):
             sent_notifications += int(notif.device_num)
         return sent_notifications
 
