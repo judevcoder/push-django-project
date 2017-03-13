@@ -19,11 +19,8 @@ window.onload = function() {
         var container = document.body ? document.body : document.head;
         var script = document.createElement("script");
         script.id = "PushMonkeySDK";
-        {% if account_key == "LGD5MFJ4Q6CPKI3RH" %}
-        script.src = "/sdk/sdk-{{ account_key }}.js";
-        {% else %}
+        // script.src = "/sdk/sdk-{{ account_key }}.js";
         script.src="//www.getpushmonkey.com/sdk/sdk-{{ account_key }}.js";
-        {% endif %}
         container.appendChild(script);
     } catch(err) {
     }
