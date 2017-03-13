@@ -18,6 +18,8 @@ def segments(request, account_key):
   darkColor.luminance -= 0.1
   darkestColor = Color(backgroundColor)
   darkestColor.luminance -= 0.6
+  if darkestColor.luminance < 0:
+    darkestColor.luminance = 0.1
   response_data = json.dumps({
 
     "segments": formatted_segments,
