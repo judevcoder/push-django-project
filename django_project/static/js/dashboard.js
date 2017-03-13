@@ -108,24 +108,18 @@ $(function() {
       }
     });
   });
+  if ($('#account_keys').length > 0) {
 
-  $('#account_keys').multiSelect({
-    selectableHeader: "<div class='websites-header'>Available Websites</div>",
-    selectionHeader: "<div class='websites-header'>Selected Websites</div>",
-    afterInit: function(container){
+    $('#account_keys').multiselect({
+            nonSelectedText: 'Please select at least one website'
+        });    
+  }
+  if ($('#send_to_segments').length > 0) {
 
-      $('#websites-select-all').click(function(){
-
-        $('#account_keys').multiSelect('select_all');
-        return false;
-      });
-      $('#websites-unselect-all').click(function(){
-
-        $('#account_keys').multiSelect('deselect_all');
-        return false;
-      });      
-    }
-  });
+    $('#send_to_segments').multiselect({
+            nonSelectedText: 'Please select at least one topic'
+        });       
+  }
 
   $('#datetimepicker').datetimepicker({
     sideBySide: true,

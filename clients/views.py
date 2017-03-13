@@ -25,6 +25,7 @@ from pushmonkey.managers import PushPackageManager
 from pushmonkey.models import PushMessage, Device, PushPackage, WebServiceDevice
 from website_clusters.helpers import website_from_profile, clean_website_url
 from website_clusters.models import WebsiteCluster, Website, WebsiteIcon, WebsiteInvitation
+from segments.models import Segment
 import hashlib
 import json
 import os
@@ -466,6 +467,8 @@ def dashboard(request):
 
     scheduled_notifications = PushMessage.objects.filter(scheduled_at__gte = datetime.now())
 
+    segments = Segment.objects.filter(account_key = account_key)
+
     #has pre-selected plan
     has_preselected_plan = False
     plan_type = None
@@ -504,6 +507,7 @@ def dashboard(request):
                                'push_messages': push_messages,
                                'remaining_notifications': remaining_notifications,
                                'scheduled_notifications': [],
+                               'segments': segments,
                                'sent_notifications': sent_notifications,
                                'sent_notifications_dataset': sent_notifications_dataset,
                                'subscribers': subscribers, 
