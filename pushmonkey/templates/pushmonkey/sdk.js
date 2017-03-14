@@ -105,6 +105,9 @@ var PushMonkey = function(config) {
     if (ev.data == "allowed") {
     
       pm.showDialog();
+    } else if (ev.data == "subscribed") {
+
+      pm.retrieveSegments(mergedEndpoint);
     }
   }
   pm.showDialog = function() {
@@ -254,16 +257,7 @@ var PushMonkey = function(config) {
           data: jQuery.param({"endpoint": mergedEndpoint}),
           success: function (data) {
 
-            pm.log("sendSubscriptionToServer saved: ");
-            pm.log(data); 
-            if (pm.isPopUp) {
-
-              window.close();
-            }       
-            if (pm.segmentationEnabled) {
-
-              pm.retrieveSegments(mergedEndpoint);
-            }
+            pm.didSendSubscriptionToServer(data);
           },
           error: function (err) {
 
@@ -276,8 +270,26 @@ var PushMonkey = function(config) {
           }
     });
   }
+  pm.didSendSubscriptionToServer = function(data) {
+
+    pm.log("sendSubscriptionToServer saved: ");
+    pm.log(data); 
+    if (pm.isPopUp) {
+
+      window.close();
+      window.parent.postMessage("subscribed", "*");
+    } else {
+
+      pm.retrieveSegments(mergedEndpoint);
+    }
+  }
   pm.retrieveSegments = function(endpoint) {
 
+    if (!pm.segmentationEnabled) {
+
+      pm.log("Segmentation is disabled.");
+      return;
+    }
     var url = pm.sdkHost + "/push/v1/segments/" + pm.accountKey + "?backgroundColor=" + encodeURIComponent(pm.dialogBackgroundColor);
     jQuery.ajax({
           type: "POST",
