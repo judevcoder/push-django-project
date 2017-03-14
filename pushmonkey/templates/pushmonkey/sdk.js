@@ -197,6 +197,7 @@ var PushMonkey = function(config) {
       function(p) {
 
         pm.log(p);
+        pm.retrieveSegments("");
       })
   }  
   pm.subscribe = function() {
@@ -320,14 +321,6 @@ var PushMonkey = function(config) {
   }
   pm.showSegmentsDialog = function(segments, template, endpoint) {
 
-    var link = document.createElement("a");
-    link.setAttribute('href',"#");
-    // link.setAttribute('onclick',"window._pushmonkey.openWindow();");  
-    // link.setAttribute("style", "display: block; background-color: "+pm.dialogButtonBackgroundColor+"; width: 50px; border-radius: 5px; margin: 15px auto 0 auto; padding: 5px; color: black;");
-    // link.innerHTML = "Done";
-    // var header = document.createElement("h3");
-    // header.setAttribute("style", "line-height: 20px; margin: 0; font-size: 18px;");
-    // header.innerHTML = "What are your topics of interest?";
     var dialog = document.createElement("div");
     dialog.setAttribute("id", "pm_segments_dialog");
     var dialogWidth = 300;
@@ -335,15 +328,17 @@ var PushMonkey = function(config) {
     var left = window.innerWidth/2 - dialogWidth/2;
     dialog.setAttribute("style", "background-color: "+pm.dialogBackgroundColor+"; position: absolute; top: "+top+"px; left: "+left+"px; width: "+dialogWidth+"px; text-align: left; padding: 10px; border-radius: 10px;");
     dialog.innerHTML = template;
-    // dialog.appendChild(header);
-    // dialog.appendChild(link);
     var overlay = document.createElement("div");
     overlay.setAttribute("style", "background-color: rgba(0, 0, 0, 0.32); position: absolute; z-index: 9999; width: 100%; height: 100%; top: 0; left: 0;");
     overlay.appendChild(dialog);
     overlay.setAttribute("id", "pm_overlay");
     document.body.appendChild(overlay); 
     var saveLink = document.getElementById("pm_segments_save");
-    saveLink.setAttribute("onclick", "console.log('yo yo!');");    
+    saveLink.onclick = function(){
+
+      console.log("=== yoyo");
+      pm.hideSegmentsDialog();
+    });    
   }
   pm.hideSegmentsDialog = function() {
 
