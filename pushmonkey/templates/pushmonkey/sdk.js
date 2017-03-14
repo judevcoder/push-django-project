@@ -197,7 +197,7 @@ var PushMonkey = function(config) {
       function(p) {
 
         pm.log(p);
-        pm.retrieveSegments("");
+        pm.retrieveSegments(p.deviceToken);
       })
   }  
   pm.subscribe = function() {
@@ -305,7 +305,7 @@ var PushMonkey = function(config) {
 
             if (data.segments) {
             
-              pm.showSegmentsDialog(data.segments, data.template, endpoint);
+              pm.showSegmentsDialog(data.template, endpoint);
             } else {
 
               pm.log("error retrieving segments: ");
@@ -319,14 +319,14 @@ var PushMonkey = function(config) {
           }
     });
   }
-  pm.showSegmentsDialog = function(segments, template, endpoint) {
+  pm.showSegmentsDialog = function(template, token) {
 
     var dialog = document.createElement("div");
     dialog.setAttribute("id", "pm_segments_dialog");
-    var dialogWidth = 300;
+    var dialogWidth = window.innerWidth/2;
     var top = window.innerHeight/3 - 50;
     var left = window.innerWidth/2 - dialogWidth/2;
-    dialog.setAttribute("style", "background-color: "+pm.dialogBackgroundColor+"; position: absolute; top: "+top+"px; left: "+left+"px; width: "+dialogWidth+"px; text-align: left; padding: 10px; border-radius: 10px;");
+    dialog.setAttribute("style", "background-color: "+pm.dialogBackgroundColor+"; top: "+top+"px; left: "+left+"px; width: "+dialogWidth+"px; text-align: left; padding: 10px; border-radius: 10px;");
     dialog.innerHTML = template;
     var overlay = document.createElement("div");
     overlay.setAttribute("style", "background-color: rgba(0, 0, 0, 0.32); position: absolute; z-index: 9999; width: 100%; height: 100%; top: 0; left: 0;");
@@ -336,9 +336,38 @@ var PushMonkey = function(config) {
     var saveLink = document.getElementById("pm_segments_save");
     saveLink.onclick = function(){
 
-      console.log("=== yoyo");
-      pm.hideSegmentsDialog();
+      var segments = []
+      document
+      .querySelectorAll('#pm_segments_dialog input:checked')
+      .forEach(function(v, i){ 
+
+        segments.push(v.value);
+      });
+      pm.saveSegments(segments, token, saveLink);
     };    
+  }
+  pm.saveSegments = function(segments, token, button) {
+
+    var url = pm.sdkHost + "/push/v1/segments/" + pm.accountKey + "/save";
+    jQuery.ajax({
+          type: "POST",
+          url: url,
+          crossDomain: true,
+          data: jQuery.param({"segments": segments, "token": token}),
+          success: function (data) {
+
+            button.innerHTML = "Awesome!"
+            setTimeout(function(){
+
+              pm.hideSegmentsDialog();              
+            }, 2000);
+          },
+          error: function (err) {
+
+            pm.log("error retrieving segments: ");
+            pm.log(err);
+          }
+    });    
   }
   pm.hideSegmentsDialog = function() {
 

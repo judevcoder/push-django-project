@@ -1,10 +1,10 @@
+from colour import Color
+from django.conf import settings
 from django.http import Http404, HttpResponse
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from models import Segment
-from django.conf import settings
-from colour import Color
-
+from pushmonkey.models import Device, WebServiceDevice
 import json
 
 @csrf_exempt
@@ -25,6 +25,7 @@ def segments(request, account_key):
     "segments": formatted_segments,
     "template": render_to_string('segments/dialog.html', {
       'segments': segments,
+      'backgroundColor': backgroundColor,
       "lightColor": lightColor.hex,
       "darkColor": darkColor.hex,
       "darkestColor": darkestColor.hex,
@@ -32,3 +33,26 @@ def segments(request, account_key):
       }),
   })
   return HttpResponse(response_data, content_type = "application/json")
+
+@csrf_exempt
+def save_segments(request, account_key):
+  segments = Segment.objects.filter(id__in = request.POST.getlist("segments", []))
+  token = request.POST.get("token", None)
+  if not token:
+    response_data = json.dumps({"response": "error"})
+    return HttpResponse(response_data, content_type = "application/json")      
+  for segment in segments:
+    try:
+      device = Device.objects.get(token = token)
+      segment.device.add(device)
+      segment.save()
+    except Device.DoesNotExist:
+      try:
+        web_service_device = WebServiceDevice.objects.get(endpoint = token)
+        segment.web_service_device.add(web_service_device)
+        segment.save()        
+      except WebServiceDevice.DoesNotExist:
+        response_data = json.dumps({"response": "error"})
+        return HttpResponse(response_data, content_type = "application/json")      
+  response_data = json.dumps({"response": "ok"})
+  return HttpResponse(response_data, content_type = "application/json")  

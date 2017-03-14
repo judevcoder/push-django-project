@@ -28,3 +28,54 @@ class SegmetsTests(TestCase):
       self.assertEqual(len(json_res["segments"]), 2)
       self.assertContains(res, "Seg 2")
       self.assertContains(res, "<h3")
+
+    def test_saving_segments_for_safari(self):
+      user = User.objects.create_user('john', 
+        'lennon@thebeatles.com', 
+        'johnpassword')
+      profile = ClientProfile.objects.create(
+        website_push_id = 'web.com.pushmonkey.1', 
+        user = user)
+      seg1 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 1")
+      seg2 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 2")
+      device = Device.objects.create(token = "123456", account_key = "abc")
+      data = {"segments": [seg1.id, seg2.id], "token": "123456"}
+      res = c.post(reverse('save_segments', args = ["abc"]), data)
+
+      self.assertEqual(Segment.objects.get(id = seg1.id).device.count(), 1)
+      self.assertEqual(Segment.objects.get(id = seg2.id).device.count(), 1)
+      self.assertContains(res, "ok")
+
+    def test_saving_segments_for_chrome(self):
+      user = User.objects.create_user('john', 
+        'lennon@thebeatles.com', 
+        'johnpassword')
+      profile = ClientProfile.objects.create(
+        website_push_id = 'web.com.pushmonkey.1', 
+        user = user)
+      seg1 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 1")
+      seg2 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 2")
+      device = WebServiceDevice.objects.create(endpoint = "123456", account_key = "abc")
+      data = {"segments": [seg1.id, seg2.id], "token": "123456"}
+      res = c.post(reverse('save_segments', args = ["abc"]), data)
+
+      self.assertEqual(Segment.objects.get(id = seg1.id).web_service_device.count(), 1)
+      self.assertEqual(Segment.objects.get(id = seg2.id).web_service_device.count(), 1)
+      self.assertContains(res, "ok")
+
+    def test_saving_segments_for_chrome_no_token(self):
+      user = User.objects.create_user('john', 
+        'lennon@thebeatles.com', 
+        'johnpassword')
+      profile = ClientProfile.objects.create(
+        website_push_id = 'web.com.pushmonkey.1', 
+        user = user)
+      seg1 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 1")
+      seg2 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 2")
+      device = WebServiceDevice.objects.create(endpoint = "123456", account_key = "abc")
+      data = {"segments": [seg1.id, seg2.id], "token": ""}
+      res = c.post(reverse('save_segments', args = ["abc"]), data)
+
+      self.assertEqual(Segment.objects.get(id = seg1.id).web_service_device.count(), 0)
+      self.assertEqual(Segment.objects.get(id = seg2.id).web_service_device.count(), 0)
+      self.assertContains(res, "error")      

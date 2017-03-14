@@ -1,4 +1,11 @@
 <style>
+  #pm_segments_dialog {
+    position: absolute; 
+    text-align: left; 
+    padding: 10px 20px; 
+    border-radius: 10px;
+  }
+
   #pm_segments_dialog label {
     padding: 0 !important;
     margin: 0 !important;
@@ -30,10 +37,10 @@
   }
 
   #pm_segments_dialog h3 {
-    font-size: 18px;
-    line-height: 20px; 
+    font-size: 20px;
+    line-height: 24px; 
     margin: 0; 
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding-top: 10px !important;    
   }
 
@@ -79,11 +86,15 @@
 <h3>
   What are your topics of interest?
 </h3>
+<p>
+  To keep the notifications relevant, we will only be sending notifications
+  about the topics you are interested in.
+</p>
 <form>
   <ul>
     {% for s in segments %}
     <li onclick="javascript:var el = document.getElementById('pm_segment_id_{{ s.id }}');el.checked = !el.checked;el.parentElement.setAttribute('class', el.checked + '_selected');">
-      <input type="checkbox" name="{{ s.id }}" id="pm_segment_id_{{ s.id }}">
+      <input type="checkbox" name="topics[]" value="{{ s.id }}" id="pm_segment_id_{{ s.id }}">
       <label>{{ s.name }}<label>
     </li>
     {% endfor %}    

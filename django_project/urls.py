@@ -119,7 +119,8 @@ urlpatterns = patterns('',
   #
   # segments
   #
-  url(r'^push/v1/segments/(?P<account_key>.+)', 'segments.views.segments', name='segments'),  
+  url(r'^push/v1/segments/(?P<account_key>.+)/save$', 'segments.views.save_segments', name='save_segments'),  
+  url(r'^push/v1/segments/(?P<account_key>.+)$', 'segments.views.segments', name='segments'),  
 
   # TODO: handle unregister
   #affiliates
