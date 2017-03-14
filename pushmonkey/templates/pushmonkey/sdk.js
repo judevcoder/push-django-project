@@ -105,9 +105,12 @@ var PushMonkey = function(config) {
     if (ev.data == "allowed") {
     
       pm.showDialog();
-    } else if (ev.data == "subscribed") {
+    } else if (typeof ev.data == "object") {
 
-      pm.retrieveSegments(mergedEndpoint);
+      if (ev.data[0] == "subscribed") {
+
+        pm.retrieveSegments(ev.data[1]);
+      }
     }
   }
   pm.showDialog = function() {
@@ -135,7 +138,7 @@ var PushMonkey = function(config) {
   } 
   pm.hideDialog = function() {
 
-    document.getElementById("pm_overlay").remove()
+    document.getElementById("pm_overlay").remove();
   }
   pm.openWindow = function() {
 
@@ -257,7 +260,7 @@ var PushMonkey = function(config) {
           data: jQuery.param({"endpoint": mergedEndpoint}),
           success: function (data) {
 
-            pm.didSendSubscriptionToServer(data);
+            pm.didSendSubscriptionToServer(data, mergedEndpoint);
           },
           error: function (err) {
 
@@ -270,17 +273,18 @@ var PushMonkey = function(config) {
           }
     });
   }
-  pm.didSendSubscriptionToServer = function(data) {
+  pm.didSendSubscriptionToServer = function(data, endpoint) {
 
     pm.log("sendSubscriptionToServer saved: ");
     pm.log(data); 
+    pm.log(endpoint);
     if (pm.isPopUp) {
 
-      window.parent.postMessage("subscribed", "*");
-      // window.close();
+      window.opener.postMessage(["subscribed", endpoint], "*");
+      window.close();
     } else {
 
-      pm.retrieveSegments(mergedEndpoint);
+      pm.retrieveSegments();
     }
   }
   pm.retrieveSegments = function(endpoint) {
