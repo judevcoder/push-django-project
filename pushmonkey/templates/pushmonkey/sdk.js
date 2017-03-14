@@ -276,8 +276,8 @@ var PushMonkey = function(config) {
     pm.log(data); 
     if (pm.isPopUp) {
 
-      window.close();
       window.parent.postMessage("subscribed", "*");
+      window.close();
     } else {
 
       pm.retrieveSegments(mergedEndpoint);
