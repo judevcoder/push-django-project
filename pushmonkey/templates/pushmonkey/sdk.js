@@ -338,7 +338,7 @@ var PushMonkey = function(config) {
 
       console.log("=== yoyo");
       pm.hideSegmentsDialog();
-    });    
+    };    
   }
   pm.hideSegmentsDialog = function() {
 
