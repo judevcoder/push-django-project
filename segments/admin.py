@@ -1,4 +1,22 @@
 from django.contrib import admin
 from models import Segment
+from pushmonkey.models import Device
 
-admin.site.register(Segment)
+class SegmentAdmin(admin.ModelAdmin):
+  def formfield_for_manytomany(self, db_field, request, **kwargs):
+    if db_field.name == "device":
+      pk = self.get_pk(request)
+      if pk:
+        segment = Segment.objects.get(id = pk)
+        kwargs["queryset"] = segment.device.all()
+      else:
+        kwargs["queryset"] = Device.objects.all()
+    return super(SegmentAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
+
+  def get_pk(self, request):
+    try:
+      pk = request.META['PATH_INFO'].strip('/').split('/')[-1]
+      return int(pk)
+    except ValueError:
+      return None  
+admin.site.register(Segment, SegmentAdmin)
