@@ -39,7 +39,7 @@ def save_segments(request, account_key):
   segments = Segment.objects.filter(id__in = request.POST.getlist("segments", []))
   token = request.POST.get("token", None)
   if not token:
-    response_data = json.dumps({"response": "error"})
+    response_data = json.dumps({"response": "no token"})
     return HttpResponse(response_data, content_type = "application/json")      
   for segment in segments:
     try:
@@ -52,7 +52,7 @@ def save_segments(request, account_key):
         segment.web_service_device.add(web_service_device)
         segment.save()        
       except WebServiceDevice.DoesNotExist:
-        response_data = json.dumps({"response": "error"})
+        response_data = json.dumps({"response": "no device"})
         return HttpResponse(response_data, content_type = "application/json")      
   response_data = json.dumps({"response": "ok"})
   return HttpResponse(response_data, content_type = "application/json")  

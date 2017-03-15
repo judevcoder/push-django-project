@@ -356,6 +356,7 @@ var PushMonkey = function(config) {
           data: jQuery.param({"segments": segments, "token": token}),
           success: function (data) {
 
+            console.log(data);
             button.innerHTML = "Awesome!"
             setTimeout(function(){
 
