@@ -6,6 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from models import Segment
 from pushmonkey.models import Device, WebServiceDevice
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def segments(request, account_key):
@@ -36,11 +39,11 @@ def segments(request, account_key):
 
 @csrf_exempt
 def save_segments(request, account_key):
-  print(request)
+  logger.error(request)
   segments = Segment.objects.filter(id__in = request.POST.getlist("segments", []))
-  print(segments)
+  logger.error(segments)
   token = request.POST.get("token", None)
-  print(token)
+  logger.error(token)
   if not token:
     response_data = json.dumps({"response": "no token"})
     return HttpResponse(response_data, content_type = "application/json")      
