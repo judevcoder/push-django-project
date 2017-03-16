@@ -285,7 +285,7 @@ var PushMonkey = function(config) {
       window.close();
     } else {
 
-      pm.retrieveSegments();
+      pm.retrieveSegments(endpoint);
     }
   }
   pm.retrieveSegments = function(endpoint) {

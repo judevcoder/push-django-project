@@ -56,7 +56,11 @@ def save_segments(request, account_key):
       segment.save()
     except Device.DoesNotExist:
       try:
-        web_service_device = WebServiceDevice.objects.get(endpoint = token, account_key = account_key)
+        subscription_id = token.split("/")[-1]
+        endpoint = token.replace("/%s" % subscription_id, '')
+        web_service_device = WebServiceDevice.objects.get(subscription_id = subscription_id, 
+          endpoint = endpoint,
+          account_key = account_key)
         segment.web_service_device.add(web_service_device)
         segment.save()        
       except WebServiceDevice.DoesNotExist:
