@@ -16,13 +16,14 @@ from django.views.decorators.http import require_http_methods
 from plans.models import Plan
 from plans.models import PlanVariant as plans
 from plans.models import Prices as prices
-from pushmonkey.models import Device, PushMessage, PayloadSafari, PushPackage
 from pushmonkey.helpers import is_demo_account, send_demo_notification
+from pushmonkey.models import Device, PushMessage, PayloadSafari, PushPackage
+from segments.models import Segment
 from website_clusters.models import Website
 import HTMLParser
+import logging
 import os
 import subprocess
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -62,10 +63,13 @@ def push_message(request):
     url_args = request.POST.get('url_args', '')
     account_key = request.POST.get('account_key', None)
     account_keys = request.POST.getlist("account_keys", None)
+    print(account_keys)
     scheduled_at = request.POST.get('scheduled_at', None)
     if not scheduled_at or len(scheduled_at) == 0:
         scheduled_at = None
-
+    segments = request.POST.getlist('send_to_segments', None)
+    if not segments or len(segments) == 0:
+        segments = None
     if not title:
         raise Exception("Submitted title is empty. Body: " + body)
     if not body:
@@ -114,18 +118,30 @@ def push_message(request):
         new_message = PushMessage.objects.create(title = title, body = body, 
             url_args = url_args, account_key = account_key, 
             custom = custom, comment = comment, scheduled_at = scheduled_at)
+        if segments:
+            for segment in Segment.objects.filter(id__in = segments):
+                new_message.segments.add(segment)
+                new_message.save()
         if should_push and scheduled_at:
             should_push = False
         if should_push:
             # subprocess for async execution 
             subprocess.Popen("sleep 10; python " + command_path + " " + str(new_message.id), shell=True)
     elif account_keys:
+        print("=== account keys")
         profiles = ClientProfile.objects.filter(account_key__in = account_keys, status = 'active')
+        print(profiles)
         for p in profiles:
             notif = PushMessage.objects.create(title = title, 
                     body = body, url_args = url_args, 
                     account_key = p.account_key, custom = custom, 
                     comment = comment, scheduled_at = scheduled_at)
+            print(notif)
+            print(notif.id)
+            if segments:
+                for segment in Segment.objects.filter(id__in = segments):
+                    notif.segments.add(segment)
+                    notif.save()            
             if not scheduled_at:
                 subprocess.Popen("sleep 10; python " + command_path + " " + str(notif.id), shell=True)            
         websites = Website.objects.filter(account_key__in = account_keys)
@@ -133,7 +149,11 @@ def push_message(request):
             notif = PushMessage.objects.create(title = title, 
                 body = body, url_args = url_args, 
                 account_key = w.account_key, custom = custom, 
-                comment = comment, scheduled_at = scheduled_at) 
+                comment = comment, scheduled_at = scheduled_at)
+            if segments:
+                for segment in Segment.objects.filter(id__in = segments):
+                    notif.segments.add(segment)
+                    notif.save()            
             if not scheduled_at:
                 subprocess.Popen("sleep 10; python " + command_path + " " + str(notif.id), shell=True)
     return render_to_response('pushmonkey/pushed.html')

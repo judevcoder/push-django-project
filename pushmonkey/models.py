@@ -102,6 +102,7 @@ class PushMessage(models.Model):
     comment = models.CharField(max_length = 300, default="", blank = True)
     custom = models.BooleanField(default = False)
     scheduled_at = models.DateTimeField(null = True, blank = True)
+    segments = models.ManyToManyField("segments.Segment", null = True, blank = True)
 
     objects = StatisticsManager()
 

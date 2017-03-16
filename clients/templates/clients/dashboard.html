@@ -332,7 +332,7 @@
                       </div><!-- .row -->
                       <div class="row">
                         <div class="col-md-4 text-right">
-                            <label for="account_keys" class="control-label">Topics</label>
+                            <label for="account_keys" class="control-label">Segments</label>
                             <br />
                             <p>to send the notification to.</p>
                         </div><!-- .col -->
@@ -344,7 +344,7 @@
                               <option value="{{ s.id }}">{{ s.name }}</option>
                               {% endfor %}
                             </select>
-                            <p>The subcribers of the selected topics will receive the notification.</p>                            
+                            <p>The subcribers of the selected topics will receive the notification. <a href="{% url 'dashboard' %}?tab=segmentation" >Click here to manage segments.</a></p>                            
                             {% else %}
                             <p>No segments created.</p>
                             {% endif %}                    

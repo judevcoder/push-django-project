@@ -3,6 +3,8 @@ from models import Segment
 from pushmonkey.models import Device, WebServiceDevice
 
 class SegmentAdmin(admin.ModelAdmin):
+  readonly_fields = ['device', 'web_service_device']
+  search_fields = ['account_key', 'name']
   def formfield_for_manytomany(self, db_field, request, **kwargs):
     if db_field.name == "device":
       pk = self.get_pk(request)

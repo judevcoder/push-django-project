@@ -39,13 +39,10 @@ def segments(request, account_key):
 
 @csrf_exempt
 def save_segments(request, account_key):
-  logger.error(request)
   segments = Segment.objects.filter(id__in = request.POST.getlist("segments[]", []))
-  logger.error(segments)
   token = request.POST.get("token", None)
   if len(token) == 0:
     token = None
-  logger.error(token)
   if not token:
     response_data = json.dumps({"response": "no token"})
     return HttpResponse(response_data, content_type = "application/json")      
