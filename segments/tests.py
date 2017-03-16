@@ -39,7 +39,7 @@ class SegmetsTests(TestCase):
       seg1 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 1")
       seg2 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 2")
       device = Device.objects.create(token = "123456", account_key = "abc")
-      data = {"segments": [seg1.id, seg2.id], "token": "123456"}
+      data = {"segments[]": [seg1.id, seg2.id], "token": "123456"}
       res = c.post(reverse('save_segments', args = ["abc"]), data)
 
       self.assertEqual(Segment.objects.get(id = seg1.id).device.count(), 1)
@@ -56,7 +56,7 @@ class SegmetsTests(TestCase):
       seg1 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 1")
       seg2 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 2")
       device = WebServiceDevice.objects.create(endpoint = "123456", account_key = "abc")
-      data = {"segments": [seg1.id, seg2.id], "token": "123456"}
+      data = {"segments[]": [seg1.id, seg2.id], "token": "123456"}
       res = c.post(reverse('save_segments', args = ["abc"]), data)
 
       self.assertEqual(Segment.objects.get(id = seg1.id).web_service_device.count(), 1)
@@ -73,9 +73,9 @@ class SegmetsTests(TestCase):
       seg1 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 1")
       seg2 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 2")
       device = WebServiceDevice.objects.create(endpoint = "123456", account_key = "abc")
-      data = {"segments": [seg1.id, seg2.id], "token": ""}
+      data = {"segments[]": [seg1.id, seg2.id], "token": ""}
       res = c.post(reverse('save_segments', args = ["abc"]), data)
 
       self.assertEqual(Segment.objects.get(id = seg1.id).web_service_device.count(), 0)
       self.assertEqual(Segment.objects.get(id = seg2.id).web_service_device.count(), 0)
-      self.assertContains(res, "error")      
+      self.assertContains(res, "no token")      

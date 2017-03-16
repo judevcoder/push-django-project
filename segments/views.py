@@ -43,13 +43,15 @@ def save_segments(request, account_key):
   segments = Segment.objects.filter(id__in = request.POST.getlist("segments[]", []))
   logger.error(segments)
   token = request.POST.get("token", None)
+  if len(token) == 0:
+    token = None
   logger.error(token)
   if not token:
     response_data = json.dumps({"response": "no token"})
     return HttpResponse(response_data, content_type = "application/json")      
   for segment in segments:
     try:
-      device = Device.objects.get(token = token)
+      device = Device.objects.get(token = token, account_key = account_key)
       segment.device.add(device)
       segment.save()
     except Device.DoesNotExist:
