@@ -344,8 +344,8 @@ var PushMonkey = function(config) {
 
         segments.push(v.value);
       });
-      button.innerHTML = "Saving...";
-      button.onclick = function(){};
+      saveLink.innerHTML = "Saving...";
+      saveLink.onclick = function(){};
       pm.saveSegments(segments, token, saveLink);
     }; 
     cancelLink.onclick = function() {
