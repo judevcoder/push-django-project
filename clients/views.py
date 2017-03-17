@@ -26,6 +26,7 @@ from pushmonkey.models import PushMessage, Device, PushPackage, WebServiceDevice
 from website_clusters.helpers import website_from_profile, clean_website_url
 from website_clusters.models import WebsiteCluster, Website, WebsiteIcon, WebsiteInvitation
 from segments.models import Segment
+from segments.forms import SegmentForm
 import hashlib
 import json
 import os
@@ -468,6 +469,7 @@ def dashboard(request):
     scheduled_notifications = PushMessage.objects.filter(scheduled_at__gte = datetime.now())
 
     segments = Segment.objects.filter(account_key = account_key)
+    segment_form = SegmentForm()
 
     #has pre-selected plan
     has_preselected_plan = False
@@ -580,7 +582,6 @@ def websites(request):
 
 @login_required
 def websites_delete(request, website_id):
-
     website = Website.objects.get(id = website_id)
     account_key = website.account_key
     try:

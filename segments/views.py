@@ -1,10 +1,15 @@
 from colour import Color
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
+from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from models import Segment
+from django.contrib.auth.decorators import login_required
 from pushmonkey.models import Device, WebServiceDevice
+from clients.models import ClientProfile
+from forms import SegmentForm
 import json
 import logging
 
@@ -64,4 +69,39 @@ def save_segments(request, account_key):
         response_data = json.dumps({"response": "no device"})
         return HttpResponse(response_data, content_type = "application/json")      
   response_data = json.dumps({"response": "ok"})
-  return HttpResponse(response_data, content_type = "application/json")  
+  return HttpResponse(response_data, content_type = "application/json") 
+
+@login_required
+def delete(request, id):
+  try:
+    segment = Segment.objects.get(id = id)
+    segment.delete()
+  except Segment.DoesNotExist:
+    pass
+  return redirect((reverse('dashboard') + "?tab=segmentation"))
+
+@login_required
+def create(request):
+  if request.method == "POST":
+    form = SegmentForm(request.POST)
+    account_key = None
+    if form.is_valid():
+      try:
+        profile = request.user.clientprofile
+        account_key = profile.account_key
+      except ClientProfile.DoesNotExist:
+        try:
+          website = request.user.website_set.all()[0]
+          account_key = website.account_key
+        except IndexError:
+          pass
+      if account_key:
+        is_duplicate = Segment.objects.filter(account_key = account_key, 
+          name = form.cleaned_data.get("name")).count() > 0
+        if not is_duplicate:
+          Segment.objects.create(account_key = account_key,
+            name = form.cleaned_data.get("name"))
+          response_data = json.dumps({"response": "ok"})
+          return HttpResponse(response_data, content_type = "application/json") 
+  response_data = json.dumps({"response": "error"})
+  return HttpResponse(response_data, content_type = "application/json") 

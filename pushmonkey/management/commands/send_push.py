@@ -81,7 +81,7 @@ class Command(BaseCommand):
             key_path = os.path.join(settings.STATIC_ROOT, profile.website_push_id, 'pushPackage', 'key.pem')
         apns = APNs(use_sandbox=False, cert_file=cert_path, key_file=key_path, enhanced = True)
         apns.gateway_server.register_response_listener(self.response_listener)
-        devices = Device.objects.filter(account_key = profile.account_key)
+        devices = self.get_devices(push_message)
         i = 0
         alert_dict = {"title": push_message.title, "body": push_message.body, "action": "View"}
         ### Single message version
@@ -124,9 +124,7 @@ class Command(BaseCommand):
     def send_google_notifications(self, push_message):
         profile = ClientProfile.objects.get(account_key = push_message.account_key)
         is_demo = is_demo_account(push_message.account_key)
-        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, 
-            chrome = True, 
-            tested = False)
+        devices = self.get_web_service_devices(push_message, chrome = True)
         if len(devices) == 0:
 
             return 0
@@ -159,9 +157,7 @@ class Command(BaseCommand):
     def send_mozilla_notifications(self, push_message):
         profile = ClientProfile.objects.get(account_key = push_message.account_key)
         is_demo = is_demo_account(push_message.account_key)
-        devices = WebServiceDevice.objects.filter(account_key = profile.account_key, 
-            mozilla = True, 
-            tested = False)
+        devices = self.get_web_service_devices(push_message, mozilla = True)
         if len(devices) == 0:
 
             return 0
@@ -184,6 +180,24 @@ class Command(BaseCommand):
         self.batch_raw[identifier]["resp_status"] += str(error_response['status'])
         self.batch.resp = json.dumps(self.batch_raw, sort_keys = True, indent = 4, separators = (',', ': '))
         self.batch.save()
+
+    def get_devices(self, message):
+        if message.segments.count() > 0:
+            devices = []
+            for s in message.segments.all():
+                devices += s.device.all()
+            return list(set(devices))
+        return Device.objects.filter(account_key = message.account_key)
+
+    def get_web_service_devices(self, message, chrome = False, mozilla = False):
+        if message.segments.count() > 0:
+            devices = []
+            for s in message.segments.all():
+                devices += s.web_service_device.filter(chrome = chrome, 
+                    mozilla = mozilla, tested = False)
+            return list(set(devices))
+        return WebServiceDevice.objects.filter(account_key = message.account_key, 
+            chrome = chrome, mozilla = mozilla)        
 
     def send_email(self, push_message):
         # send an email to MANAGERS, for the record.

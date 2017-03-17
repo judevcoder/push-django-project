@@ -1,13 +1,15 @@
+from clients.models import ClientProfile
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
-from clients.models import ClientProfile
-from models import PushPackage, Device, WebServiceDevice, PushMessage
-from managers import PushPackageManager
+from management.commands.send_push import Command as SendPushCommand
 from management.commands.weekly_report import Command as WeeklyReportCommand
-from datetime import datetime, timedelta
+from managers import PushPackageManager
+from models import PushPackage, Device, WebServiceDevice, PushMessage
+from segments.models import Segment
 
 c = Client()
 
@@ -107,7 +109,6 @@ class PushMonkeyTests(TestCase):
         self.assertEqual(outbox_count2, 2)
 
     def test_weekly_report(self):
-
         user = User.objects.create_user('john', 'tudorizer@gmail.com', 'johnpassword')
         user.first_name = "Tudor"
         user.save()
@@ -132,6 +133,142 @@ class PushMonkeyTests(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(len(mail.outbox[0].alternatives), 1)
         html = mail.outbox[0].alternatives[0]
-        print(html)
         self.assertIn("Total Subscribers  \n\n3", mail.outbox[0].body)
-        self.assertIn("New Subscribers\n\n2\n\n%2 growth", mail.outbox[0].body)       
+        self.assertIn("New Subscribers\n\n2\n\n%2 growth", mail.outbox[0].body)
+
+class SendPushTests(TestCase):
+
+    def test_devices(self):
+        d1 = Device.objects.create(account_key = "123", token = "abc")
+        d2 = Device.objects.create(account_key = "123", token = "xyz")
+        d3 = Device.objects.create(account_key = "123", token = "ijk")        
+        seg1 = Segment.objects.create(name = "Segment 1")
+        seg1.device.add(d1)
+        seg1.save()
+        seg2 = Segment.objects.create(name = "Segment 2")
+        seg2.device.add(d3)
+        seg2.save()
+        message = PushMessage.objects.create(title = "title", 
+            body = "body", 
+            account_key = "123")
+        message.segments.add(seg1, seg2)
+        message.save()
+        command = SendPushCommand()
+        devices = command.get_devices(message)
+
+        self.assertEqual(len(devices), 2)
+
+    def test_devices_single_segment(self):
+        d1 = Device.objects.create(account_key = "123", token = "abc")
+        d2 = Device.objects.create(account_key = "123", token = "xyz")
+        d3 = Device.objects.create(account_key = "123", token = "ijk")        
+        seg1 = Segment.objects.create(name = "Segment 1")
+        seg1.device.add(d1)
+        seg1.save()
+        seg2 = Segment.objects.create(name = "Segment 2")
+        message = PushMessage.objects.create(title = "title", 
+            body = "body", 
+            account_key = "123")
+        message.segments.add(seg1, seg2)
+        message.save()
+        command = SendPushCommand()
+        devices = command.get_devices(message)
+
+        self.assertEqual(len(devices), 1)
+
+    def test_selecting_devices_for_segments_duplicates(self):
+        d1 = Device.objects.create(account_key = "123", token = "abc")
+        d2 = Device.objects.create(account_key = "123", token = "xyz")
+        d3 = Device.objects.create(account_key = "123", token = "ijk")        
+        seg1 = Segment.objects.create(name = "Segment 1")
+        # d3 is tracking two segments
+        seg1.device.add(d1, d3)
+        seg1.save()
+        seg2 = Segment.objects.create(name = "Segment 2")
+        seg2.device.add(d3)
+        seg2.save()
+        message = PushMessage.objects.create(title = "title", 
+            body = "body", 
+            account_key = "123")
+        message.segments.add(seg1, seg2)
+        message.save()
+        command = SendPushCommand()
+        devices = command.get_devices(message)        
+
+        self.assertEqual(len(devices), 2)
+
+    def test_selecting_devices_for_segments_wo_subscribers(self):
+        d1 = Device.objects.create(account_key = "123", token = "abc")
+        d2 = Device.objects.create(account_key = "123", token = "xyz")
+        d3 = Device.objects.create(account_key = "123", token = "ijk")        
+        seg1 = Segment.objects.create(name = "Segment 1")
+        # d3 is tracking two segments
+        seg2 = Segment.objects.create(name = "Segment 2")
+        message = PushMessage.objects.create(title = "title", 
+            body = "body", 
+            account_key = "123")
+        command = SendPushCommand()
+        devices = command.get_devices(message)
+
+        self.assertEqual(len(devices), 3)  
+
+    def test_web_service_devices(self):
+        d1 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "abc", chrome = True)
+        d2 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "xyz", chrome = True)
+        d3 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "ijk", chrome = True)
+        d4 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "ijk", mozilla = True)        
+        seg1 = Segment.objects.create(name = "Segment 1")
+        seg1.web_service_device.add(d1)
+        seg1.save()
+        seg2 = Segment.objects.create(name = "Segment 2")
+        seg2.web_service_device.add(d3)
+        seg2.save()
+        message = PushMessage.objects.create(title = "title", 
+            body = "body", 
+            account_key = "123")
+        message.segments.add(seg1, seg2)
+        message.save()
+        command = SendPushCommand()
+        devices = command.get_web_service_devices(message, chrome = True)
+
+        self.assertEqual(len(devices), 2)
+
+    def test_web_service_devices_for_segments_duplicates(self):
+        d1 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "abc", chrome = True)
+        d2 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "xyz", chrome = True)
+        d3 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "ijk", chrome = True)
+        d4 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "ijk", mozilla = True)        
+        seg1 = Segment.objects.create(name = "Segment 1")
+        seg1.web_service_device.add(d1, d3, d4)
+        seg1.save()
+        seg2 = Segment.objects.create(name = "Segment 2")
+        seg2.web_service_device.add(d3)
+        seg2.save()
+        message = PushMessage.objects.create(title = "title", 
+            body = "body", 
+            account_key = "123")
+        message.segments.add(seg1, seg2)
+        message.save()
+        command = SendPushCommand()
+        devices = command.get_web_service_devices(message, chrome = True)
+
+        self.assertEqual(len(devices), 2)
+
+    def test_web_service_devices_for_segments_wo_subscribers(self):
+        d1 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "abc", chrome = True)
+        d2 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "xyz", chrome = True)
+        d3 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "ijk", chrome = True)
+        d4 = WebServiceDevice.objects.create(account_key = "123", endpoint = "domain.com", subscription_id = "ijk", mozilla = True)        
+        seg1 = Segment.objects.create(name = "Segment 1")
+        seg1.web_service_device.add(d1, d3, d4)
+        seg1.save()
+        seg2 = Segment.objects.create(name = "Segment 2")
+        seg2.web_service_device.add(d3)
+        seg2.save()
+        message = PushMessage.objects.create(title = "title", 
+            body = "body", 
+            account_key = "123")
+        command = SendPushCommand()
+        devices = command.get_web_service_devices(message, chrome = True)
+
+        self.assertEqual(len(devices), 3)  
