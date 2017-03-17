@@ -197,7 +197,11 @@ var PushMonkey = function(config) {
       function(p) {
 
         pm.log(p);
-        pm.retrieveSegments(p.deviceToken);
+        pm.setCookie("pm_topics", "yes", 180);
+        if (pm.getCookie("pm_topics") != "yes") {
+          
+          pm.retrieveSegments(p.deviceToken);
+        }
       })
   }  
   pm.subscribe = function() {
@@ -380,6 +384,28 @@ var PushMonkey = function(config) {
   pm.hideSegmentsDialog = function() {
 
     document.getElementById("pm_overlay").remove()
+  }
+  pm.setCookie = function(cname, cvalue, exdays) {
+
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+  pm.getCookie = function(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for(var i = 0; i <ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+          }
+      }
+      return "";
   }
   pm.checkIfFirefox = function() {
 
