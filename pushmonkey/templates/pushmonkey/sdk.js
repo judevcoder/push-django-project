@@ -197,10 +197,10 @@ var PushMonkey = function(config) {
       function(p) {
 
         pm.log(p);
-        pm.setCookie("pm_topics", "yes", 180);
         if (pm.getCookie("pm_topics") != "yes") {
           
           pm.retrieveSegments(p.deviceToken);
+          pm.setCookie("pm_topics", "yes", 180);
         }
       })
   }  
