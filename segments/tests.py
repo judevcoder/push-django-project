@@ -55,13 +55,15 @@ class SegmetsTests(TestCase):
         user = user)
       seg1 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 1")
       seg2 = Segment.objects.create(account_key = "abc", client = profile, name = "Seg 2")
-      device = WebServiceDevice.objects.create(endpoint = "123456", account_key = "abc")
-      data = {"segments[]": [seg1.id, seg2.id], "token": "123456"}
+      device = WebServiceDevice.objects.create(endpoint = "domain.com", 
+        account_key = "abc",
+        subscription_id = "123456")
+      data = {"segments[]": [seg1.id, seg2.id], "token": "domain.com/123456"}
       res = c.post(reverse('save_segments', args = ["abc"]), data)
 
+      self.assertContains(res, "ok")
       self.assertEqual(Segment.objects.get(id = seg1.id).web_service_device.count(), 1)
       self.assertEqual(Segment.objects.get(id = seg2.id).web_service_device.count(), 1)
-      self.assertContains(res, "ok")
 
     def test_saving_segments_for_chrome_no_token(self):
       user = User.objects.create_user('john', 

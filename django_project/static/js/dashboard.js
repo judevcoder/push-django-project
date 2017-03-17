@@ -95,7 +95,7 @@ $(function() {
         if (status == "success") {
 
           $('#custom-notification-success').modal();
-          $('#send-notification form input').not('[type=hidden]').val('');
+          $('#send-notification form input#title, #send-notification form input[name=url_args]').val('');
           $('#send-notification form textarea').val('');
         } else {
 
@@ -132,5 +132,38 @@ $(function() {
   $("#scheduled_at").focus(function(){
 
     $('.input-group-addon').click();
+  });
+  $("#create_segment_form").submit(function(ev){
+
+    ev.preventDefault();
+    var el = $(this);
+    var url = el.attr("action");
+    var data = el.serializeArray();
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: data,
+      success: function(data, status) {
+
+        if (status == "success") {
+
+          if (data.response == "ok") {
+          
+            window.location.reload();
+          } else {
+
+            el.find('.form-group').addClass("has-error");
+            console.log(el);
+          }
+        } else {
+
+          el.find('.form-group').addClass("has-error");
+        }
+      },
+      error: function(req, status, error) {
+
+        console.log(status);
+      }
+    });
   });
 });

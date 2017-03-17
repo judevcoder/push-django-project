@@ -16,6 +16,7 @@ admin.site.register(Device, DeviceAdmin)
 class PushMessageAdmin(admin.ModelAdmin):
     list_filter = ('account_key',)
     list_display = ('title', 'account_key', 'device_num', 'opened_num', 'comment', 'custom')
+    readonly_fields = ['segments']
 admin.site.register(PushMessage, PushMessageAdmin)
 
 class PushPackageAdmin(admin.ModelAdmin):

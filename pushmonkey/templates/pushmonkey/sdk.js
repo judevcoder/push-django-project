@@ -348,7 +348,7 @@ var PushMonkey = function(config) {
   }
   pm.saveSegments = function(segments, token, button) {
 
-    var url = pm.sdkHost + "/push/v1/segments/" + pm.accountKey + "/save";
+    var url = pm.sdkHost + "/push/v1/segments/save/" + pm.accountKey;
     jQuery.ajax({
           type: "POST",
           url: url,
