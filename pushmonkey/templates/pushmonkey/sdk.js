@@ -334,6 +334,7 @@ var PushMonkey = function(config) {
     overlay.setAttribute("id", "pm_overlay");
     document.body.appendChild(overlay); 
     var saveLink = document.getElementById("pm_segments_save");
+    var cancelLink = document.getElementById("pm_segments_cancel");    
     saveLink.onclick = function(){
 
       var segments = []
@@ -343,8 +344,14 @@ var PushMonkey = function(config) {
 
         segments.push(v.value);
       });
+      button.innerHTML = "Saving...";
+      button.onclick = function(){};
       pm.saveSegments(segments, token, saveLink);
-    };    
+    }; 
+    cancelLink.onclick = function() {
+
+        pm.hideSegmentsDialog();
+    }   
   }
   pm.saveSegments = function(segments, token, button) {
 
