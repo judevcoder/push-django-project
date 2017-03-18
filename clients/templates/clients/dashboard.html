@@ -47,7 +47,7 @@
             <a href="#send-notification" aria-controls="send-notification" role="tab" data-toggle="tab">Send Notifications</a>
           </li>
           <li role="presentation" {% if tab == "segmentation" %}class="active"{% endif %}>
-            <a href="#segmentation" aria-controls="segmentation" role="tab" data-toggle="tab">Segmentation</a>
+            <a href="{% url 'segments_dashboard' %}">Segmentation</a>
           </li>          
           {% if plan.type == plans.PRO and profile %}
           <li role="presentation" {% if tab == "manage-websites" %}class="active"{% endif %}><a href="#manage-websites" aria-controls="manage-websites" role="tab" data-toggle="tab">Manage Websites</a></li>
@@ -440,9 +440,6 @@
                 </div><!-- .row -->
               </div><!-- .row -->                  
             </div><!-- .container -->
-          </div><!-- .tabpanel -->
-          <div role="tabpanel" class="tab-pane {% if tab == "segmentation" %}active{% endif %}" id="segmentation">
-            {% include 'segments/dashboard.html' %}
           </div><!-- .tabpanel -->
           {% if plan.type == plans.PRO and profile %}
           <div role="tabpanel" class="tab-pane {% if tab == "manage-websites" %}active{% endif %}" id="manage-websites">

@@ -468,9 +468,6 @@ def dashboard(request):
 
     scheduled_notifications = PushMessage.objects.filter(scheduled_at__gte = datetime.now())
 
-    segments = Segment.objects.filter(account_key = account_key)
-    segment_form = SegmentForm()
-
     #has pre-selected plan
     has_preselected_plan = False
     plan_type = None
@@ -509,7 +506,6 @@ def dashboard(request):
                                'push_messages': push_messages,
                                'remaining_notifications': remaining_notifications,
                                'scheduled_notifications': [],
-                               'segments': segments,
                                'sent_notifications': sent_notifications,
                                'sent_notifications_dataset': sent_notifications_dataset,
                                'subscribers': subscribers, 

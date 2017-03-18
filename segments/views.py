@@ -1,15 +1,17 @@
+from clients.models import ClientProfile
 from colour import Color
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, get_object_or_404, render_to_response
+from django.template.context import RequestContext
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
-from models import Segment
-from django.contrib.auth.decorators import login_required
-from pushmonkey.models import Device, WebServiceDevice
-from clients.models import ClientProfile
 from forms import SegmentForm
+from models import Segment
+from pushmonkey.models import Device, WebServiceDevice
+from website_clusters.models import WebsiteCluster, Website
 import json
 import logging
 
@@ -78,30 +80,34 @@ def delete(request, id):
     segment.delete()
   except Segment.DoesNotExist:
     pass
-  return redirect((reverse('dashboard') + "?tab=segmentation"))
+  return redirect(reverse('segments_dashboard'))
 
 @login_required
-def create(request):
+def dashboard(request):
+  try:
+    profile = ClientProfile.objects.get(user = request.user)
+    account_key = profile.account_key
+  except ClientProfile.DoesNotExist:
+    try:
+      website = request.user.website_set.all()[0]
+      account_key = website.account_key
+    except Website.DoesNotExist:
+      raise Http404("You are not the owner of this Website.")
+  segments = Segment.objects.filter(account_key = account_key)      
   if request.method == "POST":
     form = SegmentForm(request.POST)
-    account_key = None
     if form.is_valid():
-      try:
-        profile = request.user.clientprofile
-        account_key = profile.account_key
-      except ClientProfile.DoesNotExist:
-        try:
-          website = request.user.website_set.all()[0]
-          account_key = website.account_key
-        except IndexError:
-          pass
-      if account_key:
-        is_duplicate = Segment.objects.filter(account_key = account_key, 
+      is_duplicate = Segment.objects.filter(account_key = account_key, 
           name = form.cleaned_data.get("name")).count() > 0
-        if not is_duplicate:
-          Segment.objects.create(account_key = account_key,
+      if not is_duplicate:
+        Segment.objects.create(account_key = account_key,
             name = form.cleaned_data.get("name"))
-          response_data = json.dumps({"response": "ok"})
-          return HttpResponse(response_data, content_type = "application/json") 
-  response_data = json.dumps({"response": "error"})
-  return HttpResponse(response_data, content_type = "application/json") 
+  else:
+    form = SegmentForm()
+  return render_to_response('segments/dashboard.html', 
+                          {
+                            'segments': segments,
+                            'form': form
+                          }, 
+                          RequestContext(request))
+
