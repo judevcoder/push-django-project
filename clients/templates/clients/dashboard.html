@@ -41,7 +41,7 @@
             <a href="#install" class="tab-install" aria-controls="install" role="tab" data-toggle="tab">How To Install</a>
           </li>
           <li role="presentation" {% if tab == "stats" %}class="active"{% endif %}>
-            <a href="#stats" aria-controls="stats" role="tab" data-toggle="tab">Stats</a>
+            <a href="{% url 'dashboard'%}?tab=stats">Stats</a>
           </li>
           <li role="presentation" {% if tab == "send-notification" %}class="active"{% endif %}>
             <a href="#send-notification" aria-controls="send-notification" role="tab" data-toggle="tab">Send Notifications</a>

@@ -15,10 +15,10 @@
     </a>
   </li>
   <li role="presentation" {% if active_tab == "segmentation" %}class="active"{% endif %}>
-    <a href="#segmentation" role="tab" data-toggle="tab">Segmentation</a>
+    <a href="{% url 'segments_dashboard' %}">Segmentation</a>
   </li>   
   <li role="presentation" {% if active_tab == "manage-websites" %}class="active"{% endif%}>
-    <a href="#" aria-controls="manage-websites" role="tab" data-toggle="tab">
+    <a href="{% url 'websites' %}">
       Manage Websites
     </a>
   </li>
