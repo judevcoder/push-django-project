@@ -133,37 +133,4 @@ $(function() {
 
     $('.input-group-addon').click();
   });
-  $("#create_segment_form").submit(function(ev){
-
-    ev.preventDefault();
-    var el = $(this);
-    var url = el.attr("action");
-    var data = el.serializeArray();
-    $.ajax({
-      type: "POST",
-      url: url,
-      data: data,
-      success: function(data, status) {
-
-        if (status == "success") {
-
-          if (data.response == "ok") {
-          
-            window.location.reload();
-          } else {
-
-            el.find('.form-group').addClass("has-error");
-            console.log(el);
-          }
-        } else {
-
-          el.find('.form-group').addClass("has-error");
-        }
-      },
-      error: function(req, status, error) {
-
-        console.log(status);
-      }
-    });
-  });
 });
