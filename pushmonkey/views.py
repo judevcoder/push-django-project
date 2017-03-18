@@ -1,12 +1,13 @@
+from clients.models import ClientProfile
 from clients.models import ClientProfile, ProfileImage
+from django.conf import settings
 from django.http import Http404, HttpResponse
 from django.template.loader import render_to_string
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
-from pushmonkey.models import PushMessage, Device, WebServiceDevice
-from clients.models import ClientProfile
 from helpers import is_demo_account, send_demo_notification
-from django.conf import settings
+from pushmonkey.models import PushMessage, Device, WebServiceDevice
+from website_clusters.models import Website
 import json
 
 GCM_ENDPOINT = "https://android.googleapis.com/gcm/send"
@@ -140,14 +141,18 @@ def sdk_js(request, account_key = None):
 
 		raise Http404
 	is_demo = {True: 1, False: 0}[is_demo_account(account_key)]
-	#TODO: handle this for Websites
 	try:
 		profile = ClientProfile.objects.get(account_key = account_key)
+		subdomain = profile.subdomain
 	except ClientProfile.DoesNotExist:
-		raise Http404		
+		try: 
+			website = Website.objects.get(account_key = account_key)
+			subdomain = website.subdomain
+		except Website.DoesNotExist:
+			raise Http404
 	rendered = render_to_string('pushmonkey/sdk.js', {
 		"account_key": account_key,
-		"subdomain": profile.subdomain,
+		"subdomain": subdomain,
 		"is_demo": is_demo
 		})
 	return HttpResponse(rendered, content_type="application/json")

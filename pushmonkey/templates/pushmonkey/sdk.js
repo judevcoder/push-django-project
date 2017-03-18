@@ -483,11 +483,7 @@ var PushMonkey = function(config) {
   pm.safariHost = "https://www.getpushmonkey.com";   
   pm.safariEndpointURL = pm.safariHost + "/push";
   pm.safariWebPushID = "web.com.pushmonkey." + pm.accountKey;
-  //
-  // TODO: remove debug
-  //
   pm.sdkHost = "https://{{ subdomain }}.getpushmonkey.com";
-  // pm.sdkHost = "http://127.0.0.1:8000";
   pm.segmentationEnabled = config.segmentation;
   pm.serviceWorker = './service-worker.js';  
   pm.serviceWorkerLocal = './service-worker-'+pm.accountKey+'.php';
