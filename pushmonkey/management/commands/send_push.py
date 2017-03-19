@@ -186,6 +186,12 @@ class Command(BaseCommand):
             devices = []
             for s in message.segments.all():
                 devices += s.device.all()
+            device_not_in_segment = Device.objects.filter( 
+                account_key = message.account_key).exclude(
+                id__in = [d.id for d in devices])
+            for d in device_not_in_segment:
+                if d.segment_set.count() == 0:
+                    devices.append(d)                
             return list(set(devices))
         return Device.objects.filter(account_key = message.account_key)
 
@@ -195,6 +201,14 @@ class Command(BaseCommand):
             for s in message.segments.all():
                 devices += s.web_service_device.filter(chrome = chrome, 
                     mozilla = mozilla, tested = False)
+            devices_not_in_segment = WebServiceDevice.objects.filter( 
+                chrome = chrome, 
+                mozilla = mozilla, 
+                account_key = message.account_key).exclude(
+                id__in = [d.id for d in devices])
+            for d in devices_not_in_segment:
+                if d.segment_set.count() == 0:
+                    devices.append(d)
             return list(set(devices))
         return WebServiceDevice.objects.filter(account_key = message.account_key, 
             chrome = chrome, mozilla = mozilla)        
