@@ -308,8 +308,11 @@ var PushMonkey = function(config) {
           success: function (data) {
 
             if (data.segments) {
-            
-              pm.showSegmentsDialog(data.template, endpoint);
+              
+              if (data.segments.length > 0) {
+                
+                pm.showSegmentsDialog(data.template, endpoint);
+              }
             } else {
 
               pm.log("error retrieving segments: ");
