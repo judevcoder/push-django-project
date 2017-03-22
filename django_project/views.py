@@ -67,14 +67,13 @@ def push_message(request):
     if not scheduled_at or len(scheduled_at) == 0:
         scheduled_at = None
     segments = request.POST.getlist('send_to_segments', None)
-    if not segments:
-        segments = request.POST.getlist('send_to_segments[]', None)
-    logger.error(request.POST.dict())                
-    logger.error(request.POST)        
-    logger.error(segments)
     if not segments or len(segments) == 0:
-        logger.error("!!! no segments")
         segments = None
+    segments_string = request.POST.get('send_to_segments_string', None)
+    if segments_string:
+        temp_segments = segments_string.split(",")
+        if len(temp_segments):
+            segments = temp_segments
     if not title:
         raise Exception("Submitted title is empty. Body: " + body)
     if not body:
