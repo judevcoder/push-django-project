@@ -58,7 +58,6 @@ def test(request):
 def push_message(request):
     if request.method != "POST":
         raise Http404
-    logger.error(request.POST)
     title = request.POST.get('title', None)
     body = request.POST.get('body', None)
     url_args = request.POST.get('url_args', '')
@@ -68,9 +67,11 @@ def push_message(request):
     if not scheduled_at or len(scheduled_at) == 0:
         scheduled_at = None
     segments = request.POST.getlist('send_to_segments', None)
+    if not segments:
+        segments = request.POST.getlist('send_to_segments[]', None)        
     logger.error(segments)
     if not segments or len(segments) == 0:
-        logger.error("!!! no segments")        
+        logger.error("!!! no segments")
         segments = None
     if not title:
         raise Exception("Submitted title is empty. Body: " + body)
