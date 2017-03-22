@@ -69,6 +69,7 @@ def push_message(request):
     segments = request.POST.getlist('send_to_segments', None)
     if not segments:
         segments = request.POST.getlist('send_to_segments[]', None)
+    logger.error(request.POST.dict())                
     logger.error(request.POST)        
     logger.error(segments)
     if not segments or len(segments) == 0:
