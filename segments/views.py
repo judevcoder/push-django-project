@@ -45,6 +45,26 @@ def segments(request, account_key):
   return HttpResponse(response_data, content_type = "application/json")
 
 @csrf_exempt
+def create_segment(request, account_key):
+  try:
+    profile = ClientProfile.objects.get(account_key = account_key)
+    account_key = profile.account_key
+  except ClientProfile.DoesNotExist:
+    try:
+      website = Website.objects.get(account_key = account_key)
+      account_key = website.account_key
+    except Website.DoesNotExist:
+      raise Http404("You are not the owner of this Website.")
+  name = request.POST.get("name", None)
+  if not name:
+    raise Http404("No name provided.")
+  Segment.objects.create(account_key = account_key,
+    name = request.POST.get("name"))
+  response_data = json.dumps({"response": "ok"})
+  return HttpResponse(response_data, content_type = "application/json")  
+
+
+@csrf_exempt
 def save_segments(request, account_key):
   segments = Segment.objects.filter(id__in = request.POST.getlist("segments[]", []))
   token = request.POST.get("token", None)

@@ -119,6 +119,7 @@ urlpatterns = patterns('',
   #
   # segments
   #
+  url(r'^push/v1/segments/create/(?P<account_key>.+)$', 'segments.views.create_segment', name='create_segment'),  
   url(r'^push/v1/segments/save/(?P<account_key>.+)$', 'segments.views.save_segments', name='save_segments'),  
   url(r'^push/v1/segments/(?P<account_key>.+)$', 'segments.views.segments', name='segments'),  
   # in Dashboard
