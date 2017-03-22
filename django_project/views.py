@@ -58,6 +58,7 @@ def test(request):
 def push_message(request):
     if request.method != "POST":
         raise Http404
+    logger.error(request.POST)
     title = request.POST.get('title', None)
     body = request.POST.get('body', None)
     url_args = request.POST.get('url_args', '')
