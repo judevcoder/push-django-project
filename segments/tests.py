@@ -97,3 +97,20 @@ class SegmetsTests(TestCase):
 
       self.assertEqual(Segment.objects.count(), 1)
       self.assertContains(res, "ok")  
+
+    def test_deleting_segments(self):
+
+      user = User.objects.create_user('john', 
+        'lennon@thebeatles.com', 
+        'johnpassword')
+      profile = ClientProfile.objects.create(
+        website_push_id = 'web.com.pushmonkey.1', 
+        account_key = "abc",
+        user = user)
+      s = Segment.objects.create(account_key = "abc")
+
+      data = {"id": s.id}
+      res = c.post(reverse('delete_segment', args = ["abc"]), data)
+
+      self.assertEqual(Segment.objects.count(), 0)
+      self.assertContains(res, "ok")  
