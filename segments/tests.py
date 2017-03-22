@@ -80,4 +80,20 @@ class SegmetsTests(TestCase):
 
       self.assertEqual(Segment.objects.get(id = seg1.id).web_service_device.count(), 0)
       self.assertEqual(Segment.objects.get(id = seg2.id).web_service_device.count(), 0)
-      self.assertContains(res, "no token")      
+      self.assertContains(res, "no token")  
+
+    def test_creating_segments(self):
+
+      user = User.objects.create_user('john', 
+        'lennon@thebeatles.com', 
+        'johnpassword')
+      profile = ClientProfile.objects.create(
+        website_push_id = 'web.com.pushmonkey.1', 
+        account_key = "abc",
+        user = user)
+
+      data = {"name": "Boxing"}
+      res = c.post(reverse('create_segment', args = ["abc"]), data)
+
+      self.assertEqual(Segment.objects.count(), 1)
+      self.assertContains(res, "ok")  
