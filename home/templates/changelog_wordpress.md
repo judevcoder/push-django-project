@@ -1,3 +1,52 @@
+#### v 1.4.0
+ - added segmentation
+ - changed default colors
+
+####  v 1.3.3
+ - fix permalink bugs
+
+#### v 1.3.2
+ - fix notifications that don't remain on the screen
+ - other bug fixes
+
+####  v 1.3.1
+ - fix missing URL after update
+
+#### v 1.3
+ - major overhaul of the system and back-end. HTTPS is no longer required.
+
+#### v 1.2 
+ - allow the customisation of the subscribe button
+
+#### v 1.1.1
+ - fix CSS on banner
+ - remove banner on unsupported browsers
+
+####  v 1.1
+ - fix CSS conflicts
+ - fix some missing banner positions
+ - fix the rewrite rules
+
+#### v 1.0.2
+ - remove logging
+
+#### v 1.0.1
+ - fix layout issues
+ - add some missing files
+
+####  v 1.0
+ - added Chrome integration
+ - added Firefox integration
+ - fixed some layout bugs
+ - updated the subscription banners
+
+####  v 0.9.9.9.5
+ - fix CSS conflicts
+ - test on Wordpress 4.6.1
+
+#### v 0.9.9.9.4
+- bugfixing: scheduled posts now send push notifications again.
+
 #### v 0.9.9.9.3
 - update stats layout
  
