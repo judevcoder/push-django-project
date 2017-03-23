@@ -118,7 +118,7 @@ var PushMonkey = function(config) {
     var link = document.createElement("a");
     link.setAttribute('href',"#");
     link.setAttribute('onclick',"window._pushmonkey.openWindow();");  
-    link.setAttribute("style", "display: block; background-color: "+pm.dialogButtonBackgroundColor+"; width: 50px; border-radius: 5px; margin: 15px auto 0 auto; padding: 5px; color: black;");
+    link.setAttribute("style", "display: block; background-color: "+pm.dialogButtonBackgroundColor+"; width: 70px; border-radius: 5px; margin: 15px auto 0 auto; padding: 5px; color: black;");
     link.innerHTML = "Close";
     var header = document.createElement("h3");
     header.setAttribute("style", "line-height: 20px; margin: 0; font-size: 18px;");

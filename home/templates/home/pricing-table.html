@@ -15,7 +15,7 @@
               <li>Statistics</li>
               <li>Granular Filtering</li>
               <li>Custom Branded</li>
-              <li>CTA Banners</li>
+              <li>Segmentation</li>
               <li><i class="fa fa-times"></i></li>
               <li><i class="fa fa-times"></i></li>
               <li><i class="fa fa-times"></i></li>
@@ -74,7 +74,7 @@
               <li>Statistics</li>
               <li>Granular Filtering</li>
               <li>Custom Branded</li>
-              <li>CTA Banners</li>
+              <li>Segmentation</li>
               <li>Data Export</li>
               <li><i class="fa fa-times"></i></li>
               <li><i class="fa fa-times"></i></li>
@@ -132,7 +132,7 @@
               <li>Statistics</li>
               <li>Granular Filtering</li>
               <li>Custom Branded</li>
-              <li>CTA Banners</li>
+              <li>Segmentation</li>
               <li>Data Export</li>
               <li>Lovable Support</li>
               <li>5 Websites</li>
@@ -142,15 +142,15 @@
         <div class="wpb_text_column wpb_content_element  left-pluginprice text-pluginprice">
           <div class="wpb_wrapper">
             <p>
-                {% if modal_pricing_table or overview_pricing_tabel %}
-                <a href="{% url 'payment_overview' 'yearly' plans.PRO %}" 
-                {% else %}
-                <a href="{% url 'register_preselected_plan' plans.pro_year %}" 
-                {% endif %}
-                >
-                {{ prices.pro_monthly_paid_yearly }}<br>
-                <strong>Month</strong><br>
-                <em>Paid Yearly</em>
+              {% if modal_pricing_table or overview_pricing_tabel %}
+              <a href="{% url 'payment_overview' 'yearly' plans.PRO %}" 
+              {% else %}
+              <a href="{% url 'register_preselected_plan' plans.pro_year %}" 
+              {% endif %}
+              >
+              {{ prices.pro_monthly_paid_yearly }}<br>
+              <strong>Month</strong><br>
+              <em>Paid Yearly</em>
               </a>
             </p>
           </div>
