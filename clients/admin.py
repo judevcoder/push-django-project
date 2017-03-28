@@ -1,7 +1,10 @@
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib import messages
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from models import ClientProfile, ProfileConfirmation, ProfileImage
 from pushmonkey.models import PushPackage
+import csv
 
 class ClientProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'user_first_name', 'website', 'account_key', 'confirmed', 'status', 'has_push_package', 'created_at', 'from_envato')
@@ -49,8 +52,29 @@ class ClientProfileAdmin(admin.ModelAdmin):
         else:
             message_bit = "%s profiles were" % rows_updated
         self.message_user(request, "%s successfully assigned a Push Package." % message_bit)
-        
     assign_push_package.short_description = "Assign a push package"
+
+    def get_urls(self):
+      urls = super(ClientProfileAdmin, self).get_urls()
+      custom_urls = [
+          url(r'^export/$', self.export),
+      ]
+      return custom_urls + urls
+
+    def export(self, request):
+        if not request.user.is_staff:
+            raise PermissionDenied
+        queryset = ClientProfile.objects.all()
+        opts = queryset.model._meta
+        model = queryset.model
+        response = HttpResponse(mimetype='text/csv')
+        response['Content-Disposition'] = 'attachment;filename=export.csv'
+        writer = csv.writer(response)
+        field_names = [field.name for field in opts.fields]
+        writer.writerow(field_names)
+        for obj in queryset:
+            writer.writerow([getattr(obj, field) for field in field_names])
+        return response
 
 admin.site.register(ClientProfile, ClientProfileAdmin)
 
