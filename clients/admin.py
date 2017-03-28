@@ -79,7 +79,7 @@ class ClientProfileAdmin(admin.ModelAdmin):
               row.append(getattr(obj, field).encode("utf-8"))
             except:
               row.append(getattr(obj, field))
-            writer.writerow(row)
+          writer.writerow(row)
         return response
 
 admin.site.register(ClientProfile, ClientProfileAdmin)
