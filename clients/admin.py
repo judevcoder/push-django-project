@@ -73,7 +73,7 @@ class ClientProfileAdmin(admin.ModelAdmin):
         field_names = [field.name for field in opts.fields]
         writer.writerow(field_names)
         for obj in queryset:
-            writer.writerow([getattr(obj, field) for field in field_names])
+            writer.writerow([getattr(obj, field).encode('utf-8') for field in field_names])
         return response
 
 admin.site.register(ClientProfile, ClientProfileAdmin)
