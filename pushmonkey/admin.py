@@ -5,6 +5,7 @@ from models import Device, PushMessage, PushPackage, Batch, WebServiceDevice
 class WebServiceDeviceAdmin(admin.ModelAdmin):
   search_fields = ['account_key', 'subscription_id', 'endpoint']
   list_display = ('subscription_id', 'endpoint', 'created_at', 'account_key', 'comment', 'mozilla', 'chrome')
+  list_filter = ('tested',)
 admin.site.register(WebServiceDevice, WebServiceDeviceAdmin)
 
 class DeviceAdmin(admin.ModelAdmin):
