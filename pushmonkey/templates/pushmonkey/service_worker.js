@@ -20,6 +20,9 @@ self.addEventListener('push', function(event) {
       return  self.registration.showNotification(title, {
             body: body,
             icon: icon,
+            {% if account_key == "CW598XLRMJ3YUBTZI" %}
+            image: "https://getpushmonkey.com/static/images/getpushmonkey-logo.png",
+            {% endif %}
             tag: tag,
             requireInteraction: true            
         });
