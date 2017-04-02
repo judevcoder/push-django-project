@@ -205,13 +205,14 @@ class Command(BaseCommand):
                 chrome = chrome, 
                 mozilla = mozilla, 
                 account_key = message.account_key).exclude(
-                id__in = [d.id for d in devices])
+                id__in = [d.id for d in devices], 
+                tested = False)
             for d in devices_not_in_segment:
                 if d.segment_set.count() == 0:
                     devices.append(d)
             return list(set(devices))
         return WebServiceDevice.objects.filter(account_key = message.account_key, 
-            chrome = chrome, mozilla = mozilla)        
+            chrome = chrome, mozilla = mozilla, tested = False)        
 
     def send_email(self, push_message):
         # send an email to MANAGERS, for the record.
