@@ -180,9 +180,7 @@ NOCAPTCHA = True
 
 SUBPROCESS_COMMAND_PATH = "/home/django/django_project/manage.py send_push"
 # demo on homepage
-# TODO: revert back to original account key
-# DEMO_ACCOUNT_KEY = "CW598XLRMJ3YUBTZI"
-DEMO_ACCOUNT_KEY = "abcd"
+DEMO_ACCOUNT_KEY = "CW598XLRMJ3YUBTZI"
 
 DEFAULT_DIALOG_BACKGROUND = "#CEDE9B"
 DEFAULT_DIALOG_BUTTON = "#99CC56"
