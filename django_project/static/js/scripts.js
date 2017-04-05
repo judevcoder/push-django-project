@@ -39,7 +39,7 @@ function getSubscription(registration) {
 
   log("=== getSubscription");
   if (!registration) {
-
+    
     loadSDK();
     return;
   }
