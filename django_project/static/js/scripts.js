@@ -56,7 +56,7 @@ function getSubscription(registration) {
 
 function log(m) {
 
-  // console.log(m);
+  console.log(m);
 }
 
 function endpointWorkaround(subscription) {
