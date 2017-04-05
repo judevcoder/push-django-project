@@ -30,8 +30,10 @@
       </div><!-- .row -->
       <div class="row">
         <!-- Nav tabs -->
-        {% with active_tab="manage-websites" %}
-          {% include 'tabs_menu.html' %}
+        {% with is_pro=True %}
+          {% with active_tab="manage-websites" %}
+            {% include 'tabs_menu.html' %}
+          {% endwith %}
         {% endwith %}
       </div><!-- .row -->      
       <div class="row">
@@ -127,8 +129,8 @@
             </div><!-- .col -->          
         </div><!-- .col -->
         <div class="col-md-4 right-details">
+          <h3>Plan</h3>
           <div class="side-full">
-            <h3>Plan</h3>
             <p>You are currently rocking the <strong>Pro</strong> plan. You mean business!</p>
             <p>
             This means that you can deploy Push Monkey on up to 5 websites. Please add the URLs, names and icons of 
