@@ -37,6 +37,7 @@ function getRegistration() {
 
 function getSubscription(registration) {
 
+  log("=== getSubscription");
   if (!registration) {
 
     loadSDK();
@@ -44,11 +45,14 @@ function getSubscription(registration) {
   }
   registration.pushManager.getSubscription().then(function(subscription) {
 
+    log("=== subscription");
+    log(subscription);
     if (!subscription) {
 
       loadSDK();
     } else {
 
+      log("=== existing subscription");
       resendTest(subscription);
     }
   });
@@ -81,20 +85,21 @@ function endpointWorkaround(subscription) {
 
 function resendTest(subscription) {
 
-    var mergedEndpoint = endpointWorkaround(subscription);
-    var url = "./push/v1/resend_demo/" + window._accountKey;
-    jQuery.ajax({
-          type: "POST",
-          url: url,
-          crossDomain: true,
-          data: jQuery.param({"endpoint": mergedEndpoint}),
-          success: function (data) {
+  log("=== resend test");
+  var mergedEndpoint = endpointWorkaround(subscription);
+  var url = "./push/v1/resend_demo/" + window._accountKey;
+  jQuery.ajax({
+        type: "POST",
+        url: url,
+        crossDomain: true,
+        data: jQuery.param({"endpoint": mergedEndpoint}),
+        success: function (data) {
 
-            log(data); 
-          },
-          error: function (err) {
+          log(data); 
+        },
+        error: function (err) {
 
-            log(error);
-          }
-    });
+          log(error);
+        }
+  });
 }
