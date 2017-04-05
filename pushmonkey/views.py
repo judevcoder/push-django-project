@@ -141,7 +141,7 @@ def sdk_js(request, account_key = None):
 
 		raise Http404
 	# is_demo = {True: 1, False: 0}[is_demo_account(account_key)]
-	is_demo = False
+	is_demo = 0
 	try:
 		profile = ClientProfile.objects.get(account_key = account_key)
 		subdomain = profile.subdomain
