@@ -20,7 +20,6 @@ self.addEventListener('push', function(event) {
       return  self.registration.showNotification(title, {
             body: body,
             icon: icon,
-            {% if account_key == "CW598XLRMJ3YUBTZI" %}image: "/static/images/weekly_report.jpeg",{% endif %}
             tag: tag,
             requireInteraction: true            
         });
@@ -48,4 +47,14 @@ self.addEventListener('notificationclick', function(event) {
     if (clients.openWindow)
       return clients.openWindow(pushMonkeySWConfig.host + '/stats/track_open/' + event.notification.tag);
   }));
+});
+
+self.addEventListener('install', function(event) {
+
+  event.waitUntil(self.skipWaiting());
+});
+
+self.addEventListener('activate', function(event) {
+
+  event.waitUntil(self.clients.claim());
 });
