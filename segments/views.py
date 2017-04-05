@@ -10,6 +10,8 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from forms import SegmentForm
 from models import Segment
+from plans.models import PlanVariant as plans
+from plans.models import PlanVariant, Plan
 from pushmonkey.models import Device, WebServiceDevice
 from website_clusters.models import WebsiteCluster, Website
 import json
@@ -123,9 +125,14 @@ def delete(request, id):
 
 @login_required
 def dashboard(request):
+  is_pro = False
   try:
     profile = ClientProfile.objects.get(user = request.user)
     account_key = profile.account_key
+    plan, has_only_expired_plans = Plan.objects.get_current_plan_for_user(request.user)
+    if not has_only_expired_plans:
+      if plan.type == plans.PRO:
+        is_pro = True
   except ClientProfile.DoesNotExist:
     try:
       website = request.user.website_set.all()[0]
@@ -146,7 +153,8 @@ def dashboard(request):
   return render_to_response('segments/dashboard.html', 
                           {
                             'segments': segments,
-                            'form': form
+                            'form': form,
+                            'is_pro': is_pro
                           }, 
                           RequestContext(request))
 

@@ -16,12 +16,14 @@
   </li>
   <li role="presentation" {% if active_tab == "segmentation" %}class="active"{% endif %}>
     <a href="{% url 'segments_dashboard' %}">Segmentation</a>
-  </li>   
+  </li>
+  {% if is_pro %} 
   <li role="presentation" {% if active_tab == "manage-websites" %}class="active"{% endif%}>
     <a href="{% url 'websites' %}">
       Manage Websites
     </a>
   </li>
+  {% endif %}
   <li role="presentation">
     <a href="{% url 'dashboard' %}?tab=more">
       More
