@@ -50,6 +50,9 @@ self.addEventListener('notificationclick', function(event) {
   }));
 });
 
+// 
+// Trick to make service worker updates easier.
+//
 self.addEventListener('install', function(event) {
 
   event.waitUntil(self.skipWaiting());
