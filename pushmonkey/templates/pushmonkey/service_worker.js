@@ -20,7 +20,6 @@ self.addEventListener('push', function(event) {
       return  self.registration.showNotification(title, {
             body: body,
             icon: icon,
-            {% if account_key == "CW598XLRMJ3YUBTZI" %}image: "/static/images/weekly_report.jpeg",{% endif %}
             tag: tag,
             requireInteraction: true            
         });

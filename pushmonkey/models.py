@@ -219,7 +219,8 @@ class PushPackage(models.Model):
             json.dump(website_json, outfile)
         # create icons
         iconset_path = os.path.join(dirname, 'iconset')
-        os.makedirs(iconset_path)
+        if not os.path.exists(iconset_path):
+            os.makedirs(iconset_path)
         shutil.copyfile(icon128_2x_path, os.path.join(iconset_path, 'icon_128x128@2x.png'))
         shutil.copyfile(icon128_path, os.path.join(iconset_path, 'icon_128x128.png'))
         shutil.copyfile(icon32_2x_path, os.path.join(iconset_path, 'icon_32x32@2x.png'))

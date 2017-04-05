@@ -57,8 +57,9 @@ var PushMonkey = function(config) {
 
     navigator.serviceWorker.register(pm.serviceWorkerLocal).then(pm.initialiseState);
   }  
-  pm.initialiseState = function() {
+  pm.initialiseState = function(registration) {
 
+    registration.update();
     // Are Notifications supported in the service worker?
     if (!pm.serviceWorkersSupportNotifications) {
 
