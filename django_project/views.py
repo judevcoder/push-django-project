@@ -85,6 +85,7 @@ def push_message(request):
     custom = request.POST.get('custom', False)
     if custom:
         custom = True
+    image = request.FILES.get('image', None)
     h = HTMLParser.HTMLParser()
     title = h.unescape(title)
     title = title.encode('utf-8', 'ignore').strip(' \n\r')
@@ -119,9 +120,14 @@ def push_message(request):
                 should_push = True
             except Website.DoesNotExist:
                 comment = 'No user for this account key or profile is not active or no website cluster.'
-        new_message = PushMessage.objects.create(title = title, body = body, 
-            url_args = url_args, account_key = account_key, 
-            custom = custom, comment = comment, scheduled_at = scheduled_at)
+        new_message = PushMessage.objects.create(title = title, 
+            body = body, 
+            url_args = url_args, 
+            account_key = account_key, 
+            custom = custom, 
+            comment = comment, 
+            scheduled_at = scheduled_at,
+            image = image)
         if segments:
             for segment in Segment.objects.filter(id__in = segments):
                 new_message.segments.add(segment)
@@ -132,14 +138,14 @@ def push_message(request):
             # subprocess for async execution 
             subprocess.Popen("sleep 10; python " + command_path + " " + str(new_message.id), shell=True)
     elif account_keys:
-        print("=== account keys")
         profiles = ClientProfile.objects.filter(account_key__in = account_keys, status = 'active')
         print(profiles)
         for p in profiles:
             notif = PushMessage.objects.create(title = title, 
                     body = body, url_args = url_args, 
                     account_key = p.account_key, custom = custom, 
-                    comment = comment, scheduled_at = scheduled_at)
+                    comment = comment, scheduled_at = scheduled_at,
+                    image = image)
             print(notif)
             print(notif.id)
             if segments:
@@ -153,7 +159,8 @@ def push_message(request):
             notif = PushMessage.objects.create(title = title, 
                 body = body, url_args = url_args, 
                 account_key = w.account_key, custom = custom, 
-                comment = comment, scheduled_at = scheduled_at)
+                comment = comment, scheduled_at = scheduled_at,
+                image = image)
             if segments:
                 for segment in Segment.objects.filter(id__in = segments):
                     notif.segments.add(segment)

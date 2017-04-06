@@ -277,7 +277,7 @@
                   <span>for {{ website.website_name }} ({{ website.website_url }})</span>
                   {% endif %}
                   <div class="form-container top-spacing">
-                    <form method="post" class="form-horizontal" id="custom-notification">
+                    <form method="post" class="form-horizontal" id="custom-notification" enctype="multipart/form-data">
                       <div class="form-group">
                         <label for="title" class="col-sm-4 control-label">Title</label>
                         <div class="col-sm-8">
@@ -289,13 +289,23 @@
                         <div class="col-sm-8">                
                           <textarea name="body" class="form-control" maxlength="120" rows="3" id="message"></textarea>
                         </div><!-- .col -->
-                      </div>
+                      </div>                      
                       <div class="form-group">
                         <label for="url" class="col-sm-4 control-label">Landing Page URL</label>
                         <div class="col-sm-8">                
                           <input type="text" maxlength="300" class="form-control" name="url_args" value="">
                         </div><!-- .col -->
                       </div>
+                      <div class="form-group">
+                        <div class="col-sm-4 text-right">
+                          <label for="image" class="control-label">Image</label>
+                          <br />
+                          <p>Optional. Work only for Chrome.</p>
+                        </div>
+                        <div class="col-sm-8">                
+                          <input type="file" maxlength="300" class="form-control" name="image">
+                        </div><!-- .col -->
+                      </div>                      
                       <div class="form-group">
                         <div class="col-sm-4 text-right">
                           <label for="scheduled_at" class="control-label">Scheduled At</label>
@@ -337,7 +347,7 @@
                       {% endif %}
                       <div class="row">
                         <div class="col-md-4 text-right">
-                            <label for="account_keys" class="control-label">Segments</label>
+                            <label for="send_to_segments" class="control-label">Segments</label>
                             <br />
                             <p>to send the notification to.</p>
                         </div><!-- .col -->

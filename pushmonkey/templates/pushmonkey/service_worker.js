@@ -17,13 +17,17 @@ self.addEventListener('push', function(event) {
       var body = data.body;
       var icon = data.icon;
       var tag = data.id;
-      return  self.registration.showNotification(title, {
+      var payload = {
             body: body,
             icon: icon,
-            {% if account_key == "CW598XLRMJ3YUBTZI" %}image: "/static/images/weekly_report.jpeg",{% endif %}
             tag: tag,
             requireInteraction: true            
-        });
+      };
+      if (data.image) {
+        
+        payload["image"] = data.image;
+      }
+      return  self.registration.showNotification(title, payload);
     });
   })
   );

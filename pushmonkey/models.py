@@ -9,7 +9,7 @@ from django.db.models.signals import post_delete
 from django.dispatch.dispatcher import receiver
 from django_push_package.push_package import PushPackage as PushPackageMaker
 import string, random, os, json, shutil, urlparse
-
+from clients.models import path_and_rename
 
 class Device(models.Model):
     
@@ -91,18 +91,19 @@ class StatisticsManager(models.Manager):
         return labels_dataset
 
 class PushMessage(models.Model):
-    title = models.CharField(max_length=200)
-    body = models.CharField(max_length=200)
-    url_args = models.CharField(max_length=200, default="")
-    device_num = models.CharField(max_length=10, default="0")
-    opened_num = models.IntegerField(default=0)
-    updated_at = models.DateTimeField(auto_now=True, default=datetime.now)
-    created_at = models.DateTimeField(default=datetime.now, editable=True)
     account_key = models.CharField(max_length=200, null=True)
+    body = models.CharField(max_length=200)
     comment = models.CharField(max_length = 300, default="", blank = True)
+    created_at = models.DateTimeField(default=datetime.now, editable=True)
     custom = models.BooleanField(default = False)
+    device_num = models.CharField(max_length=10, default="0")
+    image = models.ImageField(upload_to = path_and_rename('push_messages'), max_length=200, default='', blank = True, null = True)
+    opened_num = models.IntegerField(default=0)
     scheduled_at = models.DateTimeField(null = True, blank = True)
     segments = models.ManyToManyField("segments.Segment", null = True, blank = True)
+    title = models.CharField(max_length=200)
+    updated_at = models.DateTimeField(auto_now=True, default=datetime.now)
+    url_args = models.CharField(max_length=200, default="")
 
     objects = StatisticsManager()
 

@@ -19,19 +19,20 @@ def notifications(request, account_key = None):
 	if not account_key:
 
 		raise Http404
-	message = PushMessage.objects.filter(account_key = account_key).order_by('-created_at').first()
+	message = PushMessage.objects.filter(account_key = account_key).order_by('-created_at')[0]
 	if not message:
 
 		raise Http404
 	profile = ClientProfile.objects.get(account_key = account_key)
 	profile_image = ProfileImage.objects.get(profile = profile)
 	response_data = {
-
 		"body": message.body,
-		"icon": "https://" + request.META['HTTP_HOST'] + profile_image.image128.url,
+		"icon": "https://" + request.META.get('HTTP_HOST', 'example.com') + profile_image.image128.url,
 		"title": message.title,
 		"id": message.id
 	}
+	if message.image.url:
+		response_data["image"] = message.image.url
 	return HttpResponse(json.dumps(response_data), content_type = "application/json")
 
 @csrf_exempt

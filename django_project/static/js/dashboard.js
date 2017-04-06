@@ -85,11 +85,14 @@ $(function() {
       return;
     }
     var url = "/push_message";
-    var data = values;
+    var formData = new FormData($(this)[0]); 
     $.ajax({
       type: "POST",
       url: url,
-      data: data,
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,      
       success: function(data, status) {
 
         if (status == "success") {
