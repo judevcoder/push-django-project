@@ -421,7 +421,7 @@ def dashboard(request):
     wants_to_upgrade = False
     if request.GET.get('upgrade_plan', False):
         wants_to_upgrade = True
-    push_messages = PushMessage.objects.filter(account_key = account_key)[:20]
+    push_messages = PushMessage.objects.filter(account_key = account_key).order_by("-created_at")[:20]
     notifications = PushMessage.objects.filter(account_key = account_key).count()
     subscribers = Device.objects.filter(account_key = account_key).count()
     subscribers += WebServiceDevice.objects.filter(account_key = account_key).count()
