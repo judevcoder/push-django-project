@@ -31,7 +31,7 @@ def notifications(request, account_key = None):
 		"title": message.title,
 		"id": message.id
 	}
-	if message.image.url:
+	if message.image:
 		response_data["image"] = message.image.url
 	return HttpResponse(json.dumps(response_data), content_type = "application/json")
 
