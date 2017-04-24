@@ -151,7 +151,7 @@ def register_thank_you(request, profile_id = None):
     else:
         plan = Plan(user = profile.user, 
                     type = plans.TRIAL,
-                    end_at = datetime.now() + timedelta(days=30),
+                    end_at = datetime.now() + timedelta(days = settings.TRIAL_DAYS),
                     status = 'active',
                     payed = False)
     plan.save()
